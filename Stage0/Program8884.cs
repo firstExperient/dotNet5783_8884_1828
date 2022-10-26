@@ -8,7 +8,7 @@ namespace Stage0
 {
     internal partial class Program
     {
-        private static void welcome8884()
+        static partial void welcome8884()
         {
             Console.Write("Enter your name: ");
             string name = Console.ReadLine();
