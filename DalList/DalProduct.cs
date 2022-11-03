@@ -5,6 +5,11 @@ namespace Dal;
 public class DalProduct
 {
     #region Add
+    /// <summary>
+    /// this function is used when there is a new watch
+    /// </summary>
+    /// <param name="product">the new watch to add</param>
+    /// <returns>ID of the added watch</returns>
     public int Add(Product product)
     {
         if (DataSource.Config.ProductsIndex == 49) throw new Exception("Erorr! Products array is full");
@@ -18,6 +23,12 @@ public class DalProduct
     #endregion
 
     #region Get
+
+    /// <summary>
+    /// a function that returns the specific watch that was asked
+    /// </summary>
+    /// <param name="id">ID of watch to get</param>
+    /// <returns>the watch that has the given ID</returns>
     public Product Get(int id)
     {
         for (int i = 0; i < DataSource.Config.ProductsIndex; i++)
@@ -27,6 +38,10 @@ public class DalProduct
         throw new Exception("Product not found");
     }
 
+    /// <summary>
+    /// a function that returns all the watches
+    /// </summary>
+    /// <returns>an array of all watches</returns>
     public Product[] GetAll()
     {
         Product[] products = new Product[DataSource.Config.ProductsIndex];
@@ -41,6 +56,10 @@ public class DalProduct
 
     #region Update
 
+    /// <summary>
+    /// this function gets a watch to update it's details
+    /// </summary>
+    /// <param name="product">the watch to update</param>
     public void Update(Product product)
     {
         bool flag = false;
@@ -60,6 +79,10 @@ public class DalProduct
 
     #region Delete
 
+    /// <summary>
+    /// this fuction delete's a watch by the given ID
+    /// </summary>
+    /// <param name="id">the ID of the watch to delete</param>
     public void Delete(int id)
     {
         bool flag = false;

@@ -1,13 +1,15 @@
-﻿
-using DO;
+﻿using DO;
 
 namespace Dal;
 
 public class DalOrderItem
 {
-
-
     #region Add
+    /// <summary>
+    /// this function is used when there is a new order-item
+    /// </summary>
+    /// <param name="orderItem"> ID of the added order-item</param>
+    /// <returns>order-item ID of the added order-item</returns>
     public int Add(OrderItem orderItem)
     {
         if (DataSource.Config.OrderItemsIndex == 199) throw new Exception("Erorr! OrderItems array is full");
@@ -20,6 +22,11 @@ public class DalOrderItem
     #endregion
 
     #region Get
+    /// <summary>
+    /// a function that returns the specific order-item that was asked
+    /// </summary>
+    /// <param name="id">ID of order-item to get</param>
+    /// <returns>the order-item that has the given ID</returns>
     public OrderItem Get(int id)
     {
         for (int i = 0; i < DataSource.Config.OrderItemsIndex; i++)
@@ -29,6 +36,10 @@ public class DalOrderItem
         throw new Exception("Order item not found");
     }
 
+    /// <summary>
+    /// a function that returns all the order-items
+    /// </summary>
+    /// <returns>an array of all order-items</returns>
     public OrderItem[] GetAll()
     {
         OrderItem[] orderItems = new OrderItem[DataSource.Config.OrderItemsIndex];
@@ -39,6 +50,12 @@ public class DalOrderItem
         return orderItems;
     }
 
+    /// <summary>
+    /// a function that returns the order-item that has the same orderID and productID as given in params
+    /// </summary>
+    /// <param name="orderId">ID of order to get in the order-item</param>
+    /// <param name="productId">ID of watch to get in the order-item</param>
+    /// <returns>the order-item that has the same IDs as asked</returns> 
     public OrderItem GetItemByIds(int orderId,int productId)
     {
         for (int i = 0; i < DataSource.Config.OrderItemsIndex; i++)
@@ -49,6 +66,11 @@ public class DalOrderItem
         throw new Exception("Order item not found");
     }
 
+    /// <summary>
+    /// this function returns all the items in the order that has the same ID as given in params
+    /// </summary>
+    /// <param name="orderId">ID of order</param>
+    /// <returns>an array of all the items in the specific order</returns>
     public OrderItem[] GetAllItemsInOrder(int orderId)
     {
         OrderItem[] orderItems = Array.FindAll(DataSource.OrderItems, (orderItem) => orderItem.OrderId == orderId);
@@ -58,7 +80,10 @@ public class DalOrderItem
     #endregion
 
     #region Update
-
+    /// <summary>
+    /// this function gets an order-item to update it's details
+    /// </summary>
+    /// <param name="orderItem">the order-item to update</param>
     public void Update(OrderItem orderItem)
     {
         bool flag = false;
@@ -77,7 +102,10 @@ public class DalOrderItem
     #endregion
 
     #region Delete
-
+    /// <summary>
+    /// this fuction delete's an order-item by the given ID 
+    /// </summary>
+    /// <param name="id">the ID of the order-item to delete</param>
     public void Delete(int id)
     {
         bool flag = false;
