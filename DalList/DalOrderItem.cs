@@ -6,7 +6,6 @@ namespace Dal;
 public class DalOrderItem
 {
 
-
     #region Add
     public int Add(OrderItem orderItem)
     {

@@ -9,6 +9,7 @@ public static class DataSource
         s_Initialize();
     }
 
+    internal static readonly Random Random = new Random();
 
     #region entities' array
 
@@ -67,8 +68,6 @@ public static class DataSource
     }
 
     #endregion
-
-    internal static readonly Random Random = new Random();
 
     #region config
         internal class Config
