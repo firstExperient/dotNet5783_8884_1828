@@ -1,6 +1,6 @@
 ﻿using DO;
-
 namespace Dal;
+
 public class DalOrder
 {
     #region Add
@@ -101,5 +101,4 @@ public class DalOrder
     }
 
     #endregion
-
 }

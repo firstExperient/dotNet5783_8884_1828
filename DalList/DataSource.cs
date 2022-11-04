@@ -100,8 +100,6 @@ public static class DataSource
 
     #endregion
 
-    internal static readonly Random Random = new Random();
-
     #region config
 
     /// <summary>
