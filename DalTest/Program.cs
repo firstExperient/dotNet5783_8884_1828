@@ -51,7 +51,7 @@ internal class Program
 
     private static DalOrderItem _dalOrderItem = new DalOrderItem();
     private static void TestingProduct() {
-        int choice = 0,id,number;
+        int choice = 0,id;
         Product product = new Product();
         Console.WriteLine(" - a. Enter 1 to add a product");
         Console.WriteLine(" - b. Enter 2 to get a product by id");
@@ -68,19 +68,25 @@ internal class Program
         switch (choice)
         {
             case 1:
-                Console.WriteLine("Enter the product name,Category,price and amount in stock:");
-                product.Name = Console.ReadLine();
-                Int32.TryParse(Console.ReadLine(), out number);
-                product.Category = (Category)number;
-                Double.TryParse(Console.ReadLine(), out product.Price);
+                product = ReadProductData();
+                try
+                {
+                    _dalProduct.Add(product);
+
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine(e.Message);
+                }
                 break;
             case 2:
                 Console.WriteLine("Enter product id:");
                 Int32.TryParse(Console.ReadLine(),out id);
                 try
                 {
-                  product = _dalProduct.Get(id);
-
+                    product = _dalProduct.Get(id);
+                    Console.Write(product);    
                 }
                 catch (Exception e)
                 {
@@ -92,7 +98,21 @@ internal class Program
                 Product[] products = _dalProduct.GetAll();
                 foreach (Product item in products)
                 {
-                    Console.WriteLine(item);
+                    Console.Write(item);
+                }
+                break;
+            case 4:
+                Console.WriteLine("Enter product id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                product = ReadProductData();
+                product.ID = id;
+                try
+                {
+                    _dalProduct.Update(product);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
                 }
                 break;
             case 5:
@@ -109,11 +129,94 @@ internal class Program
                 }
                 break;
             default:
-                Console.WriteLine("\nError! input must be a number");
+                Console.WriteLine("\nError! input is not valid");
                 break;
         }
     }
-    private static void TestingOrder() { }
+    private static void TestingOrder()
+    {
+        int choice = 0, id;
+        Order order = new Order();
+        Console.WriteLine(" - a. Enter 1 to add an order");
+        Console.WriteLine(" - b. Enter 2 to get an order by id");
+        Console.WriteLine(" - c. Enter 3 to get all orders");
+        Console.WriteLine(" - d. Enter 4 to update an order");
+        Console.WriteLine(" - e. Enter 5 to delete an order");
+        bool success = Int32.TryParse(Console.ReadLine(), out choice);
+        if (!success)
+        {
+            Console.WriteLine("Error! input must be a number");
+            TestingOrder();
+            return;
+        }
+        switch (choice)
+        {
+            case 1:
+                order = ReadOrderData();
+                try
+                {
+                    _dalOrder.Add(order);
+
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine(e.Message);
+                }
+                break;
+            case 2:
+                Console.WriteLine("Enter order id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                try
+                {
+                    order = _dalOrder.Get(id);
+                    Console.Write(order);
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
+
+                break;
+            case 3:
+                Order[] orders = _dalOrder.GetAll();
+                foreach (Order item in orders)
+                {
+                    Console.Write(item);
+                }
+                break;
+            case 4:
+                Console.WriteLine("Enter order id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                order = ReadOrderData();
+                order.ID = id;
+                try
+                {
+                    _dalOrder.Update(order);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                break;
+            case 5:
+                Console.WriteLine("Enter order id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                try
+                {
+                    _dalOrder.Delete(id);
+
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
+                break;
+            default:
+                Console.WriteLine("\nError! input is not valid");
+                break;
+        }
+    }
     private static void TestingOrderItem() { }
 
     private static Product ReadProductData()
