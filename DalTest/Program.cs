@@ -5,6 +5,10 @@ internal class Program
     private static void Main(string[] args)
     {
         int choice = MainMenu();
+
+        /// <summary>
+        /// the main program. the function that will run will be according to user's choose.
+        /// </summary>
         while (choice != 0)
         {
             switch (choice)
@@ -28,6 +32,9 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// the user must choose an option in the main menu
+    /// </summary>
     private static int MainMenu()
     {
         Console.WriteLine("\nMAIN MENU\n");
@@ -45,11 +52,18 @@ internal class Program
         return choice;
     }
 
+    /// <summary>
+    /// creating the Dals
+    /// </summary>
     private static DalProduct _dalProduct = new DalProduct();
 
     private static DalOrder _dalOrder = new DalOrder();
 
     private static DalOrderItem _dalOrderItem = new DalOrderItem();
+
+    /// <summary>
+    /// The product menu
+    /// </summary>
     private static void TestingProduct() {
 
         int choice = 0,id;
@@ -126,7 +140,6 @@ internal class Program
                 try
                 {
                     _dalProduct.Delete(id);
-
                 }
                 catch (Exception e)
                 {
@@ -138,6 +151,10 @@ internal class Program
                 break;
         }
     }
+
+    /// <summary>
+    /// The order menu
+    /// </summary>
     private static void TestingOrder()
     {
         int choice = 0, id;
@@ -222,6 +239,10 @@ internal class Program
                 break;
         }
     }
+
+    /// <summary>
+    /// The order-item menu
+    /// </summary>
     private static void TestingOrderItem() {
         int choice = 0, id,productId;
         OrderItem orderItem = new OrderItem();
@@ -331,6 +352,10 @@ internal class Program
         }
     }
 
+    /// <summary>
+    /// function to create a new product
+    /// </summary>
+    /// <returns>the new product created by user</returns>
     private static Product ReadProductData()
     {
         int inStock,category;
@@ -348,6 +373,11 @@ internal class Program
         Product product = new Product() { Name = name, Price = price, InStock = inStock, Category = (Category)category };
         return product;
     }
+
+    /// <summary>
+    /// function to create a new order
+    /// </summary>
+    /// <returns>the new order created by user</returns>
     private static Order ReadOrderData()
     {
         string name, mail, adress;
@@ -376,10 +406,15 @@ internal class Program
         };
         return order;
     }
+
+    /// <summary>
+    /// function to create a new item
+    /// </summary>
+    /// <returns>the new order-item created by user</returns>
     private static OrderItem ReadItemData()
     {
-        //maybe add a check the the product and the order ids do exist
-        int productId, orderId,amount;
+        //maybe add a check if the product and the order's ids exist
+        int productId, orderId, amount;
         double price;
         Console.WriteLine("Enter the order id:");
         Int32.TryParse(Console.ReadLine(), out orderId);

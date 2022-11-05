@@ -174,7 +174,7 @@ public static class DataSource
 
         //orderItems:
 
-        //the code will add an avarage of 2 items to an order wich will give about 40 orderitems
+        //the code will add an avarage of 2 items to an order wich will give about 40 order-items
         for (int i = 0; i < 20; i++)
         {
             int itemPerOrder = Random.Next(1, 5);//adding 1-4 items to an order
