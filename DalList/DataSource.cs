@@ -3,10 +3,18 @@ namespace Dal;
 
 public static class DataSource
 {
+    /// <summary>
+    /// the DataSource constructor initialized the data
+    /// </summary>
     static DataSource()
     {
         s_Initialize();
     }
+
+    /// <summary>
+    /// a Random object to create random numbers
+    /// </summary>
+    internal static Random Random = new Random();
 
     #region entities' array
 
@@ -78,10 +86,10 @@ public static class DataSource
     /// <summary>
     ///  this function adds a new order-item
     /// </summary>
-    /// <param name="productId">the product's ID</param>
-    /// <param name="orderId">the order's ID</param>
-    /// <param name="price">the price of the item</param>
-    /// <param name="amount">the amount of items in this specific order</param>
+    /// <param name="productId"></param>
+    /// <param name="orderId"></param>
+    /// <param name="price"></param>
+    /// <param name="amount"></param>
     private static void AddOrderItem(int productId,int orderId,double price,int amount) {
         int id = Config.OrderItemId;
 
@@ -102,7 +110,7 @@ public static class DataSource
     #region config
 
     /// <summary>
-    /// 
+    /// holds all the configration information for the DataSource
     /// </summary>
         internal class Config
         {
@@ -137,21 +145,44 @@ public static class DataSource
 
     #region initialize
 
+
+    /// <summary>
+    /// initialize the dataSource by adding random data to all the data's array
+    /// </summary>
+    private static void s_Initialize() {
         // items:
+        string[] watchNames = { "iceWatch", "Rolex", "DKNY", "Michael Kors", "Louis Vitton", "Tommy Hilfiger", "Casio", "Anna Klein", "Celvin Clein", "Q&Q" };
 
-        private static void s_Initialize() {
-        string[] watchNames = {"iceWatch", "Rolex", "DKNY","Michael Kors","Louis Vitton","Tommy Hilfiger","Casio","Anna Klein","Celvin Clein","Q&Q" };
 
+        for (int i = 0; i < 10; i++)
+        {
+            AddProduct(watchNames[i], (Category)Random.Next(0, 5), Random.NextDouble() * 400, Random.Next(0, 350));
+        }
 
         // orders:
         string[] customerName = { "Joey Fabian", "Recceca Levi", "Jossef Cohen", "Sarah Mendel", "Rachel Green", "Steeve McGarret", "Danny Williams", "Lizzie McGuaier", "Maddie Ziegler", "Zoey Brooks" };
-        
+
         string[] email = { "JoeyFabian@gmail.com", "ReccecaLevi@gmail.com", "JossefCohen@gmail.com", "SarahMendel@gmail.com", "RachelGreen@gmail.com", "SteeveMcGarret@gmail.com", "DannyWilliams@gmail.com", "LizzieMcGuaier@gmail.com", "MaddieZiegler@gmail.com", "ZoeyBrooks@gmail.com" };
-        
+
         string[] adress = { "Kazan 10 Ra'anana", "Mordechai Buxboim 12 Jerusalem", "Rabbi Akiva 34 Bnei-Brak", "Kakal 19 Tel-Aviv", "Ha'Melachim 65 Modi'in", "Shwarts 192 Kiriat-Malachi", "Ha'Shunit 1 Ashdod", "Sokolov 27 Holon", "Etrog 70 Herzelia", "Hakablan 18 Jerusalem" };
 
-        for (int i = 0; i < 10; i++) {
-            AddProduct(watchNames[i],(Category)Random.Next(0,10), Random.Next(100,1000),Random.Next(0,350));
+        for (int i = 0; i < 20; i++)
+        {
+            //add a random dates  - fix it
+            AddOrder(customerName[i % 10], email[i % 10], adress[i % 10], DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
+        }
+
+        //orderItems:
+
+        //the code will add an avarage of 2 items to an order wich will give about 40 orderitems
+        for (int i = 0; i < 20; i++)
+        {
+            int itemPerOrder = Random.Next(1, 5);//adding 1-4 items to an order
+            for (int j = 0; j < itemPerOrder; j++)
+            {
+                int productIndex = Random.Next(0, Config.ProductsIndex);//selecting a random product to add
+                AddOrderItem(Products[productIndex].ID, Orders[i].ID, Products[productIndex].Price, Random.Next(1, 5));
+            }
         }
     }
 
