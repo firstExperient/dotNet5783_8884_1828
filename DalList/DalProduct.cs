@@ -13,7 +13,7 @@ public class DalProduct
     public int Add(Product product)
     {
         if (DataSource.Config.ProductsIndex == 49) throw new Exception("Erorr! Products array is full");
-        product.ID = DataSource.Random.Next(100000, 1000000);
+        product.ID = Random.Next(100000, 1000000);
         //add check to see if exist
         DataSource.Products[DataSource.Config.ProductsIndex] = product;
         DataSource.Config.ProductsIndex++;

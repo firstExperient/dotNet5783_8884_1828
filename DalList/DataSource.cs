@@ -1,5 +1,4 @@
 ﻿using DO;
-
 namespace Dal;
 
 public static class DataSource
@@ -17,12 +16,12 @@ public static class DataSource
     internal static Product[] Products = new Product[50];
 
     /// <summary>
-    /// this function adds a new watch to config 
+    /// this function adds a new watch
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="category"></param>
-    /// <param name="price"></param>
-    /// <param name="inStock"></param>
+    /// <param name="name">name of the watch</param>
+    /// <param name="category">category of the watch</param>
+    /// <param name="price">price of the watch</param>
+    /// <param name="inStock">how many watches are in stock</param>
     private static void AddProduct(string name, Category category,double price, int inStock) {
         int id = Random.Next(100000, 1000000);
 
@@ -46,14 +45,14 @@ public static class DataSource
     internal static Order[] Orders = new Order[100];
 
     /// <summary>
-    /// this function adds a new order to config 
+    /// this function adds a new order
     /// </summary>
-    /// <param name="customerName"></param>
-    /// <param name="customerEmail"></param>
-    /// <param name="customerAdress"></param>
-    /// <param name="orderDate"></param>
-    /// <param name="shipDate"></param>
-    /// <param name="deliveryDate"></param>
+    /// <param name="customerName">customer's name</param>
+    /// <param name="customerEmail">customer's email</param>
+    /// <param name="customerAdress">customer's address</param>
+    /// <param name="orderDate">the order date</param>
+    /// <param name="shipDate">the shipment date</param>
+    /// <param name="deliveryDate">the deliveration date</param>
     private static void AddOrder(string customerName,string customerEmail,string customerAdress,DateTime orderDate,DateTime shipDate,DateTime deliveryDate) {
         int id = Config.OrderId;
 
@@ -77,12 +76,12 @@ public static class DataSource
     internal static OrderItem[] OrderItems = new OrderItem[200];
 
     /// <summary>
-    ///  this function adds a new order-item to config 
+    ///  this function adds a new order-item
     /// </summary>
-    /// <param name="productId"></param>
-    /// <param name="orderId"></param>
-    /// <param name="price"></param>
-    /// <param name="amount"></param>
+    /// <param name="productId">the product's ID</param>
+    /// <param name="orderId">the order's ID</param>
+    /// <param name="price">the price of the item</param>
+    /// <param name="amount">the amount of items in this specific order</param>
     private static void AddOrderItem(int productId,int orderId,double price,int amount) {
         int id = Config.OrderItemId;
 
