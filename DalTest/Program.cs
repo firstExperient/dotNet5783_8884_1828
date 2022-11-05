@@ -217,7 +217,114 @@ internal class Program
                 break;
         }
     }
-    private static void TestingOrderItem() { }
+    private static void TestingOrderItem() {
+        int choice = 0, id,productId;
+        OrderItem orderItem = new OrderItem();
+        OrderItem[] items;
+        Console.WriteLine(" - a. Enter 1 to add an order item");
+        Console.WriteLine(" - b. Enter 2 to get an order item by id");
+        Console.WriteLine(" - c. Enter 3 to get all orders' items");
+        Console.WriteLine(" - d. Enter 4 to get an order item by order and product ids");
+        Console.WriteLine(" - e. Enter 5 to get all order items by order id");
+        Console.WriteLine(" - d. Enter 6 to update an order item");
+        Console.WriteLine(" - e. Enter 7 to delete an order item");
+        bool success = Int32.TryParse(Console.ReadLine(), out choice);
+        if (!success)
+        {
+            Console.WriteLine("Error! input must be a number");
+            TestingOrderItem();
+            return;
+        }
+        switch (choice)
+        {
+            case 1:
+                orderItem = ReadItemData();
+                try
+                {
+                    _dalOrderItem.Add(orderItem);
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine(e.Message);
+                }
+                break;
+            case 2:
+                Console.WriteLine("Enter order item id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                try
+                {
+                    orderItem = _dalOrderItem.Get(id);
+                    Console.Write(orderItem);
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
+
+                break;
+            case 3:
+                items = _dalOrderItem.GetAll();
+                foreach (OrderItem item in items)
+                {
+                    Console.Write(item);
+                }
+                break;
+            case 4:
+                Console.WriteLine("Enter order id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                Console.WriteLine("Enter product id:");
+                Int32.TryParse(Console.ReadLine(), out productId);
+                try
+                {
+                    orderItem = _dalOrderItem.GetItemByIds(id,productId);
+                    Console.Write(orderItem);
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
+                break;
+            case 5:
+                Console.WriteLine("Enter order id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                items = _dalOrderItem.GetAllItemsInOrder(id);
+                foreach (OrderItem item in items)
+                {
+                    Console.Write(item);
+                }
+                break;
+            case 6:
+                Console.WriteLine("Enter order item id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                orderItem = ReadItemData();
+                orderItem.ID = id;
+                try
+                {
+                    _dalOrderItem.Update(orderItem);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                break;
+            case 7:
+                Console.WriteLine("Enter order item id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                try
+                {
+                    _dalOrderItem.Delete(id);  
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
+                break;
+            default:
+                Console.WriteLine("\nError! input is not valid");
+                break;
+        }
+    }
 
     private static Product ReadProductData()
     {
