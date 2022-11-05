@@ -4,6 +4,7 @@ namespace Dal;
 
 public class DalProduct
 {
+    
     #region Add
     /// <summary>
     /// this function is used when there is a new watch
