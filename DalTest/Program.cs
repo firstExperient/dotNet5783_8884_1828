@@ -54,23 +54,26 @@ internal class Program
     }
     #endregion
 
+    #region dal objects
     /// <summary>
     /// creating the Dals
     /// </summary>
-    #region dal objects
-
     private static DalProduct _dalProduct = new DalProduct();
 
     private static DalOrder _dalOrder = new DalOrder();
 
     private static DalOrderItem _dalOrderItem = new DalOrderItem();
 
+    #endregion
+
+    #region testing product
     /// <summary>
     /// The product menu
     /// </summary>
-    private static void TestingProduct() {
+    private static void TestingProduct()
+    {
 
-        int choice = 0,id;
+        int choice = 0, id;
         Product product = new Product();
 
         Console.WriteLine(" - a. Enter 1 to add a product");
@@ -79,7 +82,7 @@ internal class Program
         Console.WriteLine(" - d. Enter 4 to update a product");
         Console.WriteLine(" - e. Enter 5 to delete a product");
 
-        bool success = Int32.TryParse(Console.ReadLine(),out choice);
+        bool success = Int32.TryParse(Console.ReadLine(), out choice);
 
         if (!success)
         {
@@ -294,15 +297,13 @@ internal class Program
     #endregion
 
     #region testing order item
-    private static void TestingOrderItem()
-    {
-        int choice = 0, id, productId;
 
     /// <summary>
     /// The order-item menu
     /// </summary>
-    private static void TestingOrderItem() {
-        int choice = 0, id,productId;
+    private static void TestingOrderItem()
+    {
+        int choice = 0, id, productId;
         OrderItem orderItem = new OrderItem();
         OrderItem[] items;
         Console.WriteLine(" - a. Enter 1 to add an order item");
@@ -409,62 +410,6 @@ internal class Program
                 break;
         }
     }
-
-    /// <summary>
-    /// function to create a new product
-    /// </summary>
-    /// <returns>the new product created by user</returns>
-    private static Product ReadProductData()
-    {
-        int inStock,category;
-        double price;
-        string name;
-        Console.WriteLine("Enter product name:");
-        name = Console.ReadLine();
-        Console.WriteLine("Enter th product category (0 - men watch, 1 - women watch, 2 - children watch, 3 - smart watch, 4 - diving watch");
-        Int32.TryParse(Console.ReadLine(), out category);
-        Console.WriteLine("Enter product price:");
-        double.TryParse(Console.ReadLine(), out price);
-        Console.WriteLine("Enter the amount of product in stock:");
-        Int32.TryParse(Console.ReadLine(), out inStock);
-
-        Product product = new Product() { Name = name, Price = price, InStock = inStock, Category = (Category)category };
-        return product;
-    }
-
-    /// <summary>
-    /// function to create a new order
-    /// </summary>
-    /// <returns>the new order created by user</returns>
-    private static Order ReadOrderData()
-    {
-        string name, mail, adress;
-        DateTime orderDate, ship, delivery;
-        Console.WriteLine("Enter customer name:");
-        name= Console.ReadLine();
-        Console.WriteLine("Enter customer mail:");
-        mail= Console.ReadLine();
-        Console.WriteLine("Enter customer adress:");
-        adress= Console.ReadLine();
-        Console.WriteLine("Enter the date of the order:");
-        DateTime.TryParse(Console.ReadLine(), out orderDate);
-        Console.WriteLine("Enter the shipping date:");
-        DateTime.TryParse(Console.ReadLine(), out ship);
-        Console.WriteLine("Enter the delivery date:");
-        DateTime.TryParse(Console.ReadLine(), out delivery);
-
-        Order order = new Order()
-        {
-            CustomerName = name,
-            CustomerEmail = mail,
-            CustomerAdress = adress,
-            OrderDate = orderDate,
-            ShipDate = ship,
-            DeliveryDate = delivery
-        };
-        return order;
-    }
-
     /// <summary>
     /// function to create a new item
     /// </summary>
@@ -485,5 +430,7 @@ internal class Program
         OrderItem orderItem = new OrderItem() { OrderId = orderId, ProductId = productId, Price = price, Amount = amount };
         return orderItem;
     }
+    #endregion
+    
 }
-#endregion
+
