@@ -2,6 +2,7 @@
 using DO;
 internal class Program
 {
+    #region main
     private static void Main(string[] args)
     {
         int choice = MainMenu();
@@ -11,7 +12,7 @@ internal class Program
             {
                 case 0:
                     break;
-                case 1: 
+                case 1:
                     TestingProduct();
                     break;
                 case 2:
@@ -36,29 +37,37 @@ internal class Program
         Console.WriteLine(" - Enter 2 to test Order");
         Console.WriteLine(" - Enter 3 to test Order Item");
         int choice;
-        bool success = Int32.TryParse(Console.ReadLine(),out choice);
-        if(!success)
+        bool success = Int32.TryParse(Console.ReadLine(), out choice);
+        if (!success)
         {
             Console.WriteLine("\nError! input must be a number");
             return MainMenu();
         }
         return choice;
     }
+    #endregion
+
+    #region dal objects
 
     private static DalProduct _dalProduct = new DalProduct();
 
     private static DalOrder _dalOrder = new DalOrder();
 
     private static DalOrderItem _dalOrderItem = new DalOrderItem();
-    private static void TestingProduct() {
-        int choice = 0,id;
+
+    #endregion
+
+    #region testing product
+    private static void TestingProduct()
+    {
+        int choice = 0, id;
         Product product = new Product();
         Console.WriteLine(" - a. Enter 1 to add a product");
         Console.WriteLine(" - b. Enter 2 to get a product by id");
         Console.WriteLine(" - c. Enter 3 to get all products");
         Console.WriteLine(" - d. Enter 4 to update a product");
         Console.WriteLine(" - e. Enter 5 to delete a product");
-        bool success = Int32.TryParse(Console.ReadLine(),out choice);
+        bool success = Int32.TryParse(Console.ReadLine(), out choice);
         if (!success)
         {
             Console.WriteLine("Error! input must be a number");
@@ -82,17 +91,17 @@ internal class Program
                 break;
             case 2:
                 Console.WriteLine("Enter product id:");
-                Int32.TryParse(Console.ReadLine(),out id);
+                Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
                     product = _dalProduct.Get(id);
-                    Console.Write(product);    
+                    Console.Write(product);
                 }
                 catch (Exception e)
                 {
                     Console.Write(e.Message);
                 }
-                
+
                 break;
             case 3:
                 Product[] products = _dalProduct.GetAll();
@@ -133,6 +142,26 @@ internal class Program
                 break;
         }
     }
+    private static Product ReadProductData()
+    {
+        int inStock, category;
+        double price;
+        string name;
+        Console.WriteLine("Enter product name:");
+        name = Console.ReadLine();
+        Console.WriteLine("Enter th product category (0 - men watch, 1 - women watch, 2 - children watch, 3 - smart watch, 4 - diving watch");
+        Int32.TryParse(Console.ReadLine(), out category);
+        Console.WriteLine("Enter product price:");
+        double.TryParse(Console.ReadLine(), out price);
+        Console.WriteLine("Enter the amount of product in stock:");
+        Int32.TryParse(Console.ReadLine(), out inStock);
+
+        Product product = new Product() { Name = name, Price = price, InStock = inStock, Category = (Category)category };
+        return product;
+    }
+    #endregion
+
+    #region testing order
     private static void TestingOrder()
     {
         int choice = 0, id;
@@ -217,8 +246,40 @@ internal class Program
                 break;
         }
     }
-    private static void TestingOrderItem() {
-        int choice = 0, id,productId;
+    private static Order ReadOrderData()
+    {
+        string name, mail, adress;
+        DateTime orderDate, ship, delivery;
+        Console.WriteLine("Enter customer name:");
+        name = Console.ReadLine();
+        Console.WriteLine("Enter customer mail:");
+        mail = Console.ReadLine();
+        Console.WriteLine("Enter customer adress:");
+        adress = Console.ReadLine();
+        Console.WriteLine("Enter the date of the order:");
+        DateTime.TryParse(Console.ReadLine(), out orderDate);
+        Console.WriteLine("Enter the shipping date:");
+        DateTime.TryParse(Console.ReadLine(), out ship);
+        Console.WriteLine("Enter the delivery date:");
+        DateTime.TryParse(Console.ReadLine(), out delivery);
+
+        Order order = new Order()
+        {
+            CustomerName = name,
+            CustomerEmail = mail,
+            CustomerAdress = adress,
+            OrderDate = orderDate,
+            ShipDate = ship,
+            DeliveryDate = delivery
+        };
+        return order;
+    }
+    #endregion
+
+    #region testing order item
+    private static void TestingOrderItem()
+    {
+        int choice = 0, id, productId;
         OrderItem orderItem = new OrderItem();
         OrderItem[] items;
         Console.WriteLine(" - a. Enter 1 to add an order item");
@@ -277,7 +338,7 @@ internal class Program
                 Int32.TryParse(Console.ReadLine(), out productId);
                 try
                 {
-                    orderItem = _dalOrderItem.GetItemByIds(id,productId);
+                    orderItem = _dalOrderItem.GetItemByIds(id, productId);
                     Console.Write(orderItem);
                 }
                 catch (Exception e)
@@ -313,7 +374,7 @@ internal class Program
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    _dalOrderItem.Delete(id);  
+                    _dalOrderItem.Delete(id);
                 }
                 catch (Exception e)
                 {
@@ -326,55 +387,10 @@ internal class Program
         }
     }
 
-    private static Product ReadProductData()
-    {
-        int inStock,category;
-        double price;
-        string name;
-        Console.WriteLine("Enter product name:");
-        name = Console.ReadLine();
-        Console.WriteLine("Enter th product category (0 - men watch, 1 - women watch, 2 - children watch, 3 - smart watch, 4 - diving watch");
-        Int32.TryParse(Console.ReadLine(), out category);
-        Console.WriteLine("Enter product price:");
-        double.TryParse(Console.ReadLine(), out price);
-        Console.WriteLine("Enter the amount of product in stock:");
-        Int32.TryParse(Console.ReadLine(), out inStock);
-
-        Product product = new Product() { Name = name, Price = price, InStock = inStock, Category = (Category)category };
-        return product;
-    }
-    private static Order ReadOrderData()
-    {
-        string name, mail, adress;
-        DateTime orderDate, ship, delivery;
-        Console.WriteLine("Enter customer name:");
-        name= Console.ReadLine();
-        Console.WriteLine("Enter customer mail:");
-        mail= Console.ReadLine();
-        Console.WriteLine("Enter customer adress:");
-        adress= Console.ReadLine();
-        Console.WriteLine("Enter the date of the order:");
-        DateTime.TryParse(Console.ReadLine(), out orderDate);
-        Console.WriteLine("Enter the shipping date:");
-        DateTime.TryParse(Console.ReadLine(), out ship);
-        Console.WriteLine("Enter the delivery date:");
-        DateTime.TryParse(Console.ReadLine(), out delivery);
-
-        Order order = new Order()
-        {
-            CustomerName = name,
-            CustomerEmail = mail,
-            CustomerAdress = adress,
-            OrderDate = orderDate,
-            ShipDate = ship,
-            DeliveryDate = delivery
-        };
-        return order;
-    }
     private static OrderItem ReadItemData()
     {
         //maybe add a check the the product and the order ids do exist
-        int productId, orderId,amount;
+        int productId, orderId, amount;
         double price;
         Console.WriteLine("Enter the order id:");
         Int32.TryParse(Console.ReadLine(), out orderId);
@@ -388,3 +404,4 @@ internal class Program
         return orderItem;
     }
 }
+#endregion

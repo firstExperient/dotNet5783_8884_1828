@@ -34,7 +34,14 @@ public static class DataSource
     private static void AddProduct(string name, Category category,double price, int inStock) {
         int id = Random.Next(100000, 1000000);
 
-        //add here a check to see that the random id doesnt already exist
+        for (int i = 0; i < Config.ProductsIndex; i++)
+        {
+            if (Products[i].ID == id)
+            {
+                id = Random.Next(100000, 1000000);
+                i = 0;
+            }
+        }
 
         Products[Config.ProductsIndex] = new Product()
         {
@@ -157,7 +164,7 @@ public static class DataSource
 
         for (int i = 0; i < 10; i++)
         {
-            AddProduct(watchNames[i], (Category)Random.Next(0, 5), Random.NextDouble() * 400, Random.Next(0, 350));
+            AddProduct(watchNames[i], (Category)Random.Next(0, 5), Math.Round(Random.NextDouble() * 400, 1), i == 2 ? 0 : Random.Next(0, 350));
         }
 
         // orders:

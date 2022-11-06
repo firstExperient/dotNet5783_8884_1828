@@ -15,7 +15,14 @@ public class DalProduct
     {
         if (DataSource.Config.ProductsIndex == 49) throw new Exception("Erorr! Products array is full");
         product.ID = DataSource.Random.Next(100000, 1000000);
-        //add check to see if exist
+        for(int i = 0; i < DataSource.Config.ProductsIndex; i++)
+        {
+            if (DataSource.Products[i].ID == product.ID)
+            {
+                product.ID = DataSource.Random.Next(100000, 1000000);
+                i = 0;
+            }
+        }
         DataSource.Products[DataSource.Config.ProductsIndex] = product;
         DataSource.Config.ProductsIndex++;
         return product.ID;
