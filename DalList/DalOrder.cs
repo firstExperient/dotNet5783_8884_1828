@@ -89,10 +89,7 @@ public class DalOrder
             if (DataSource.Orders[i].ID == id)
             {
                 flag = true;
-                for (; i < DataSource.Config.OrdersIndex - 1; i++)
-                {
-                    DataSource.Orders[i] = DataSource.Orders[i + 1];
-                }
+                DataSource.Orders[i] = DataSource.Orders[DataSource.Config.OrdersIndex - 1];
                 DataSource.Config.OrdersIndex--;
                 break;
             }

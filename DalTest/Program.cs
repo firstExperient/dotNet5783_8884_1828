@@ -5,6 +5,17 @@ internal class Program
     #region main
     private static void Main(string[] args)
     {
+        //according to the documantion, the static constructor is supposed to be called automatically when the first access to 
+        //a static member of the class is being done  - https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors
+        //but, when we run this program, the constructor (and therefore the initialize) wasn't call
+        //until we tried to add a new item to one of the three array.(and then it worked)
+        //but until that, every get,getall,update,delete of the 3 entities didnt cause the constructor to ran
+        //(you can try it yoursef - take down the debag(), try to do getall - return an empty array, after the first add-
+        //return all the values from the initilaize)
+        //it might be because the first acceses are to DataSource.config.[entity]index
+        //but config is a static member of DataSource
+        //we will try to find the problem with our teacher
+        DataSource.Debug();
         int choice = MainMenu();
 
         /// <summary>

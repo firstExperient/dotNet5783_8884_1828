@@ -99,10 +99,7 @@ public class DalProduct
             if (DataSource.Products[i].ID == id)
             {
                 flag = true;
-                for (; i < DataSource.Config.ProductsIndex - 1; i++)
-                {
-                    DataSource.Products[i] = DataSource.Products[i + 1];
-                }
+                DataSource.Products[i] = DataSource.Products[DataSource.Config.ProductsIndex - 1];
                 DataSource.Config.ProductsIndex--;
                 break;
             }
