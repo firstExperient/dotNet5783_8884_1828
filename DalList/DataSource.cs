@@ -11,6 +11,11 @@ public static class DataSource
     }
 
     /// <summary>
+    /// this method is used to force the static onstructor to run
+    /// </summary>
+    public static void Debug() { }
+
+    /// <summary>
     /// a Random object to create random numbers
     /// </summary>
     internal static Random Random = new Random();
@@ -32,7 +37,14 @@ public static class DataSource
     private static void AddProduct(string name, Category category,double price, int inStock) {
         int id = Random.Next(100000, 1000000);
 
-        //add here a check to see that the random id doesnt already exist
+        for (int i = 0; i < Config.ProductsIndex; i++)
+        {
+            if (Products[i].ID == id)
+            {
+                id = Random.Next(100000, 1000000);
+                i = 0;
+            }
+        }
 
         Products[Config.ProductsIndex] = new Product()
         {
@@ -111,7 +123,7 @@ public static class DataSource
     /// <summary>
     /// holds all the configration information for the DataSource
     /// </summary>
-        internal class Config
+        internal static class Config
         {
 
             static internal int ProductsIndex = 0;
@@ -155,7 +167,7 @@ public static class DataSource
 
         for (int i = 0; i < 10; i++)
         {
-            AddProduct(watchNames[i], (Category)Random.Next(0, 5), Random.NextDouble() * 400, Random.Next(0, 350));
+            AddProduct(watchNames[i], (Category)Random.Next(0, 5), Math.Round(Random.NextDouble() * 400, 1), i == 2 ? 0 : Random.Next(0, 350));
         }
 
         // orders:
@@ -164,11 +176,12 @@ public static class DataSource
         string[] email = { "JoeyFabian@gmail.com", "ReccecaLevi@gmail.com", "JossefCohen@gmail.com", "SarahMendel@gmail.com", "RachelGreen@gmail.com", "SteeveMcGarret@gmail.com", "DannyWilliams@gmail.com", "LizzieMcGuaier@gmail.com", "MaddieZiegler@gmail.com", "ZoeyBrooks@gmail.com" };
 
         string[] adress = { "Kazan 10 Ra'anana", "Mordechai Buxboim 12 Jerusalem", "Rabbi Akiva 34 Bnei-Brak", "Kakal 19 Tel-Aviv", "Ha'Melachim 65 Modi'in", "Shwarts 192 Kiriat-Malachi", "Ha'Shunit 1 Ashdod", "Sokolov 27 Holon", "Etrog 70 Herzelia", "Hakablan 18 Jerusalem" };
-
         for (int i = 0; i < 20; i++)
         {
-            //add a random dates  - fix it
-            AddOrder(customerName[i % 10], email[i % 10], adress[i % 10], DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
+            DateTime orderDate = (DateTime.Now).Add(new TimeSpan(-Random.Next(24, 400), Random.Next(0, 60), Random.Next(0, 60)));
+            DateTime ship = orderDate.Add(new TimeSpan(Random.Next(12, 96), Random.Next(0, 60), Random.Next(0, 60)));
+            DateTime delivery = ship.Add(new TimeSpan(Random.Next(12, 96), Random.Next(0, 60), Random.Next(0, 60)));
+            AddOrder(customerName[i % 10], email[i % 10], adress[i % 10], orderDate, ship<DateTime.Now ? ship:DateTime.MinValue, delivery < DateTime.Now ? delivery : DateTime.MinValue);
         }
 
         //orderItems:

@@ -14,8 +14,15 @@ public class DalProduct
     public int Add(Product product)
     {
         if (DataSource.Config.ProductsIndex == 49) throw new Exception("Erorr! Products array is full");
-        product.ID = Random.Next(100000, 1000000);
-        //add check to see if exist
+        product.ID = DataSource.Random.Next(100000, 1000000);
+        for(int i = 0; i < DataSource.Config.ProductsIndex; i++)
+        {
+            if (DataSource.Products[i].ID == product.ID)
+            {
+                product.ID = DataSource.Random.Next(100000, 1000000);
+                i = 0;
+            }
+        }
         DataSource.Products[DataSource.Config.ProductsIndex] = product;
         DataSource.Config.ProductsIndex++;
         return product.ID;
@@ -92,10 +99,7 @@ public class DalProduct
             if (DataSource.Products[i].ID == id)
             {
                 flag = true;
-                for (; i < DataSource.Config.ProductsIndex - 1; i++)
-                {
-                    DataSource.Products[i] = DataSource.Products[i + 1];
-                }
+                DataSource.Products[i] = DataSource.Products[DataSource.Config.ProductsIndex - 1];
                 DataSource.Config.ProductsIndex--;
                 break;
             }

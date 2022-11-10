@@ -116,10 +116,7 @@ public class DalOrderItem
             if (DataSource.OrderItems[i].ID == id)
             {
                 flag = true;
-                for (; i < DataSource.Config.OrderItemsIndex - 1; i++)
-                {
-                    DataSource.OrderItems[i] = DataSource.OrderItems[i + 1];
-                }
+                DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.Config.OrderItemsIndex - 1];
                 DataSource.Config.OrderItemsIndex--;
                 break;
             }
