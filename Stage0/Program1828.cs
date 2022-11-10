@@ -1,4 +1,4 @@
-﻿namespace Stage0
+﻿/*namespace Stage0
 {
     internal partial class Program
     {
@@ -17,4 +17,4 @@
             Console.WriteLine("{0}, welcome to my first console application", name);
         }
     }
-}
+}*/

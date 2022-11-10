@@ -1,6 +1,5 @@
 ﻿using DO;
 namespace Dal;
-
 public static class DataSource
 {
     /// <summary>
