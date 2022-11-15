@@ -1,10 +1,10 @@
 ﻿using DO;
 using static Dal.DataSource;
 using System.Diagnostics;
-
+using DalApi;
 namespace Dal;
 
-public class DalOrderItem
+public class DalOrderItem /*: IOrderItem*/
 {
     #region Add
     /// <summary>
@@ -125,5 +125,4 @@ public class DalOrderItem
     }
 
     #endregion
-
 }

@@ -239,7 +239,7 @@ internal class Program
 
                 break;
             case 3:
-                Order[] orders = _dalOrder.GetAll();
+                List<Order> orders = _dalOrder.GetAll();
                 foreach (Order item in orders)
                 {
                     Console.Write(item);

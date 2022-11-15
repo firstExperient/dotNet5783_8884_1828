@@ -1,7 +1,11 @@
-﻿using DO;
-namespace Dal;
+﻿using DalApi;
+using DO;
+using static Dal.DataSource;
+using System.Diagnostics;
+using System.Xml.Linq;
 
-public class DalOrder
+namespace Dal;
+ public class DalOrder /*: IOrder*/
 {
     #region Add
     /// <summary>
@@ -13,7 +17,7 @@ public class DalOrder
     {
         if (DataSource.Config.OrdersIndex == 99) throw new Exception("Erorr! Orders array is full");
         order.ID = DataSource.Config.OrderId;
-        DataSource.Orders[DataSource.Config.OrdersIndex] = order;
+        DataSource.Orders.Insert(Config.OrdersIndex, order);
         DataSource.Config.OrdersIndex++;
         return order.ID;
     }
@@ -31,7 +35,7 @@ public class DalOrder
     {
         for (int i = 0; i < DataSource.Config.OrdersIndex; i++)
         {
-            if (DataSource.Orders[i].ID == id) return DataSource.Orders[i];
+            if (DataSource.Orders.ElementAt(i).ID == id) return DataSource.Orders.ElementAt(i);
         }
         throw new Exception("Order not found");
     }
@@ -39,13 +43,13 @@ public class DalOrder
     /// <summary>
     /// a function that returns all the orders
     /// </summary>
-    /// <returns>an array of all orders</returns>
-    public Order[] GetAll()
+    /// <returns>a list of all orders</returns>
+    public List<Order> GetAll()
     {
-        Order[] orders = new Order[DataSource.Config.OrdersIndex];
+        List<Order> orders = new List<Order>(DataSource.Config.OrdersIndex);
         for (int i = 0; i < DataSource.Config.OrdersIndex; i++)
         {
-            orders[i] = DataSource.Orders[i];
+            orders.Insert(i, DataSource.Orders.ElementAt(i));
         }
         return orders;
     }
@@ -63,9 +67,9 @@ public class DalOrder
         bool flag = false;
         for (int i = 0; i < DataSource.Config.OrdersIndex; i++)
         {
-            if (DataSource.Orders[i].ID == order.ID)
+            if (DataSource.Orders.ElementAt(i).ID == order.ID)
             {
-                DataSource.Orders[i] = order;
+                DataSource.Orders.Insert(i, order);
                 flag = true;
                 break;
             }

@@ -1,6 +1,7 @@
-﻿using DO;
-namespace Dal;
+﻿using DalApi;
+using DO;
 
+namespace Dal;
 public static class DataSource
 {
     /// <summary>
