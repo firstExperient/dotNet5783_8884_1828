@@ -4,7 +4,7 @@ using System.Diagnostics;
 using DalApi;
 namespace Dal;
 
-public class DalOrderItem /*: IOrderItem*/
+internal class DalOrderItem: IOrderItem
 {
     #region Add
     /// <summary>
@@ -14,10 +14,8 @@ public class DalOrderItem /*: IOrderItem*/
     /// <returns>order-item ID of the added order-item</returns>
     public int Add(OrderItem orderItem)
     {
-        if (DataSource.Config.OrderItemsIndex == 199) throw new Exception("Erorr! OrderItems array is full");
         orderItem.ID = DataSource.Config.OrderItemId;
-        DataSource.OrderItems.Insert(DataSource.Config.OrderItemsIndex, orderItem);
-        DataSource.Config.OrderItemsIndex++;
+        DataSource.OrderItems.Add(orderItem);
         return orderItem.ID;
     }
 
@@ -31,11 +29,11 @@ public class DalOrderItem /*: IOrderItem*/
     /// <returns>the order-item that has the given ID</returns>
     public OrderItem Get(int id)
     {
-        for (int i = 0; i < DataSource.Config.OrderItemsIndex; i++)
+        for (int i = 0; i < DataSource.OrderItems.Count; i++)
         {
-            if (DataSource.OrderItems.ElementAt(i).ID == id) return DataSource.OrderItems.ElementAt(i);
+            if (DataSource.OrderItems[i].ID == id) return DataSource.OrderItems[i];
         }
-        throw new Exception("Order item not found");
+        throw new AlreadyExistsException("Order item not found");
     }
 
     /// <summary>
@@ -89,7 +87,7 @@ public class DalOrderItem /*: IOrderItem*/
     public void Update(OrderItem orderItem)
     {
         bool flag = false;
-        for (int i = 0; i < DataSource.Config.OrderItemsIndex; i++)
+        for (int i = 0; i < DataSource.OrderItems.Count; i++)
         {
             if (DataSource.OrderItems[i].ID == orderItem.ID)
             {
@@ -98,7 +96,7 @@ public class DalOrderItem /*: IOrderItem*/
                 break;
             }
         }
-        if (!flag) throw new Exception("Order item not found");
+        if (!flag) throw new AlreadyExistsException("Order item not found");
     }
 
     #endregion
@@ -111,17 +109,18 @@ public class DalOrderItem /*: IOrderItem*/
     public void Delete(int id)
     {
         bool flag = false;
-        for (int i = 0; i < DataSource.Config.OrderItemsIndex; i++)
+        int i = 0;
+        for (; i < DataSource.OrderItems.Count; i++)
         {
             if (DataSource.OrderItems[i].ID == id)
             {
                 flag = true;
-                DataSource.OrderItems[i] = DataSource.OrderItems[DataSource.Config.OrderItemsIndex - 1];
-                DataSource.Config.OrderItemsIndex--;
                 break;
             }
         }
-        if (!flag) throw new Exception("Order item not found");
+        if (!flag) throw new NotFoundException("Order item not found");
+        else
+            DataSource.OrderItems.RemoveAt(i);
     }
 
     #endregion

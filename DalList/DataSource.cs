@@ -2,7 +2,7 @@
 using DO;
 
 namespace Dal;
-public static class DataSource
+internal static class DataSource
 {
     /// <summary>
     /// the DataSource constructor initialized the data
@@ -27,7 +27,7 @@ public static class DataSource
     /// <summary>
     /// a list of the watches
     /// </summary>
-    internal static List<Product> Products = new List<Product>(50);
+    internal static List<Product> Products = new List<Product>();
 
     /// <summary>
     /// this function adds a new watch
@@ -40,15 +40,15 @@ public static class DataSource
     {
         int id = Random.Next(100000, 1000000);
 
-        for (int i = 0; i < Config.ProductsIndex; i++)
+        for (int i = 0; i < Products.Count; i++)
         {
-            if (Products.ElementAt(i).ID == id)
+            if (Products[i].ID == id)
             {
                 id = Random.Next(100000, 1000000);
                 i = 0;
             }
         }
-        Products.Insert(Config.ProductsIndex, new Product()
+        Products.Add(new Product()
         {
             ID = id,
             Name = name,
@@ -56,15 +56,13 @@ public static class DataSource
             Price = price,
             InStock = inStock
         });
-
-        Config.ProductsIndex++;
     }
 
     /// <summary>
     /// a list of the orders
     /// </summary>
 
-    internal static List<Order> Orders = new List<Order>(100);
+    internal static List<Order> Orders = new List<Order>();
 
     /// <summary>
     /// this function adds a new order
@@ -78,8 +76,7 @@ public static class DataSource
     private static void AddOrder(string customerName, string customerEmail, string customerAdress, DateTime orderDate, DateTime shipDate, DateTime deliveryDate)
     {
         int id = Config.OrderId;
-
-        Orders.Insert(Config.OrdersIndex, new Order()
+        Orders.Add(new Order()
         {
             ID = id,
             CustomerName = customerName,
@@ -89,14 +86,12 @@ public static class DataSource
             ShipDate = shipDate,
             DeliveryDate = deliveryDate
         });
-
-        Config.OrdersIndex++;
     }
 
     /// <summary>
     /// a list of the order-items
     /// </summary>
-    internal static List<OrderItem> OrderItems = new List<OrderItem>(200);
+    internal static List<OrderItem> OrderItems = new List<OrderItem>();
 
     /// <summary>
     ///  this function adds a new order-item
@@ -108,8 +103,7 @@ public static class DataSource
     private static void AddOrderItem(int productId, int orderId, double price, int amount)
     {
         int id = Config.OrderItemId;
-
-        OrderItems.Insert(Config.OrderItemsIndex, new OrderItem()
+        OrderItems.Add(new OrderItem()
         {
             ID = id,
             ProductId = productId,
@@ -117,8 +111,6 @@ public static class DataSource
             Price = price,
             Amount = amount
         });
-
-        Config.OrderItemsIndex++;
     }
 
     #endregion
@@ -130,10 +122,6 @@ public static class DataSource
     /// </summary>
     internal static class Config
     {
-
-        static internal int ProductsIndex = 0;
-        static internal int OrdersIndex = 0;
-        static internal int OrderItemsIndex = 0;
 
         static private int orderId = 0; //check if 0 is the begining
         static internal int OrderId
@@ -197,8 +185,8 @@ public static class DataSource
             int itemPerOrder = Random.Next(1, 5);//adding 1-4 items to an order
             for (int j = 0; j < itemPerOrder; j++)
             {
-                int productIndex = Random.Next(0, Config.ProductsIndex);//selecting a random product to add
-                AddOrderItem(Products.ElementAt(productIndex).ID, Orders.ElementAt(i).ID, Products.ElementAt(productIndex).Price, Random.Next(1, 5));
+                int productIndex = Random.Next(0, Products.Count);//selecting a random product to add
+                AddOrderItem(Products[productIndex].ID, Orders[i].ID, Products[productIndex].Price, Random.Next(1, 5));
             }
         }
     }

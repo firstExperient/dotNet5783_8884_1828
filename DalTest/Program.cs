@@ -1,4 +1,5 @@
 ﻿using Dal;
+using DalApi;
 using DO;
 
 internal class Program
@@ -6,17 +7,6 @@ internal class Program
     #region main
     private static void Main(string[] args)
     {
-        //according to the documantion, the static constructor is supposed to be called automatically when the first access to 
-        //a static member of the class is being done  - https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors
-        //but, when we run this program, the constructor (and therefore the initialize) wasn't call
-        //until we tried to add a new item to one of the three array.(and then it worked)
-        //but until that, every get,getall,update,delete of the 3 entities didnt cause the constructor to ran
-        //(you can try it yoursef - take down the debag(), try to do getall - return an empty array, after the first add-
-        //return all the values from the initilaize)
-        //it might be because the first acceses are to DataSource.config.[entity]index
-        //but config is a static member of DataSource
-        //we will try to find the problem with our teacher
-        DataSource.Debug();
         int choice = MainMenu();
 
         /// <summary>
@@ -65,18 +55,8 @@ internal class Program
         return choice;
     }
     #endregion
- 
-    #region dal objects
-    /// <summary>
-    /// creating the Dals
-    /// </summary>
-    private static DalProduct _dalProduct = new DalProduct();
 
-    private static DalOrder _dalOrder = new DalOrder();
-
-    private static DalOrderItem _dalOrderItem = new DalOrderItem();
-
-    #endregion
+    static private IDal _dalList = new DalList();
 
     #region testing product
     /// <summary>
@@ -84,7 +64,6 @@ internal class Program
     /// </summary>
     private static void TestingProduct()
     {
-
         int choice = 0, id;
         Product product = new Product();
 
@@ -106,24 +85,14 @@ internal class Program
         switch (choice)
         {
             case 1:
-                product = ReadProductData();
-                try
-                {
-                    _dalProduct.Add(product);
-
-                }
-                catch (Exception e)
-                {
-
-                    Console.WriteLine(e.Message);
-                }
+                _dalList.Product.Add(ReadProductData());
                 break;
             case 2:
                 Console.WriteLine("Enter product id:");
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    product = _dalProduct.Get(id);
+                    product = _dalList.Product.Get(id);
                     Console.Write(product);
                 }
                 catch (Exception e)
@@ -133,11 +102,12 @@ internal class Program
 
                 break;
             case 3:
-                Product[] products = _dalProduct.GetAll();
-                foreach (Product item in products)
-                {
-                    Console.Write(item);
-                }
+                //fix this
+                //Product[] products = _dalProduct.GetAll();
+                //foreach (Product item in products)
+                //{
+                //    Console.Write(item);
+                //}
                 break;
             case 4:
                 Console.WriteLine("Enter product id:");
@@ -146,7 +116,7 @@ internal class Program
                 product.ID = id;
                 try
                 {
-                    _dalProduct.Update(product);
+                    _dalList.Product.Update(product);
                 }
                 catch (Exception e)
                 {
@@ -158,7 +128,7 @@ internal class Program
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    _dalProduct.Delete(id);
+                    _dalList.Product.Delete(id);
                 }
                 catch (Exception e)
                 {
@@ -213,24 +183,14 @@ internal class Program
         switch (choice)
         {
             case 1:
-                order = ReadOrderData();
-                try
-                {
-                    _dalOrder.Add(order);
-
-                }
-                catch (Exception e)
-                {
-
-                    Console.WriteLine(e.Message);
-                }
+               _dalList.Order.Add(ReadOrderData());
                 break;
             case 2:
                 Console.WriteLine("Enter order id:");
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    order = _dalOrder.Get(id);
+                    order = _dalList.Order.Get(id);
                     Console.Write(order);
                 }
                 catch (Exception e)
@@ -240,11 +200,12 @@ internal class Program
 
                 break;
             case 3:
-                List<Order> orders = _dalOrder.GetAll();
-                foreach (Order item in orders)
-                {
-                    Console.Write(item);
-                }
+                //fix this
+                //List<Order> orders = _dalOrder.GetAll();
+                //foreach (Order item in orders)
+                //{
+                //    Console.Write(item);
+                //}
                 break;
             case 4:
                 Console.WriteLine("Enter order id:");
@@ -253,7 +214,7 @@ internal class Program
                 order.ID = id;
                 try
                 {
-                    _dalOrder.Update(order);
+                    _dalList.Order.Update(order);
                 }
                 catch (Exception e)
                 {
@@ -265,7 +226,7 @@ internal class Program
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    _dalOrder.Delete(id);
+                    _dalList.Order.Delete(id);
 
                 }
                 catch (Exception e)
@@ -337,23 +298,14 @@ internal class Program
         switch (choice)
         {
             case 1:
-                orderItem = ReadItemData();
-                try
-                {
-                    _dalOrderItem.Add(orderItem);
-                }
-                catch (Exception e)
-                {
-
-                    Console.WriteLine(e.Message);
-                }
+                _dalList.OrderItem.Add(ReadItemData());
                 break;
             case 2:
                 Console.WriteLine("Enter order item id:");
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    orderItem = _dalOrderItem.Get(id);
+                    orderItem = _dalList.OrderItem.Get(id);
                     Console.Write(orderItem);
                 }
                 catch (Exception e)
@@ -363,35 +315,38 @@ internal class Program
 
                 break;
             case 3:
-                items = _dalOrderItem.GetAll();
-                foreach (OrderItem item in items)
-                {
-                    Console.Write(item);
-                }
+                //fix this
+                //items = _dalList.OrderItem.GetAll();
+                //foreach (OrderItem item in items)
+                //{
+                //    Console.Write(item);
+                //}
                 break;
             case 4:
-                Console.WriteLine("Enter order id:");
-                Int32.TryParse(Console.ReadLine(), out id);
-                Console.WriteLine("Enter product id:");
-                Int32.TryParse(Console.ReadLine(), out productId);
-                try
-                {
-                    orderItem = _dalOrderItem.GetItemByIds(id, productId);
-                    Console.Write(orderItem);
-                }
-                catch (Exception e)
-                {
-                    Console.Write(e.Message);
-                }
+                //fix this
+                //Console.WriteLine("Enter order id:");
+                //Int32.TryParse(Console.ReadLine(), out id);
+                //Console.WriteLine("Enter product id:");
+                //Int32.TryParse(Console.ReadLine(), out productId);
+                //try
+                //{
+                //    orderItem = _dalList.OrderItem.GetItemByIds(id, productId);
+                //    Console.Write(orderItem);
+                //}
+                //catch (Exception e)
+                //{
+                //    Console.Write(e.Message);
+                //}
                 break;
             case 5:
-                Console.WriteLine("Enter order id:");
-                Int32.TryParse(Console.ReadLine(), out id);
-                items = _dalOrderItem.GetAllItemsInOrder(id);
-                foreach (OrderItem item in items)
-                {
-                    Console.Write(item);
-                }
+                //fix this
+                //Console.WriteLine("Enter order id:");
+                //Int32.TryParse(Console.ReadLine(), out id);
+                //items = _dalOrderItem.GetAllItemsInOrder(id);
+                //foreach (OrderItem item in items)
+                //{
+                //    Console.Write(item);
+                //}
                 break;
             case 6:
                 Console.WriteLine("Enter order item id:");
@@ -400,7 +355,7 @@ internal class Program
                 orderItem.ID = id;
                 try
                 {
-                    _dalOrderItem.Update(orderItem);
+                    _dalList.OrderItem.Update(orderItem);
                 }
                 catch (Exception e)
                 {
@@ -412,7 +367,7 @@ internal class Program
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    _dalOrderItem.Delete(id);
+                    _dalList.OrderItem.Delete(id);
                 }
                 catch (Exception e)
                 {

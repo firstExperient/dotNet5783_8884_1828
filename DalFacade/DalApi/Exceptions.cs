@@ -1,12 +1,18 @@
 ﻿
 namespace DalApi;
 
-internal class NotFoundExceptions : Exception
+public class NotFoundException : Exception
 {
+	public NotFoundException(string msg):base(msg)
+	{
 
+	}
 }
 
-internal class AlreadyExistsExceptions : Exception
+public class AlreadyExistsException : Exception
 {
+	public AlreadyExistsException(string msg) : base(msg)
+    {
 
+	}
 }

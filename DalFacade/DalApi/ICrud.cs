@@ -1,10 +1,9 @@
 ﻿
-
 using DO;
 
 namespace DalApi;
 
-internal interface ICrud<T>
+public interface ICrud<T>
 {
     int Add(T value);
     T Get(int id);
@@ -12,4 +11,3 @@ internal interface ICrud<T>
     void Update(T value);
     void Delete(int id);
 }
- 
