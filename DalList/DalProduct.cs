@@ -1,10 +1,9 @@
 ﻿using DO;
-
+using DalApi;
 namespace Dal;
 
-public class DalProduct
+public class DalProduct /*: IProduct*/
 {
-    
     #region Add
     /// <summary>
     /// this function is used when there is a new watch
@@ -108,5 +107,4 @@ public class DalProduct
     }
 
     #endregion
-
 }

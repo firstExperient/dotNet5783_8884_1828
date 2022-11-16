@@ -1,7 +1,12 @@
 ﻿
 namespace DalApi;
 
-internal class Exceptions
+internal class NotFoundExceptions : Exception
+{
+
+}
+
+internal class AlreadyExistsExceptions : Exception
 {
 
 }

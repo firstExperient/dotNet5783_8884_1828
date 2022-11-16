@@ -1,6 +1,4 @@
-﻿
-
-namespace DalApi;
+﻿namespace DalApi;
 
 internal interface IDal
 {

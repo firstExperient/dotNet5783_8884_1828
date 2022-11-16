@@ -240,7 +240,7 @@ internal class Program
 
                 break;
             case 3:
-                Order[] orders = _dalOrder.GetAll();
+                List<Order> orders = _dalOrder.GetAll();
                 foreach (Order item in orders)
                 {
                     Console.Write(item);
@@ -317,7 +317,8 @@ internal class Program
     {
         int choice = 0, id, productId;
         OrderItem orderItem = new OrderItem();
-        OrderItem[] items;
+        List<OrderItem> items;
+
         Console.WriteLine(" - a. Enter 1 to add an order item");
         Console.WriteLine(" - b. Enter 2 to get an order item by id");
         Console.WriteLine(" - c. Enter 3 to get all orders' items");
@@ -325,6 +326,7 @@ internal class Program
         Console.WriteLine(" - e. Enter 5 to get all order items by order id");
         Console.WriteLine(" - d. Enter 6 to update an order item");
         Console.WriteLine(" - e. Enter 7 to delete an order item");
+
         bool success = Int32.TryParse(Console.ReadLine(), out choice);
         if (!success)
         {
@@ -443,6 +445,5 @@ internal class Program
         return orderItem;
     }
     #endregion
-    
-}
 
+}
