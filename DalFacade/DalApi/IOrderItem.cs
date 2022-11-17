@@ -2,7 +2,7 @@
 using DO;
 namespace DalApi;
 
-internal interface IOrderItem:ICrud<OrderItem>
+public interface IOrderItem : ICrud<OrderItem>
 {
     OrderItem GetItemByIds(int orderId, int productId);
 

@@ -1,7 +1,8 @@
-﻿using DO;
-namespace Dal;
+﻿using DalApi;
+using DO;
 
-public static class DataSource
+namespace Dal;
+internal static class DataSource
 {
     /// <summary>
     /// the DataSource constructor initialized the data
@@ -24,7 +25,7 @@ public static class DataSource
     #region entities' array
 
     /// <summary>
-    /// an array of the watches
+    /// a list of the watches
     /// </summary>
     internal static List<Product> Products = new List<Product>();
 
@@ -35,10 +36,11 @@ public static class DataSource
     /// <param name="category">category of the watch</param>
     /// <param name="price">price of the watch</param>
     /// <param name="inStock">how many watches are in stock</param>
-    private static void AddProduct(string name, Category category,double price, int inStock) {
+    private static void AddProduct(string name, Category category, double price, int inStock)
+    {
         int id = Random.Next(100000, 1000000);
 
-        for (int i = 0; i < Config.ProductsIndex; i++)
+        for (int i = 0; i < Products.Count; i++)
         {
             if (Products[i].ID == id)
             {
@@ -46,22 +48,20 @@ public static class DataSource
                 i = 0;
             }
         }
-
-        Products[Config.ProductsIndex] = new Product()
+        Products.Add(new Product()
         {
             ID = id,
             Name = name,
             Category = category,
             Price = price,
             InStock = inStock
-        };
-
-        Config.ProductsIndex++;
+        });
     }
 
     /// <summary>
-    /// an array of the orders
+    /// a list of the orders
     /// </summary>
+
     internal static List<Order> Orders = new List<Order>();
 
     /// <summary>
@@ -73,10 +73,10 @@ public static class DataSource
     /// <param name="orderDate">the order date</param>
     /// <param name="shipDate">the shipment date</param>
     /// <param name="deliveryDate">the deliveration date</param>
-    private static void AddOrder(string customerName,string customerEmail,string customerAdress,DateTime orderDate,DateTime shipDate,DateTime deliveryDate) {
+    private static void AddOrder(string customerName, string customerEmail, string customerAdress, DateTime orderDate, DateTime shipDate, DateTime deliveryDate)
+    {
         int id = Config.OrderId;
-
-        Orders[Config.OrdersIndex] = new Order()
+        Orders.Add(new Order()
         {
             ID = id,
             CustomerName = customerName,
@@ -85,13 +85,11 @@ public static class DataSource
             OrderDate = orderDate,
             ShipDate = shipDate,
             DeliveryDate = deliveryDate
-        };
-
-        Config.OrdersIndex++;
+        });
     }
 
     /// <summary>
-    /// an array of the order-items
+    /// a list of the order-items
     /// </summary>
     internal static List<OrderItem> OrderItems = new List<OrderItem>();
 
@@ -102,19 +100,17 @@ public static class DataSource
     /// <param name="orderId"></param>
     /// <param name="price"></param>
     /// <param name="amount"></param>
-    private static void AddOrderItem(int productId,int orderId,double price,int amount) {
+    private static void AddOrderItem(int productId, int orderId, double price, int amount)
+    {
         int id = Config.OrderItemId;
-
-        OrderItems[Config.OrderItemsIndex] = new OrderItem()
+        OrderItems.Add(new OrderItem()
         {
             ID = id,
             ProductId = productId,
             OrderId = orderId,
             Price = price,
             Amount = amount
-        };
-
-        Config.OrderItemsIndex++; 
+        });
     }
 
     #endregion
@@ -124,34 +120,29 @@ public static class DataSource
     /// <summary>
     /// holds all the configration information for the DataSource
     /// </summary>
-        internal static class Config
+    internal static class Config
+    {
+
+        static private int orderId = 0; //check if 0 is the begining
+        static internal int OrderId
         {
-
-            static internal int ProductsIndex = 0;
-            static internal int OrdersIndex = 0;
-            static internal int OrderItemsIndex = 0;
-
-            static private int orderId = 0;//check if 0 is the begining
-            static internal int OrderId
+            get
             {
-                get
-                {
-                    orderId++;
-                    return orderId;
-                }
-            }
-
-            static private int orderItemId = 0;//check this too
-
-            static internal int OrderItemId
-            {
-                get
-                {
-                    orderItemId++;
-                    return orderItemId;
-                }
+                orderId++;
+                return orderId;
             }
         }
+
+        static private int orderItemId = 0; //check this too
+        static internal int OrderItemId
+        {
+            get
+            {
+                orderItemId++;
+                return orderItemId;
+            }
+        }
+    }
 
     #endregion
 
@@ -161,7 +152,8 @@ public static class DataSource
     /// <summary>
     /// initialize the dataSource by adding random data to all the data's array
     /// </summary>
-    private static void s_Initialize() {
+    private static void s_Initialize()
+    {
         // items:
         string[] watchNames = { "iceWatch", "Rolex", "DKNY", "Michael Kors", "Louis Vitton", "Tommy Hilfiger", "Casio", "Anna Klein", "Celvin Clein", "Q&Q" };
 
@@ -172,9 +164,9 @@ public static class DataSource
         }
 
         // orders:
-        string[] customerName = { "Joey Fabian", "Recceca Levi", "Jossef Cohen", "Sarah Mendel", "Rachel Green", "Steeve McGarret", "Danny Williams", "Lizzie McGuaier", "Maddie Ziegler", "Zoey Brooks" };
+        string[] customerName = { "Joey Fabian", "Rebecca Levi", "Jossef Cohen", "Sarah Mendel", "Rachel Green", "Steeve McGarret", "Danny Williams", "Lizzie McGuaier", "Maddie Ziegler", "Zoey Brooks" };
 
-        string[] email = { "JoeyFabian@gmail.com", "ReccecaLevi@gmail.com", "JossefCohen@gmail.com", "SarahMendel@gmail.com", "RachelGreen@gmail.com", "SteeveMcGarret@gmail.com", "DannyWilliams@gmail.com", "LizzieMcGuaier@gmail.com", "MaddieZiegler@gmail.com", "ZoeyBrooks@gmail.com" };
+        string[] email = { "JoeyFabian@gmail.com", "RebeccaLevi@gmail.com", "JossefCohen@gmail.com", "SarahMendel@gmail.com", "RachelGreen@gmail.com", "SteeveMcGarret@gmail.com", "DannyWilliams@gmail.com", "LizzieMcGuaier@gmail.com", "MaddieZiegler@gmail.com", "ZoeyBrooks@gmail.com" };
 
         string[] adress = { "Kazan 10 Ra'anana", "Mordechai Buxboim 12 Jerusalem", "Rabbi Akiva 34 Bnei-Brak", "Kakal 19 Tel-Aviv", "Ha'Melachim 65 Modi'in", "Shwarts 192 Kiriat-Malachi", "Ha'Shunit 1 Ashdod", "Sokolov 27 Holon", "Etrog 70 Herzelia", "Hakablan 18 Jerusalem" };
         for (int i = 0; i < 20; i++)
@@ -182,7 +174,7 @@ public static class DataSource
             DateTime orderDate = (DateTime.Now).Add(new TimeSpan(-Random.Next(24, 400), Random.Next(0, 60), Random.Next(0, 60)));
             DateTime ship = orderDate.Add(new TimeSpan(Random.Next(12, 96), Random.Next(0, 60), Random.Next(0, 60)));
             DateTime delivery = ship.Add(new TimeSpan(Random.Next(12, 96), Random.Next(0, 60), Random.Next(0, 60)));
-            AddOrder(customerName[i % 10], email[i % 10], adress[i % 10], orderDate, ship<DateTime.Now ? ship:DateTime.MinValue, delivery < DateTime.Now ? delivery : DateTime.MinValue);
+            AddOrder(customerName[i % 10], email[i % 10], adress[i % 10], orderDate, ship < DateTime.Now ? ship : DateTime.MinValue, delivery < DateTime.Now ? delivery : DateTime.MinValue);
         }
 
         //orderItems:
@@ -193,7 +185,7 @@ public static class DataSource
             int itemPerOrder = Random.Next(1, 5);//adding 1-4 items to an order
             for (int j = 0; j < itemPerOrder; j++)
             {
-                int productIndex = Random.Next(0, Config.ProductsIndex);//selecting a random product to add
+                int productIndex = Random.Next(0, Products.Count);//selecting a random product to add
                 AddOrderItem(Products[productIndex].ID, Orders[i].ID, Products[productIndex].Price, Random.Next(1, 5));
             }
         }

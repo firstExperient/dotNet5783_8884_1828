@@ -1,10 +1,12 @@
 ﻿using DO;
+using DalApi;
+using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace Dal;
 
-public class DalProduct
+internal class DalProduct : IProduct
 {
-    
     #region Add
     /// <summary>
     /// this function is used when there is a new watch
@@ -13,19 +15,19 @@ public class DalProduct
     /// <returns>ID of the added watch</returns>
     public int Add(Product product)
     {
-        if (DataSource.Config.ProductsIndex == 49) throw new Exception("Erorr! Products array is full");
-        product.ID = DataSource.Random.Next(100000, 1000000);
-        for(int i = 0; i < DataSource.Config.ProductsIndex; i++)
+       
+        int id = DataSource.Random.Next(100000, 1000000);
+        for (int i = 0; i < DataSource.Products.Count; i++)
         {
-            if (DataSource.Products[i].ID == product.ID)
+            if (DataSource.Products[i].ID == id)
             {
-                product.ID = DataSource.Random.Next(100000, 1000000);
+                id = DataSource.Random.Next(100000, 1000000);
                 i = 0;
             }
         }
-        DataSource.Products[DataSource.Config.ProductsIndex] = product;
-        DataSource.Config.ProductsIndex++;
-        return product.ID;
+        product.ID = id;   
+        DataSource.Products.Add(product);
+        return id;
     }
 
     #endregion
@@ -39,11 +41,11 @@ public class DalProduct
     /// <returns>the watch that has the given ID</returns>
     public Product Get(int id)
     {
-        for (int i = 0; i < DataSource.Config.ProductsIndex; i++)
+        for (int i = 0; i < DataSource.Products.Count; i++)
         {
             if (DataSource.Products[i].ID == id) return DataSource.Products[i];
         }
-        throw new Exception("Product not found");
+        throw new AlreadyExistsException("Product not found");
     }
 
     /// <summary>
@@ -71,7 +73,7 @@ public class DalProduct
     public void Update(Product product)
     {
         bool flag = false;
-        for (int i = 0; i < DataSource.Config.ProductsIndex; i++)
+        for (int i = 0; i < DataSource.Products.Count; i++)
         {
             if (DataSource.Products[i].ID == product.ID)
             {
@@ -80,7 +82,7 @@ public class DalProduct
                 break;
             }
         }
-        if (!flag) throw new Exception("Product not found");
+        if (!flag) throw new AlreadyExistsException("Product not found");
     }
 
     #endregion
@@ -94,19 +96,19 @@ public class DalProduct
     public void Delete(int id)
     {
         bool flag = false;
-        for (int i = 0; i < DataSource.Config.ProductsIndex; i++)
+        int i = 0;
+        for (; i < DataSource.Products.Count; i++)
         {
             if (DataSource.Products[i].ID == id)
             {
                 flag = true;
-                DataSource.Products[i] = DataSource.Products[DataSource.Config.ProductsIndex - 1];
-                DataSource.Config.ProductsIndex--;
                 break;
             }
         }
-        if (!flag) throw new Exception("Product not found");
+        if (!flag) throw new NotFoundException("Product not found");
+        else
+            DataSource.Products.RemoveAt(i);
     }
 
     #endregion
-
 }

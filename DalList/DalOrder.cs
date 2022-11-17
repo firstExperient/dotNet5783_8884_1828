@@ -1,7 +1,8 @@
-﻿using DO;
+﻿using DalApi;
+using DO;
+using static Dal.DataSource;
 namespace Dal;
-
-public class DalOrder
+ internal class DalOrder:IOrder 
 {
     #region Add
     /// <summary>
@@ -11,10 +12,8 @@ public class DalOrder
     /// <returns> ID of the added order</returns>
     public int Add(Order order)
     {
-        if (DataSource.Config.OrdersIndex == 99) throw new Exception("Erorr! Orders array is full");
         order.ID = DataSource.Config.OrderId;
-        DataSource.Orders[DataSource.Config.OrdersIndex] = order;
-        DataSource.Config.OrdersIndex++;
+        DataSource.Orders.Add(order);
         return order.ID;
     }
 
@@ -29,25 +28,20 @@ public class DalOrder
     /// <returns>the order that has the given ID</returns>
     public Order Get(int id)
     {
-        for (int i = 0; i < DataSource.Config.OrdersIndex; i++)
+        for (int i = 0; i < DataSource.Orders.Count; i++)
         {
             if (DataSource.Orders[i].ID == id) return DataSource.Orders[i];
         }
-        throw new Exception("Order not found");
+        throw new AlreadyExistsException("Order not found");
     }
 
     /// <summary>
     /// a function that returns all the orders
     /// </summary>
-    /// <returns>an array of all orders</returns>
-    public Order[] GetAll()
+    /// <returns>a list of all orders</returns>
+    public List<Order> GetAll()
     {
-        Order[] orders = new Order[DataSource.Config.OrdersIndex];
-        for (int i = 0; i < DataSource.Config.OrdersIndex; i++)
-        {
-            orders[i] = DataSource.Orders[i];
-        }
-        return orders;
+        return new List<Order>(DataSource.Orders);
     }
 
     #endregion
@@ -61,7 +55,7 @@ public class DalOrder
     public void Update(Order order)
     {
         bool flag = false;
-        for (int i = 0; i < DataSource.Config.OrdersIndex; i++)
+        for (int i = 0; i < DataSource.Orders.Count; i++)
         {
             if (DataSource.Orders[i].ID == order.ID)
             {
@@ -70,7 +64,7 @@ public class DalOrder
                 break;
             }
         }
-        if (!flag) throw new Exception("Order not found");
+        if (!flag) throw new AlreadyExistsException("Order not found"); 
     }
 
     #endregion
@@ -84,17 +78,18 @@ public class DalOrder
     public void Delete(int id)
     {
         bool flag = false;
-        for (int i = 0; i < DataSource.Config.OrdersIndex; i++)
+        int i = 0;
+        for (; i < DataSource.Orders.Count; i++)
         {
             if (DataSource.Orders[i].ID == id)
             {
                 flag = true;
-                DataSource.Orders[i] = DataSource.Orders[DataSource.Config.OrdersIndex - 1];
-                DataSource.Config.OrdersIndex--;
                 break;
             }
         }
-        if (!flag) throw new Exception("Order not found");
+        if (!flag) throw new NotFoundException("Order not found");
+        else
+            DataSource.Orders.RemoveAt(i);
     }
 
     #endregion
