@@ -102,12 +102,11 @@ internal class Program
 
                 break;
             case 3:
-                //fix this
-                //Product[] products = _dalProduct.GetAll();
-                //foreach (Product item in products)
-                //{
-                //    Console.Write(item);
-                //}
+                IEnumerable<Product> products = _dalList.Product.GetAll();
+                foreach (Product item in products)
+                {
+                    Console.Write(item);
+                }
                 break;
             case 4:
                 Console.WriteLine("Enter product id:");
@@ -200,12 +199,11 @@ internal class Program
 
                 break;
             case 3:
-                //fix this
-                //List<Order> orders = _dalOrder.GetAll();
-                //foreach (Order item in orders)
-                //{
-                //    Console.Write(item);
-                //}
+                IEnumerable<Order> orders = _dalList.Order.GetAll();
+                foreach (Order item in orders)
+                {
+                    Console.Write(item);
+                }
                 break;
             case 4:
                 Console.WriteLine("Enter order id:");
@@ -278,7 +276,7 @@ internal class Program
     {
         int choice = 0, id, productId;
         OrderItem orderItem = new OrderItem();
-        List<OrderItem> items;
+        IEnumerable<OrderItem> items;
 
         Console.WriteLine(" - a. Enter 1 to add an order item");
         Console.WriteLine(" - b. Enter 2 to get an order item by id");
@@ -315,38 +313,35 @@ internal class Program
 
                 break;
             case 3:
-                //fix this
-                //items = _dalList.OrderItem.GetAll();
-                //foreach (OrderItem item in items)
-                //{
-                //    Console.Write(item);
-                //}
+                items = _dalList.OrderItem.GetAll();
+                foreach (OrderItem item in items)
+                {
+                    Console.Write(item);
+                }
                 break;
             case 4:
-                //fix this
-                //Console.WriteLine("Enter order id:");
-                //Int32.TryParse(Console.ReadLine(), out id);
-                //Console.WriteLine("Enter product id:");
-                //Int32.TryParse(Console.ReadLine(), out productId);
-                //try
-                //{
-                //    orderItem = _dalList.OrderItem.GetItemByIds(id, productId);
-                //    Console.Write(orderItem);
-                //}
-                //catch (Exception e)
-                //{
-                //    Console.Write(e.Message);
-                //}
+                Console.WriteLine("Enter order id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                Console.WriteLine("Enter product id:");
+                Int32.TryParse(Console.ReadLine(), out productId);
+                try
+                {
+                    orderItem = _dalList.OrderItem.GetItemByIds(id, productId);
+                    Console.Write(orderItem);
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
                 break;
             case 5:
-                //fix this
-                //Console.WriteLine("Enter order id:");
-                //Int32.TryParse(Console.ReadLine(), out id);
-                //items = _dalOrderItem.GetAllItemsInOrder(id);
-                //foreach (OrderItem item in items)
-                //{
-                //    Console.Write(item);
-                //}
+                Console.WriteLine("Enter order id:");
+                Int32.TryParse(Console.ReadLine(), out id);
+                items = _dalList.OrderItem.GetAllItemsInOrder(id);
+                foreach (OrderItem item in items)
+                {
+                    Console.Write(item);
+                }
                 break;
             case 6:
                 Console.WriteLine("Enter order item id:");

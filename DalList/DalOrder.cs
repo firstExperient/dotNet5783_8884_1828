@@ -39,7 +39,7 @@ namespace Dal;
     /// a function that returns all the orders
     /// </summary>
     /// <returns>a list of all orders</returns>
-    public List<Order> GetAll()
+    public IEnumerable<Order> GetAll()
     {
         return new List<Order>(DataSource.Orders);
     }

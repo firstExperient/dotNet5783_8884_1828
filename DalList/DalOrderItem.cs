@@ -33,21 +33,16 @@ internal class DalOrderItem: IOrderItem
         {
             if (DataSource.OrderItems[i].ID == id) return DataSource.OrderItems[i];
         }
-        throw new AlreadyExistsException("Order item not found");
+        throw new NotFoundException("Order item not found");
     }
 
     /// <summary>
     /// a function that returns all the order-items
     /// </summary>
     /// <returns>an array of all order-items</returns>
-    public List<OrderItem> GetAll()
+    public IEnumerable<OrderItem> GetAll()
     {
-        List<OrderItem> orderItems = new List<OrderItem>(DataSource.Config.OrderItemsIndex);
-        for (int i = 0; i < DataSource.Config.OrderItemsIndex; i++)
-        {
-            orderItems[i] = DataSource.OrderItems[i];
-        }
-        return orderItems;
+        return new List<OrderItem>(DataSource.OrderItems);
     }
 
     /// <summary>
@@ -58,12 +53,12 @@ internal class DalOrderItem: IOrderItem
     /// <returns>the order-item that has the same IDs as asked</returns> 
     public OrderItem GetItemByIds(int orderId,int productId)
     {
-        for (int i = 0; i < DataSource.Config.OrderItemsIndex; i++)
+        for (int i = 0; i < DataSource.OrderItems.Count; i++)
         {
-            if (DataSource.OrderItems.ElementAt(i).OrderId == orderId && DataSource.OrderItems.ElementAt(i).ProductId == productId) 
-                return DataSource.OrderItems.ElementAt(i);
+            if (DataSource.OrderItems[i].OrderId == orderId && DataSource.OrderItems[i].ProductId == productId) 
+                return DataSource.OrderItems[i];
         }
-        throw new Exception("Order item not found");
+        throw new NotFoundException("Order item not found");
     }
 
     /// <summary>
@@ -71,7 +66,7 @@ internal class DalOrderItem: IOrderItem
     /// </summary>
     /// <param name="orderId">ID of order</param>
     /// <returns>an array of all the items in the specific order</returns>
-    public List<OrderItem> GetAllItemsInOrder(int orderId)
+    public IEnumerable<OrderItem> GetAllItemsInOrder(int orderId)
     {
         List<OrderItem> orderItems = DataSource.OrderItems.FindAll(orderItem => orderItem.OrderId == orderId);
         return orderItems;

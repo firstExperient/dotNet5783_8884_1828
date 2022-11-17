@@ -52,14 +52,9 @@ internal class DalProduct : IProduct
     /// a function that returns all the watches
     /// </summary>
     /// <returns>an array of all watches</returns>
-    public Product[] GetAll()
+    public IEnumerable<Product> GetAll()
     {
-        Product[] products = new Product[DataSource.Config.ProductsIndex];
-        for (int i = 0; i < DataSource.Config.ProductsIndex; i++)
-        {
-            products[i] = DataSource.Products[i];
-        }
-        return products;
+        return new List<Product>(DataSource.Products);
     }
 
     #endregion
