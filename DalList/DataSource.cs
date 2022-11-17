@@ -26,7 +26,7 @@ public static class DataSource
     /// <summary>
     /// an array of the watches
     /// </summary>
-    internal static Product[] Products = new Product[50];
+    internal static List<Product> Products = new List<Product>();
 
     /// <summary>
     /// this function adds a new watch
@@ -62,7 +62,7 @@ public static class DataSource
     /// <summary>
     /// an array of the orders
     /// </summary>
-    internal static Order[] Orders = new Order[100];
+    internal static List<Order> Orders = new List<Order>();
 
     /// <summary>
     /// this function adds a new order
@@ -93,7 +93,7 @@ public static class DataSource
     /// <summary>
     /// an array of the order-items
     /// </summary>
-    internal static OrderItem[] OrderItems = new OrderItem[200];
+    internal static List<OrderItem> OrderItems = new List<OrderItem>();
 
     /// <summary>
     ///  this function adds a new order-item
