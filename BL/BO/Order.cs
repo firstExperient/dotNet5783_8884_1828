@@ -11,7 +11,7 @@ public class Order
     public string CustomerEmail { get; set; }  
     public string CustomerAdress { get; set; }
     public DateTime OrderDate { get; set; }
-    //add status
+    public OrderStatus Status { get; set; }
     //public DateTime PaymentDate { get; set; } not sure that is needed
     public DateTime ShipDate { get; set; }
     public DateTime DeliveryDate { get; set; }
