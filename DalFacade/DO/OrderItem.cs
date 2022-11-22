@@ -28,7 +28,7 @@ public struct OrderItem
     public double Price { get; set; }
 
     /// <summary>
-    /// the amount of items (wathes) in thid order-item
+    /// the amount of items (wathes) in this order-item
     /// </summary>
     public int Amount { get; set; }
 
@@ -40,8 +40,8 @@ public struct OrderItem
     {
         return $@"
         ID: {ID}
-        Product Id - {ProductId}
-        Order Id - {OrderId}
+        Product Id: {ProductId}
+        Order Id: {OrderId}
         Price: {Price}
         Amount: {Amount}
         ";

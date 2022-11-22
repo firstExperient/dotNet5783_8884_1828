@@ -164,9 +164,9 @@ internal static class DataSource
         }
 
         // orders:
-        string[] customerName = { "Joey Fabian", "Rebecca Levi", "Jossef Cohen", "Sarah Mendel", "Rachel Green", "Steeve McGarret", "Danny Williams", "Lizzie McGuaier", "Maddie Ziegler", "Zoey Brooks" };
+        string[] customerName = { "Moshe Gross", "Rebecca Levi", "Jossef Cohen", "Sarah Mendel", "Rachel Greenfeld", "Haim Goldstein", "Esther Buxboim", "Arieh Zilbernagel", "Yechezkel Burstein", "Tzipora Chazan" };
 
-        string[] email = { "JoeyFabian@gmail.com", "RebeccaLevi@gmail.com", "JossefCohen@gmail.com", "SarahMendel@gmail.com", "RachelGreen@gmail.com", "SteeveMcGarret@gmail.com", "DannyWilliams@gmail.com", "LizzieMcGuaier@gmail.com", "MaddieZiegler@gmail.com", "ZoeyBrooks@gmail.com" };
+        string[] email = { "MosheGross@gmail.com", "RebeccaLevi@gmail.com", "JossefCohen@gmail.com", "SarahMendel@gmail.com", "RachelGreenfeld@gmail.com", "HaimGoldstein@gmail.com", "EstherBuxboim@gmail.com", "AriehZilbernagel@gmail.com", "YechezkelBurstein@gmail.com", "TziporaChazan@gmail.com" };
 
         string[] adress = { "Kazan 10 Ra'anana", "Mordechai Buxboim 12 Jerusalem", "Rabbi Akiva 34 Bnei-Brak", "Kakal 19 Tel-Aviv", "Ha'Melachim 65 Modi'in", "Shwarts 192 Kiriat-Malachi", "Ha'Shunit 1 Ashdod", "Sokolov 27 Holon", "Etrog 70 Herzelia", "Hakablan 18 Jerusalem" };
         for (int i = 0; i < 20; i++)
