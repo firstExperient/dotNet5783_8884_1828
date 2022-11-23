@@ -136,10 +136,11 @@ namespace BlTest
                     Int32.TryParse(Console.ReadLine(), out id);
                     try
                     {
-                        _dalList.Product.Delete(id);
+                        _bl.Product.Delete(id);
                     }
                     catch (Exception e)
                     {
+                        //fix this
                         Console.Write(e.Message);
                     }
                     break;
@@ -177,7 +178,7 @@ namespace BlTest
         private static void TestingOrder()
         {
             int choice = 0, id;
-            Order order = new Order();
+            BO.Order order = new BO.Order();
             Console.WriteLine(" - a. Enter 1 to add an order");
             Console.WriteLine(" - b. Enter 2 to get an order by id");
             Console.WriteLine(" - c. Enter 3 to get all orders");
@@ -278,12 +279,10 @@ namespace BlTest
         }
         #endregion
 
-        #region testing order item
+        #region testing cart
 
-        /// <summary>
-        /// The order-item menu
-        /// </summary>
-        private static void TestingOrderItem()
+        
+        private static void TestingCart()
         {
             int choice = 0, id, productId;
             OrderItem orderItem = new OrderItem();
