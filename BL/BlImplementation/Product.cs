@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using BO;
 using Dal;
 
 namespace BlImplementation;
@@ -10,8 +11,7 @@ internal class Product : IProduct
     #region ADD
     public void Add(BO.Product item)
     {
-        if(checkValid(item))
-            throw new NotImplementedException();//fix this
+        checkValid(item);
         try
         {
             Dal.Product.Add(new DO.Product()
@@ -23,10 +23,9 @@ internal class Product : IProduct
                 InStock = item.InStock,
             });
         }
-        catch (Exception)
+        catch (DO.AlreadyExistsException e)
         {
-            //fix this
-            throw;
+            throw new BO.AlreadyExistsException(e.Message, e);
         }
     }
 
@@ -40,16 +39,15 @@ internal class Product : IProduct
         foreach (DO.OrderItem item in orderItems)
         {
             if (item.ID == id)
-                throw new Exception();//fix this
+                throw new BO.IntegrityDamageException("cannot delete the product without hurting data integrity. There are orders for the product");
         }
         try
         {
             Dal.Product.Delete(id);
         }
-        catch (Exception)
-        {
-            //fix this
-            throw;
+        catch (DO.NotFoundException e)
+        { 
+            throw new BO.NotFoundException("product not found",e);
         }
     }
 
@@ -60,15 +58,16 @@ internal class Product : IProduct
     public BO.ProductItem Get(int id, BO.Cart cart)
     {
 
-        if (id < 0) throw new Exception();//fix this
+        if (id < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
         BO.ProductItem product;
         try
         {
             DO.Product dalProduct = Dal.Product.Get(id);
             BO.OrderItem orderItem = cart.Items.Find((x) => x.ID == id);
-            if (orderItem == null)
-                throw new Exception(); //fix this
-            //check this - should the instock consider the amount that the costumer already have in cart?
+            int amount = 0;
+            if (orderItem != null)
+                amount = orderItem.Amount; 
+            //fix this - check this - should the instock consider the amount that the costumer already have in cart?
             product = new BO.ProductItem()
             {
                 ID = dalProduct.ID,
@@ -76,20 +75,19 @@ internal class Product : IProduct
                 Category = (BO.Category)dalProduct.Category,
                 Price = dalProduct.Price,
                 InStock = dalProduct.InStock > 0 ? true : false,
-                Amount = orderItem.Amount
+                Amount = amount
             };
+            return product;
         }
-        catch (Exception)
+        catch (DO.NotFoundException e)
         {
-            //fix this
-            throw;
+            throw new BO.NotFoundException("product not found", e);
         }
-        return product;
     }
 
     public BO.Product AdminGet(int id)
     {
-        if (id < 0) throw new Exception();//fix this
+        if (id < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
         BO.Product product;
         try
         {
@@ -103,10 +101,9 @@ internal class Product : IProduct
                 InStock = dalProduct.InStock,
             };
         }
-        catch (Exception)
+        catch (DO.NotFoundException e)
         {
-            //fix this
-            throw;
+            throw new BO.NotFoundException("product not found", e);
         }
         return product;
     }
@@ -140,9 +137,7 @@ internal class Product : IProduct
 
     public void Update(BO.Product item)
     {
-
-        if (checkValid(item))
-            throw new NotImplementedException();//fix this
+        checkValid(item);
         try
         {
             Dal.Product.Update(new DO.Product()
@@ -154,10 +149,9 @@ internal class Product : IProduct
                 InStock = item.InStock,
             });
         }
-        catch (Exception)
+        catch (DO.NotFoundException e)
         {
-            //fix this
-            throw;
+            throw new BO.NotFoundException("product not found", e);
         }
     }
 
@@ -165,13 +159,12 @@ internal class Product : IProduct
 
     #region Helpers
 
-    private bool checkValid(BO.Product product)
+    private void checkValid(BO.Product product)
     {
-        if (product.ID < 0) return false;
-        if (product.Name == null || product.Name == "") return false;
-        if(product.Price < 0) return false; 
-        if(product.InStock < 0) return false;
-        return true;
+        if (product.ID < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
+        if (product.Name == null || product.Name == "") throw new BO.NullValueException("product Name property cannot be null or an empty string");
+        if(product.Price < 0) throw new BO.NegativeNumberException("product Price property cannot be a negative number");
+        if (product.InStock < 0) throw new BO.NegativeNumberException("product InStock property cannot be a negative number");
     }
 
     #endregion

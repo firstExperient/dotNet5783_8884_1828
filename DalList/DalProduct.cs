@@ -16,18 +16,15 @@ internal class DalProduct : IProduct
     public int Add(Product product)
     {
        
-        int id = DataSource.Random.Next(100000, 1000000);
         for (int i = 0; i < DataSource.Products.Count; i++)
         {
-            if (DataSource.Products[i].ID == id)
+            if (DataSource.Products[i].ID == product.ID)
             {
-                id = DataSource.Random.Next(100000, 1000000);
-                i = 0;
+                throw new AlreadyExistsException("product with id: " + product.ID + " already exists");
             }
         }
-        product.ID = id;   
         DataSource.Products.Add(product);
-        return id;
+        return product.ID;
     }
 
     #endregion
@@ -45,7 +42,7 @@ internal class DalProduct : IProduct
         {
             if (DataSource.Products[i].ID == id) return DataSource.Products[i];
         }
-        throw new AlreadyExistsException("Product not found");
+        throw new NotFoundException("Product not found");
     }
 
     /// <summary>
@@ -77,7 +74,7 @@ internal class DalProduct : IProduct
                 break;
             }
         }
-        if (!flag) throw new AlreadyExistsException("Product not found");
+        if (!flag) throw new NotFoundException("Product not found");
     }
 
     #endregion
