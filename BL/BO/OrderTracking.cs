@@ -15,7 +15,7 @@ public class OrderTracking
     /// </summary>
     public OrderStatus Status { get; set; }
 
-    // add list with pairs of descreption and date
+    //fix this add list with pairs of descreption and date
 
     /// <summary>
     /// a string of the order-tracking details
