@@ -56,6 +56,8 @@ namespace BlTest
 
         static private IBl _bl = new Bl();
 
+        static private BO.Cart _cart = new BO.Cart();
+
         #region testing product
         /// <summary>
         /// The product menu
@@ -90,8 +92,9 @@ namespace BlTest
                     {
                         _bl.Product.Add(ReadProductData());
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        
                         //fix this
                         throw;
                     }
@@ -284,125 +287,104 @@ namespace BlTest
         
         private static void TestingCart()
         {
-            int choice = 0, id, productId;
-            OrderItem orderItem = new OrderItem();
-            IEnumerable<OrderItem> items;
-
-            Console.WriteLine(" - a. Enter 1 to add an order item");
-            Console.WriteLine(" - b. Enter 2 to get an order item by id");
-            Console.WriteLine(" - c. Enter 3 to get all orders' items");
-            Console.WriteLine(" - d. Enter 4 to get an order item by order and product ids");
-            Console.WriteLine(" - e. Enter 5 to get all order items by order id");
-            Console.WriteLine(" - d. Enter 6 to update an order item");
-            Console.WriteLine(" - e. Enter 7 to delete an order item");
+            int choice = 0, productId,amount;
+            string customerName, email, adress;
+            Console.WriteLine(" - Enter 0 to return to main menu");
+            Console.WriteLine(" - a. Enter 1 to add an item to cart");
+            Console.WriteLine(" - b. Enter 2 to update an item amount in cart");
+            Console.WriteLine(" - c. Enter 3 to confirm order");
+            //Console.WriteLine(" - d. Enter 4 to get an order item by order and product ids");
+            //Console.WriteLine(" - e. Enter 5 to get all order items by order id");
+            //Console.WriteLine(" - d. Enter 6 to update an order item");
+            //Console.WriteLine(" - e. Enter 7 to delete an order item");
 
             bool success = Int32.TryParse(Console.ReadLine(), out choice);
             if (!success)
             {
                 Console.WriteLine("Error! input must be a number");
-                TestingOrderItem();
+                TestingCart();
                 return;
             }
             switch (choice)
             {
+                case 0:
+                    return;
                 case 1:
-                    _dalList.OrderItem.Add(ReadItemData());
-                    break;
-                case 2:
-                    Console.WriteLine("Enter order item id:");
-                    Int32.TryParse(Console.ReadLine(), out id);
-                    try
-                    {
-                        orderItem = _dalList.OrderItem.Get(id);
-                        Console.Write(orderItem);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.Write(e.Message);
-                    }
-
-                    break;
-                case 3:
-                    items = _dalList.OrderItem.GetAll();
-                    foreach (OrderItem item in items)
-                    {
-                        Console.Write(item);
-                    }
-                    break;
-                case 4:
-                    Console.WriteLine("Enter order id:");
-                    Int32.TryParse(Console.ReadLine(), out id);
                     Console.WriteLine("Enter product id:");
                     Int32.TryParse(Console.ReadLine(), out productId);
-                    try
-                    {
-                        orderItem = _dalList.OrderItem.GetItemByIds(id, productId);
-                        Console.Write(orderItem);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.Write(e.Message);
-                    }
+                    _bl.Cart.AddItem(productId, _cart);
                     break;
-                case 5:
-                    Console.WriteLine("Enter order id:");
-                    Int32.TryParse(Console.ReadLine(), out id);
-                    items = _dalList.OrderItem.GetAllItemsInOrder(id);
-                    foreach (OrderItem item in items)
-                    {
-                        Console.Write(item);
-                    }
+                case 2:
+                    Console.WriteLine("Enter product id:");
+                    Int32.TryParse(Console.ReadLine(), out productId);
+                    Console.WriteLine("Enter the new amount:");
+                    Int32.TryParse(Console.ReadLine(), out amount);
+                    _bl.Cart.UpdateItemAmount(productId, _cart,amount);
                     break;
-                case 6:
-                    Console.WriteLine("Enter order item id:");
-                    Int32.TryParse(Console.ReadLine(), out id);
-                    orderItem = ReadItemData();
-                    orderItem.ID = id;
-                    try
-                    {
-                        _dalList.OrderItem.Update(orderItem);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
+                case 3:
+                    Console.WriteLine("Enter customer name:");
+                    customerName = Console.ReadLine();
+                    Console.WriteLine("Enter customer email:");
+                    email = Console.ReadLine();
+                    Console.WriteLine("Enter customer adress:");
+                    adress = Console.ReadLine();
+                    _bl.Cart.ConfirmOrder(_cart, customerName, email, adress);
+                    _cart = new BO.Cart();
                     break;
-                case 7:
-                    Console.WriteLine("Enter order item id:");
-                    Int32.TryParse(Console.ReadLine(), out id);
-                    try
-                    {
-                        _dalList.OrderItem.Delete(id);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.Write(e.Message);
-                    }
-                    break;
+                //case 4:
+                //    Console.WriteLine("Enter order id:");
+                //    Int32.TryParse(Console.ReadLine(), out id);
+                //    Console.WriteLine("Enter product id:");
+                //    Int32.TryParse(Console.ReadLine(), out productId);
+                //    try
+                //    {
+                //        orderItem = _dalList.OrderItem.GetItemByIds(id, productId);
+                //        Console.Write(orderItem);
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        Console.Write(e.Message);
+                //    }
+                //    break;
+                //case 5:
+                //    Console.WriteLine("Enter order id:");
+                //    Int32.TryParse(Console.ReadLine(), out id);
+                //    items = _dalList.OrderItem.GetAllItemsInOrder(id);
+                //    foreach (OrderItem item in items)
+                //    {
+                //        Console.Write(item);
+                //    }
+                //    break;
+                //case 6:
+                //    Console.WriteLine("Enter order item id:");
+                //    Int32.TryParse(Console.ReadLine(), out id);
+                //    orderItem = ReadItemData();
+                //    orderItem.ID = id;
+                //    try
+                //    {
+                //        _dalList.OrderItem.Update(orderItem);
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        Console.WriteLine(e.Message);
+                //    }
+                //    break;
+                //case 7:
+                //    Console.WriteLine("Enter order item id:");
+                //    Int32.TryParse(Console.ReadLine(), out id);
+                //    try
+                //    {
+                //        _dalList.OrderItem.Delete(id);
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        Console.Write(e.Message);
+                //    }
+                //    break;
                 default:
                     Console.WriteLine("\nError! input is not valid");
                     break;
             }
-        }
-        /// <summary>
-        /// function to create a new item
-        /// </summary>
-        /// <returns>the new order-item created by user</returns>
-        private static OrderItem ReadItemData()
-        {
-            //maybe add a check if the product and the order's ids exist
-            int productId, orderId, amount;
-            double price;
-            Console.WriteLine("Enter the order id:");
-            Int32.TryParse(Console.ReadLine(), out orderId);
-            Console.WriteLine("Enter the product id:");
-            Int32.TryParse(Console.ReadLine(), out productId);
-            Console.WriteLine("Enter the item price:");
-            double.TryParse(Console.ReadLine(), out price);
-            Console.WriteLine("Enter the amount:");
-            Int32.TryParse(Console.ReadLine(), out amount);
-            OrderItem orderItem = new OrderItem() { OrderId = orderId, ProductId = productId, Price = price, Amount = amount };
-            return orderItem;
         }
         #endregion
 

@@ -141,9 +141,11 @@ internal class Program
     }
     private static Product ReadProductData()
     {
-        int inStock, category;
+        int inStock, category,id;
         double price;
         string name;
+        Console.WriteLine("Enter the product id:");
+        Int32.TryParse(Console.ReadLine(), out id);
         Console.WriteLine("Enter product name:");
         name = Console.ReadLine();
         Console.WriteLine("Enter th product category (0 - men watch, 1 - women watch, 2 - children watch, 3 - smart watch, 4 - diving watch");
@@ -153,7 +155,7 @@ internal class Program
         Console.WriteLine("Enter the amount of product in stock:");
         Int32.TryParse(Console.ReadLine(), out inStock);
 
-        Product product = new Product() { Name = name, Price = price, InStock = inStock, Category = (Category)category };
+        Product product = new Product() {ID=id, Name = name, Price = price, InStock = inStock, Category = (Category)category };
         return product;
     }
     #endregion
