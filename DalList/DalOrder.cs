@@ -1,6 +1,5 @@
 ﻿using DalApi;
 using DO;
-using static Dal.DataSource;
 namespace Dal;
  internal class DalOrder:IOrder 
 {
@@ -93,4 +92,4 @@ namespace Dal;
     }
 
     #endregion
-}
+ }

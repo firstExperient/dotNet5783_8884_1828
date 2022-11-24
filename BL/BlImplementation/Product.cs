@@ -51,7 +51,6 @@ internal class Product : IProduct
         }
     }
 
-
     #endregion
 
     #region GET

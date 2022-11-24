@@ -13,5 +13,6 @@ public enum Category
 }
 public enum OrderStatus
 {
-
+    Shipping,
+    Delivery
 }
