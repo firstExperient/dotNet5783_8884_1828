@@ -11,7 +11,7 @@ public class NegativeNumberException : Exception
     /// <summary>
     /// exception for when user entered a negative number (usually for ID's)
     /// </summary>
-    /// <param name="msg">the messege the user will rescive</param>
+    /// <param name="msg">the messege the user will receive</param>
     public NegativeNumberException(string msg) : base(msg)
     {
 
