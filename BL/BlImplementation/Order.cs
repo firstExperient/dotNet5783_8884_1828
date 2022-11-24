@@ -1,6 +1,7 @@
 ﻿using BlApi;
 using BO;
 using Dal;
+using DalApi;
 using DO;
 using System.Collections.Generic;
 
@@ -24,7 +25,7 @@ namespace BlImplementation
                 {
                     ID = item.ID,
                     CustomerName = item.CustomerName,
-                    // Status=BO.Enums.OrderStatus, //fix this
+                    Status = (BO.OrderStatus),//fix this I don't know how to continue
                     AmountOfItems = dalOrders.Count,
                     TotalPrice = totalPrice
                 });
@@ -48,7 +49,7 @@ namespace BlImplementation
                         CustomerEmail = dalOrder.CustomerEmail,
                         CustomerAdress = dalOrder.CustomerAdress,
                         OrderDate = dalOrder.OrderDate,
-                        // Status = BO.Enums.OrderStatus, //fix this
+                        Status = (BO.OrderStatus),//fix this I don't know how to continue
                         ShipDate = dalOrder.ShipDate,
                         DeliveryDate = dalOrder.DeliveryDate,
                         // Items = 
@@ -69,40 +70,75 @@ namespace BlImplementation
 
         public BO.Order ShipOrder(int id)
         {
-            BO.Order order;
-
             try
             {
                 DO.Order dalOrder = Dal.Order.Get(id);
 
-                IEnumerable<DO.Order> orderList = Dal.Order.GetAll();
-
-                int numOfOrders = orderList.Count();
-
-            } catch (Exception)
-            {
-                //fix this
-                throw;
-            }
-            return order;
-        }
-    
-        public Order DeliverOrder(int id)
-        {
-            DO.Order DalOrder = Dal.Order.Get(id);
-            BO.Order order = DalOrder.Items cart.Items.Find((x) => x.ID == id);
-
-
-            for (int i = 0; i <BO.Order cart.Items.Count; i++)
-            {
-                if (cart.Items[i].ProductId == id)//the product is already in cart
+                if (DateTime.Now > dalOrder.ShipDate)
                 {
-                    //fix this
-                    //האם הכמות היא לפי הכמות הכללית פחות מה שכבר יש או רק פחות האחד שהוא מוסיף?
+                    throw new Exception();//fix this
                 }
+
+                dalOrder.DeliveryDate = DateTime.Now;
+
+                BO.Order order = new BO.Order()
+                {
+                    ID = dalOrder.ID,
+                    CustomerName = dalOrder.CustomerName,
+                    CustomerEmail = dalOrder.CustomerEmail,
+                    CustomerAdress = dalOrder.CustomerAdress,
+                    OrderDate = dalOrder.OrderDate,
+                    Status = (BO.OrderStatus),//fix this I don't know how to continue
+                    ShipDate = DateTime.Now,
+                    DeliveryDate = dalOrder.DeliveryDate,
+                    // Items = 
+                    // TotalPrice =  הם רוצים שנבחר לבד?
+                };
+
+                return order;
+            }
+            catch (DO.NotFoundException e)
+            {
+                throw new BO.NotFoundException("Order not found", e);
             }
         }
 
+        public BO.Order DeliverOrder(int id)
+        {
+            try
+            {
+                DO.Order dalOrder = Dal.Order.Get(id);
+
+                if (dalOrder.ShipDate > dalOrder.DeliveryDate)
+                {
+                    throw new Exception();//fix this
+                }
+
+                dalOrder.DeliveryDate = DateTime.Now;
+
+                BO.Order order = new BO.Order()
+                {
+                    ID = dalOrder.ID,
+                    CustomerName = dalOrder.CustomerName,
+                    CustomerEmail = dalOrder.CustomerEmail,
+                    CustomerAdress = dalOrder.CustomerAdress,
+                    OrderDate = dalOrder.OrderDate,
+                    Status = (BO.OrderStatus),//fix this I don't know how to continue
+                    ShipDate = dalOrder.ShipDate,
+                    DeliveryDate = DateTime.Now,
+                    // Items = 
+                    // TotalPrice =  הם רוצים שנבחר לבד?
+                };
+
+                return order;
+            }
+            catch (DO.NotFoundException e)
+            {
+                throw new BO.NotFoundException("Order not found", e);
+            }
+        }
+
+        // bonus
         public void UpdateOrder(Order order)
         {
 
@@ -112,6 +148,11 @@ namespace BlImplementation
 
         #region TRACK
 
+        /// <summary>
+        /// a function for the maneger to manage orders
+        /// </summary>
+        /// <param name="id">id of order</param>
+        /// <returns>order-tracking of the asked order (by id)</returns>
         public OrderTracking TrackOrder(int id)
         {
             BO.OrderTracking orderTracking;
@@ -122,7 +163,7 @@ namespace BlImplementation
                 orderTracking = new BO.OrderTracking()
                 {
                     ID = dalOrder.ID,
-                 //   Status =  (BO.OrderStatus)// I don't know how to continue,
+                    Status =  (BO.OrderStatus)//fix this I don't know how to continue,
 
                 };
                 return orderTracking;
