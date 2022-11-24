@@ -12,24 +12,52 @@ namespace BlTest
             int choice = MainMenu();
             while (choice != 0)
             {
-                switch (choice)
+                try
                 {
-                    case 0:
-                        break;
-                    case 1:
-                        TestingProduct();
-                        break;
-                    case 2:
-                        TestingOrder();
-                        break;
-                    case 3:
-                        TestingCart();
-                        break;
-                    default:
-                        Console.WriteLine("\nError! worng number input");
-                        break;
+                    switch (choice)
+                    {
+                        case 0:
+                            break;
+                        case 1:
+                            TestingProduct();
+                            break;
+                        case 2:
+                            TestingOrder();
+                            break;
+                        case 3:
+                            TestingCart();
+                            break;
+                        default:
+                            Console.WriteLine("\nError! worng number input");
+                            break;
+                    }
+                    choice = MainMenu();
                 }
-                choice = MainMenu();
+                catch (BO.NegativeNumberException e)
+                {
+                    Console.Write(e);
+                }
+                catch (BO.IntegrityDamageException e)
+                {
+                    Console.Write(e);
+                }
+                catch (BO.NullValueException e)
+                {
+                    Console.Write(e);
+                }
+                catch (BO.NotFoundException e)
+                {
+                    Console.Write(e);
+                }
+                catch (BO.AlreadyExistsException e)
+                {
+                    Console.Write(e);
+                }
+                catch (BO.OutOfStockException e)
+                {
+                    Console.Write(e);
+                }
+                //no general exception catch - to allow debuging 
             }
         }
 

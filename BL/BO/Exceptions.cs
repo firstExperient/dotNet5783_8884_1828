@@ -1,10 +1,20 @@
-﻿namespace BO;
+﻿using System;
+
+namespace BO;
 
 public class NegativeNumberException : Exception
 {
     public NegativeNumberException(string msg) : base(msg)
     {
 
+    }
+    public override string ToString()
+    {
+        
+        return $@"
+        ERROR - NegativeNumberException:
+        {Message}
+        "; 
     }
 }
 
@@ -14,6 +24,15 @@ public class IntegrityDamageException : Exception
     {
 
     }
+
+    public override string ToString()
+    {
+
+        return $@"
+        ERROR - IntegrityDamageException:
+        {Message}
+        "; 
+    }
 }
 
 public class NullValueException : Exception
@@ -21,6 +40,15 @@ public class NullValueException : Exception
     public NullValueException(string msg) : base(msg)
     {
 
+    }
+
+    public override string ToString()
+    {
+
+        return $@"
+        ERROR - NullValueException:
+        {Message}
+        "; 
     }
 }
 
@@ -32,6 +60,16 @@ public class NotFoundException : Exception
     }
     public NotFoundException(string msg ,Exception innerException):base(msg ,innerException)
     {
+    }
+
+    public override string ToString()
+    {
+        string innerException = (InnerException != null) ? "Inner exception:" + InnerException : "";
+        return $@"
+        ERROR - NotFoundException:
+        {Message}
+        {innerException}
+        "; 
     }
 }
 
@@ -47,9 +85,12 @@ public class AlreadyExistsException : Exception
 
     public override string ToString()
     {
-        
-        
-        return Message;
+        string innerException = (InnerException != null) ? "Inner exception:" + InnerException : "";
+        return $@"
+        ERROR - AlreadyExistsException:
+        {Message}
+        {innerException}
+        ";
     }
 }
 
@@ -59,20 +100,14 @@ public class OutOfStockException : Exception
     {
 
     }
-}
 
-public class NotYetShippedException : Exception
-{
-    public NotYetShippedException(string msg) : base(msg)
+    public override string ToString()
     {
 
+        return $@"
+        ERROR - OutOfStockException:
+        {Message}
+        ";
     }
 }
 
-public class NotYetDeliveredException : Exception
-{
-    public NotYetDeliveredException(string msg) : base(msg)
-    {
-
-    }
-}

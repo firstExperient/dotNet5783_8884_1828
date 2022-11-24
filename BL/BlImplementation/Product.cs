@@ -38,7 +38,7 @@ internal class Product : IProduct
         List<DO.OrderItem> orderItems = (List<DO.OrderItem>)Dal.OrderItem.GetAll();
         foreach (DO.OrderItem item in orderItems)
         {
-            if (item.ID == id)
+            if (item.ProductId == id)
                 throw new BO.IntegrityDamageException("cannot delete the product without hurting data integrity. There are orders for the product");
         }
         try
@@ -61,7 +61,7 @@ internal class Product : IProduct
         try
         {
             DO.Product dalProduct = Dal.Product.Get(id);
-            BO.OrderItem orderItem = cart.Items.Find((x) => x.ID == id);
+            BO.OrderItem orderItem = cart.Items.Find((x) => x.ProductId == id);
             int amount = 0;
             if (orderItem != null)
                 amount = orderItem.Amount; 

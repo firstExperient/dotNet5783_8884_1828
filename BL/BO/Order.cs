@@ -48,7 +48,7 @@ public class Order
     /// <summary>
     /// the list of the items
     /// </summary>
-    public List<OrderItem> Items { get; set; }
+    public List<OrderItem> Items { get; set; } = new();
 
     /// <summary>
     /// the order's total price
@@ -63,7 +63,7 @@ public class Order
         string temp = "";
         foreach(OrderItem item in Items)
         {
-            temp = temp + item;
+            temp = temp + "\n" + item;
         }
         return $@"
         Order ID: {ID}
@@ -74,8 +74,8 @@ public class Order
         Order status: {Status}
         Ship date: {ShipDate.Day}:{ShipDate.Month}:{ShipDate.Year}
         Delivery date: {DeliveryDate.Day}:{DeliveryDate.Month}:{DeliveryDate.Year}
-        Items list: {temp}
         Total Price: {TotalPrice}
+        Items list: {temp}
         ";
     }
 }
