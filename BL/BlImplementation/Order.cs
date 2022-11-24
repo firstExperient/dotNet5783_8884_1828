@@ -1,22 +1,25 @@
 ﻿using BlApi;
+using BO;
 using Dal;
 using DalApi;
 using DO;
-using System.Collections.Generic;
 
 namespace BlImplementation
 {
-    internal class Order:IOrder
+    internal class Order:IOrder //fix this
     {
         private DalApi.IDal Dal = new DalList();
 
         #region GET
 
-        public IEnumerable<OrderForList> GetAll()
+        public IEnumerable<BO.OrderForList> GetAll()
         {
             List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
             List<BO.OrderForList> blOrders = new List<BO.OrderForList>();
-            double totalPrice = 0; // fix this
+
+            // TODO: for each to calculate the total price
+            double totalPrice = 0;
+
 
             foreach (DO.Order item in dalOrders)
             {
@@ -24,7 +27,7 @@ namespace BlImplementation
                 {
                     ID = item.ID,
                     CustomerName = item.CustomerName,
-                    Status = (BO.OrderStatus),//fix this I don't know how to continue
+                    Status = (BO.OrderStatus),//fix this
                     AmountOfItems = dalOrders.Count,
                     TotalPrice = totalPrice
                 });
@@ -37,9 +40,15 @@ namespace BlImplementation
             if (id > 0) throw new Exception();//fix this
             {
                 BO.Order order;
+
                 try
                 {
                     DO.Order dalOrder = Dal.Order.Get(id);
+
+                    // TODO: for each to calculate the total price
+                    double totalPrice = 0;
+
+
 
                     order = new BO.Order()
                     {
@@ -48,12 +57,14 @@ namespace BlImplementation
                         CustomerEmail = dalOrder.CustomerEmail,
                         CustomerAdress = dalOrder.CustomerAdress,
                         OrderDate = dalOrder.OrderDate,
-                        Status = (BO.OrderStatus),//fix this I don't know how to continue
+                        Status = (BO.OrderStatus), //fix this
                         ShipDate = dalOrder.ShipDate,
                         DeliveryDate = dalOrder.DeliveryDate,
-                        // Items = 
-                        // TotalPrice =  הם רוצים שנבחר לבד?
+                        Items = , // fix this
+                        TotalPrice = dalOrder.Items.count //fix this
                     };
+            
+
                     return order;
                 }
                 catch (DO.NotFoundException e)
@@ -65,7 +76,6 @@ namespace BlImplementation
         }
         #endregion
 
-
         #region UPDATE
 
         public BO.Order ShipOrder(int id)
@@ -76,8 +86,12 @@ namespace BlImplementation
 
                 if (DateTime.Now > dalOrder.ShipDate)
                 {
-                    throw new Exception();//fix this
+                    throw new BO.NotYetShippedException("Order hasn't shipped yet");
                 }
+
+                // TODO: for each to calculate the total price
+                double totalPrice = 0;
+
 
                 dalOrder.DeliveryDate = DateTime.Now;
 
@@ -88,11 +102,11 @@ namespace BlImplementation
                     CustomerEmail = dalOrder.CustomerEmail,
                     CustomerAdress = dalOrder.CustomerAdress,
                     OrderDate = dalOrder.OrderDate,
-                    Status = (BO.OrderStatus),//fix this I don't know how to continue
+                    Status = (BO.OrderStatus),//fix this
                     ShipDate = DateTime.Now,
                     DeliveryDate = dalOrder.DeliveryDate,
-                    // Items = 
-                    // TotalPrice =  הם רוצים שנבחר לבד?
+                    Items = //fix this
+                    TotalPrice //fix this
                 };
 
                 return order;
@@ -111,8 +125,12 @@ namespace BlImplementation
 
                 if (dalOrder.ShipDate > dalOrder.DeliveryDate)
                 {
-                    throw new Exception();//fix this
+                    throw new BO.NotYetDeliveredException("Order hasn't delivered yet");
                 }
+
+                // TODO: for each to calculate the total price
+                double totalPrice = 0;
+
 
                 dalOrder.DeliveryDate = DateTime.Now;
 
@@ -123,11 +141,11 @@ namespace BlImplementation
                     CustomerEmail = dalOrder.CustomerEmail,
                     CustomerAdress = dalOrder.CustomerAdress,
                     OrderDate = dalOrder.OrderDate,
-                    Status = (BO.OrderStatus),//fix this I don't know how to continue
+                    Status = (BO.OrderStatus),//fix this
                     ShipDate = dalOrder.ShipDate,
                     DeliveryDate = DateTime.Now,
-                    // Items = 
-                    // TotalPrice =  הם רוצים שנבחר לבד?
+                    Items = //fix this
+                    TotalPrice //fix this
                 };
 
                 return order;
@@ -138,7 +156,6 @@ namespace BlImplementation
             }
         }
 
-        // bonus
         public void UpdateOrder(Order order)
         {
 

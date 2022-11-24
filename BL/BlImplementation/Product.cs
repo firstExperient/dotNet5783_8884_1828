@@ -56,7 +56,6 @@ internal class Product : IProduct
     #region GET
     public BO.ProductItem Get(int id, BO.Cart cart)
     {
-
         if (id < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
         BO.ProductItem product;
         try
