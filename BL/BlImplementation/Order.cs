@@ -1,8 +1,6 @@
 ﻿using BlApi;
-using BO;
 using Dal;
 
-using DO;
 
 namespace BlImplementation
 {
@@ -12,11 +10,14 @@ namespace BlImplementation
 
         #region GET
 
+        /// <summary>
+        /// a function that returns a list of all the orders that are in the BO. 
+        /// </summary>
+        /// <returns>list of orders</returns>
         public IEnumerable<BO.OrderForList> GetAll()
         {
             List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
             List<BO.OrderForList> blOrders = new List<BO.OrderForList>();
-
 
             foreach (DO.Order order in dalOrders)
             {
@@ -42,6 +43,10 @@ namespace BlImplementation
             return blOrders;
         }
 
+        /// <summary>
+        /// a function that returns the requested BO order, by its ID
+        /// </summary>
+        /// <returns>list of orders</returns>
         public BO.Order Get(int id)
         {
             if (id < 0) throw new BO.NegativeNumberException("order ID property cannot be a negative number");
@@ -53,9 +58,12 @@ namespace BlImplementation
                 //creating the orderItem list for the order and figuring order total price 
                 List<BO.OrderItem> blOrderItems = new();
                 double totalPrice = 0;
+
                 foreach (var item in dalOrderItems) {
+
                     DO.Product product = Dal.Product.Get(item.ProductId);
                     totalPrice += item.Price * item.Amount;
+
                     blOrderItems.Add(new BO.OrderItem()
                     {
                         ID = item.ID,
@@ -65,7 +73,6 @@ namespace BlImplementation
                         Amount = item.Amount,
                         TotalPrice = item.Amount * item.Price,
                     });
-
                 };
      
                 //figuring order status
@@ -86,8 +93,6 @@ namespace BlImplementation
                     Items = blOrderItems, 
                     TotalPrice = totalPrice,
                 };
-            
-
                 return blOrder;
             }
             catch (DO.NotFoundException e)
@@ -99,6 +104,12 @@ namespace BlImplementation
 
         #region UPDATE
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">id of order</param>
+        /// <param name="shipDate">the date of the order shipping</param>
+        /// <returns></returns>
         public BO.Order ShipOrder(int id, DateTime shipDate)
         {
             try

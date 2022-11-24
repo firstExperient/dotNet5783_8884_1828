@@ -11,6 +11,10 @@ public enum Category
     SmartWatches,
     DivingWatches
 }
+
+/// <summary>
+/// enum of the statuses of orders
+/// </summary>
 public enum OrderStatus
 {
     Confirmed,
