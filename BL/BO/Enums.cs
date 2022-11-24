@@ -13,6 +13,7 @@ public enum Category
 }
 public enum OrderStatus
 {
-    Shipping,
-    Delivery
+    Confirmed,
+    Shipped,
+    Delivered
 }

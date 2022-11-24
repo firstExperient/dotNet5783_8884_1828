@@ -1,12 +1,12 @@
 ﻿using BlApi;
 using BO;
 using Dal;
-using DalApi;
+
 using DO;
 
 namespace BlImplementation
 {
-    internal class Order:IOrder //fix this
+    internal class Order:IOrder 
     {
         private DalApi.IDal Dal = new DalList();
 
@@ -17,17 +17,20 @@ namespace BlImplementation
             List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
             List<BO.OrderForList> blOrders = new List<BO.OrderForList>();
 
-            // TODO: for each to calculate the total price
+            // TODO: for each to calculate the total price - fix this
             double totalPrice = 0;
 
 
             foreach (DO.Order item in dalOrders)
             {
+                BO.OrderStatus status = BO.OrderStatus.Confirmed;
+                if (item.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
+                if (item.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
                 blOrders.Add(new BO.OrderForList()
                 {
                     ID = item.ID,
                     CustomerName = item.CustomerName,
-                    Status = (BO.OrderStatus),//fix this
+                    Status = status,
                     AmountOfItems = dalOrders.Count,
                     TotalPrice = totalPrice
                 });
@@ -37,42 +40,40 @@ namespace BlImplementation
 
         public BO.Order Get(int id)
         {
-            if (id > 0) throw new Exception();//fix this
+            if (id < 0) throw new BO.NegativeNumberException("order ID property cannot be a negative number");
+
+            BO.Order order;
+
+            try
             {
-                BO.Order order;
+                DO.Order dalOrder = Dal.Order.Get(id);
 
-                try
+                // TODO: for each to calculate the total price
+                double totalPrice = 0;
+                BO.OrderStatus status = BO.OrderStatus.Confirmed;
+                if (dalOrder.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
+                if (dalOrder.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
+                order = new BO.Order()
                 {
-                    DO.Order dalOrder = Dal.Order.Get(id);
-
-                    // TODO: for each to calculate the total price
-                    double totalPrice = 0;
-
-
-
-                    order = new BO.Order()
-                    {
-                        ID = dalOrder.ID,
-                        CustomerName = dalOrder.CustomerName,
-                        CustomerEmail = dalOrder.CustomerEmail,
-                        CustomerAdress = dalOrder.CustomerAdress,
-                        OrderDate = dalOrder.OrderDate,
-                        Status = (BO.OrderStatus), //fix this
-                        ShipDate = dalOrder.ShipDate,
-                        DeliveryDate = dalOrder.DeliveryDate,
-                        Items = , // fix this
-                        TotalPrice = dalOrder.Items.count //fix this
-                    };
+                    ID = dalOrder.ID,
+                    CustomerName = dalOrder.CustomerName,
+                    CustomerEmail = dalOrder.CustomerEmail,
+                    CustomerAdress = dalOrder.CustomerAdress,
+                    OrderDate = dalOrder.OrderDate,
+                    Status = status, 
+                    ShipDate = dalOrder.ShipDate,
+                    DeliveryDate = dalOrder.DeliveryDate,
+                    Items = , // fix this
+                    TotalPrice = dalOrder.Items.count //fix this
+                };
             
 
-                    return order;
-                }
-                catch (DO.NotFoundException e)
-                {
-                    throw new BO.NotFoundException("Order not found", e);
-                }
+                return order;
             }
-            return new BO.Order();
+            catch (DO.NotFoundException e)
+            {
+                throw new BO.NotFoundException("Order not found", e);
+            }
         }
         #endregion
 
@@ -156,7 +157,7 @@ namespace BlImplementation
             }
         }
 
-        public void UpdateOrder(Order order)
+        public void UpdateOrder(BO.Order order)
         {
 
         }

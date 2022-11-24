@@ -44,6 +44,13 @@ public class AlreadyExistsException : Exception
     public AlreadyExistsException(string msg, Exception innerException) : base(msg, innerException)
     {
     }
+
+    public override string ToString()
+    {
+        
+        
+        return Message;
+    }
 }
 
 public class OutOfStockException : Exception
