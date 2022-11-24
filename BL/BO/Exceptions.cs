@@ -53,3 +53,19 @@ public class OutOfStockException : Exception
 
     }
 }
+
+public class NotYetShippedException : Exception
+{
+    public NotYetShippedException(string msg) : base(msg)
+    {
+
+    }
+}
+
+public class NotYetDeliveredException : Exception
+{
+    public NotYetDeliveredException(string msg) : base(msg)
+    {
+
+    }
+}
