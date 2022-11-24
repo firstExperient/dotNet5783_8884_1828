@@ -11,14 +11,10 @@ internal class Order:IOrder
 
     #region GET
 
-        /// <summary>
-        /// a function that returns a list of all the orders that are in the BO. 
-        /// </summary>
-        /// <returns>list of orders</returns>
-        public IEnumerable<BO.OrderForList> GetAll()
-        {
-            List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
-            List<BO.OrderForList> blOrders = new List<BO.OrderForList>();
+    /// <summary>
+    /// a function that returns a list of all the orders that are in the BO. 
+    /// </summary>
+    /// <returns>list of orders</returns>
     public IEnumerable<BO.OrderForList> GetAll()
     {
         List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
