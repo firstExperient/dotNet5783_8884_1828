@@ -88,64 +88,31 @@ namespace BlTest
                 case 0:
                     return;
                 case 1:
-                    try
-                    {
                         _bl.Product.Add(ReadProductData());
-                    }
-                    catch (Exception e)
-                    {
-                        
-                        //fix this
-                        throw;
-                    }
-                    
                     break;
                 case 2:
                     Console.WriteLine("Enter product id:");
                     Int32.TryParse(Console.ReadLine(), out id);
-                    try
-                    {
-                        product = _bl.Product.AdminGet(id);
-                        Console.Write(product);
-                    }
-                    catch (Exception e)
-                    {
-                        //fix this
-                        Console.Write(e.Message);
-                    }
-
+                    Console.Write(_bl.Product.AdminGet(id));
                     break;
                 case 3:
-                    IEnumerable<BO.ProductForList> products = _bl.Product.GetAll();
-                    foreach (var item in products)
+                    foreach (var item in _bl.Product.GetAll())
                     {
                         Console.Write(item);
                     }
                     break;
                 case 4:
-                    product = ReadProductData();
-                    try
-                    {
-                        _bl.Product.Update(product);
-                    }
-                    catch (Exception e)
-                    {
-                        //fix this
-                        Console.WriteLine(e.Message);
-                    }
+                    _bl.Product.Update(ReadProductData());
                     break;
                 case 5:
                     Console.WriteLine("Enter product id:");
                     Int32.TryParse(Console.ReadLine(), out id);
-                    try
-                    {
-                        _bl.Product.Delete(id);
-                    }
-                    catch (Exception e)
-                    {
-                        //fix this
-                        Console.Write(e.Message);
-                    }
+                     _bl.Product.Delete(id);
+                    break;
+                case 6:
+                    Console.WriteLine("Enter product id:");
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    Console.Write(_bl.Product.Get(id,_cart));
                     break;
                 default:
                     Console.WriteLine("\nError! input is not valid");
@@ -180,13 +147,15 @@ namespace BlTest
         /// </summary>
         private static void TestingOrder()
         {
-            int choice = 0, id;
+            int choice = 0, orderId;
             BO.Order order = new BO.Order();
-            Console.WriteLine(" - a. Enter 1 to add an order");
+            Console.WriteLine(" - Enter 0 to return to main menu");
+            Console.WriteLine(" - a. Enter 1 to track an order");
             Console.WriteLine(" - b. Enter 2 to get an order by id");
             Console.WriteLine(" - c. Enter 3 to get all orders");
             Console.WriteLine(" - d. Enter 4 to update an order");
-            Console.WriteLine(" - e. Enter 5 to delete an order");
+            Console.WriteLine(" - e. Enter 5 to update order shipping");
+            Console.WriteLine(" - f. Enter 6 to update order delivery");
             bool success = Int32.TryParse(Console.ReadLine(), out choice);
             if (!success)
             {
@@ -196,66 +165,49 @@ namespace BlTest
             }
             switch (choice)
             {
+                case 0:
+                    return;
                 case 1:
-                    _dalList.Order.Add(ReadOrderData());
+                    Console.WriteLine("Enter order id:");
+                    Int32.TryParse(Console.ReadLine(), out orderId);
+                    Console.Write(_bl.Order.TrackOrder(orderId));
                     break;
                 case 2:
                     Console.WriteLine("Enter order id:");
-                    Int32.TryParse(Console.ReadLine(), out id);
-                    try
-                    {
-                        order = _dalList.Order.Get(id);
-                        Console.Write(order);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.Write(e.Message);
-                    }
-
+                    Int32.TryParse(Console.ReadLine(), out orderId);
+                    Console.Write(_bl.Order.Get(orderId));
                     break;
                 case 3:
-                    IEnumerable<Order> orders = _dalList.Order.GetAll();
-                    foreach (Order item in orders)
+                    foreach (BO.OrderForList item in _bl.Order.GetAll())
                     {
                         Console.Write(item);
                     }
                     break;
                 case 4:
-                    Console.WriteLine("Enter order id:");
-                    Int32.TryParse(Console.ReadLine(), out id);
-                    order = ReadOrderData();
-                    order.ID = id;
-                    try
-                    {
-                        _dalList.Order.Update(order);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
+                    _bl.Order.UpdateOrder(ReadOrderData());
                     break;
                 case 5:
                     Console.WriteLine("Enter order id:");
-                    Int32.TryParse(Console.ReadLine(), out id);
-                    try
-                    {
-                        _dalList.Order.Delete(id);
-
-                    }
-                    catch (Exception e)
-                    {
-                        Console.Write(e.Message);
-                    }
+                    Int32.TryParse(Console.ReadLine(), out orderId);
+                    _bl.Order.ShipOrder(orderId);
+                    break;
+                case 6:
+                    Console.WriteLine("Enter order id:");
+                    Int32.TryParse(Console.ReadLine(), out orderId);
+                    _bl.Order.DeliverOrder(orderId);
                     break;
                 default:
                     Console.WriteLine("\nError! input is not valid");
                     break;
             }
         }
-        private static Order ReadOrderData()
+        private static BO.Order ReadOrderData()
         {
             string name, mail, adress;
             DateTime orderDate, ship, delivery;
+            int id;
+            Console.WriteLine("Enter order id:");
+            Int32.TryParse(Console.ReadLine(), out id);
             Console.WriteLine("Enter customer name:");
             name = Console.ReadLine();
             Console.WriteLine("Enter customer mail:");
@@ -268,9 +220,10 @@ namespace BlTest
             DateTime.TryParse(Console.ReadLine(), out ship);
             Console.WriteLine("Enter the delivery date:");
             DateTime.TryParse(Console.ReadLine(), out delivery);
-
-            Order order = new Order()
+            //fix this - add the other property of order
+            BO.Order order = new BO.Order()
             {
+                ID = id,
                 CustomerName = name,
                 CustomerEmail = mail,
                 CustomerAdress = adress,
@@ -292,11 +245,7 @@ namespace BlTest
             Console.WriteLine(" - Enter 0 to return to main menu");
             Console.WriteLine(" - a. Enter 1 to add an item to cart");
             Console.WriteLine(" - b. Enter 2 to update an item amount in cart");
-            Console.WriteLine(" - c. Enter 3 to confirm order");
-            //Console.WriteLine(" - d. Enter 4 to get an order item by order and product ids");
-            //Console.WriteLine(" - e. Enter 5 to get all order items by order id");
-            //Console.WriteLine(" - d. Enter 6 to update an order item");
-            //Console.WriteLine(" - e. Enter 7 to delete an order item");
+            Console.WriteLine(" - c. Enter 3 to confirm order");;
 
             bool success = Int32.TryParse(Console.ReadLine(), out choice);
             if (!success)
@@ -331,56 +280,6 @@ namespace BlTest
                     _bl.Cart.ConfirmOrder(_cart, customerName, email, adress);
                     _cart = new BO.Cart();
                     break;
-                //case 4:
-                //    Console.WriteLine("Enter order id:");
-                //    Int32.TryParse(Console.ReadLine(), out id);
-                //    Console.WriteLine("Enter product id:");
-                //    Int32.TryParse(Console.ReadLine(), out productId);
-                //    try
-                //    {
-                //        orderItem = _dalList.OrderItem.GetItemByIds(id, productId);
-                //        Console.Write(orderItem);
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        Console.Write(e.Message);
-                //    }
-                //    break;
-                //case 5:
-                //    Console.WriteLine("Enter order id:");
-                //    Int32.TryParse(Console.ReadLine(), out id);
-                //    items = _dalList.OrderItem.GetAllItemsInOrder(id);
-                //    foreach (OrderItem item in items)
-                //    {
-                //        Console.Write(item);
-                //    }
-                //    break;
-                //case 6:
-                //    Console.WriteLine("Enter order item id:");
-                //    Int32.TryParse(Console.ReadLine(), out id);
-                //    orderItem = ReadItemData();
-                //    orderItem.ID = id;
-                //    try
-                //    {
-                //        _dalList.OrderItem.Update(orderItem);
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        Console.WriteLine(e.Message);
-                //    }
-                //    break;
-                //case 7:
-                //    Console.WriteLine("Enter order item id:");
-                //    Int32.TryParse(Console.ReadLine(), out id);
-                //    try
-                //    {
-                //        _dalList.OrderItem.Delete(id);
-                //    }
-                //    catch (Exception e)
-                //    {
-                //        Console.Write(e.Message);
-                //    }
-                //    break;
                 default:
                     Console.WriteLine("\nError! input is not valid");
                     break;

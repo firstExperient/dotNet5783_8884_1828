@@ -1,18 +1,17 @@
 ﻿using BlApi;
-using BO;
 using Dal;
 
 namespace BlImplementation
 {
-    internal class Order
+    internal class Order:IOrder
     {
        
-        public IEnumerable<OrderForList> GetAll()
+        public IEnumerable<BO.OrderForList> GetAll()
         {
-            return new List<Order>(DataSource.Orders);
+            return new List<BO.OrderForList>();
         }
 
-        public Order Get(int id)
+        public BO.Order Get(int id)
         {
             if (id > 0)
             {
@@ -26,24 +25,25 @@ namespace BlImplementation
                     throw;
                 }
             }
+            return new BO.Order();
         }
 
-        public Order ShipOrder(int id)
+        public BO.Order ShipOrder(int id)
         {
-
+            return new BO.Order();
         }
 
-        public Order DeliverOrder(int id)
+        public BO.Order DeliverOrder(int id)
         {
-
+            return new BO.Order();
         }
 
-        public OrderTracking TrackOrder(int id)
+        public BO.OrderTracking TrackOrder(int id)
         {
-
+            return new BO.OrderTracking();
         }
 
-        public void UpdateOrder(Order order)
+        public void UpdateOrder(BO.Order order)
         {
 
         }
