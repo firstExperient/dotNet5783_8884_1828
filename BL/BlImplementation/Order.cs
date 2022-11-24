@@ -96,19 +96,7 @@ namespace BlImplementation
 
                 dalOrder.DeliveryDate = DateTime.Now;
 
-                BO.Order order = new BO.Order()
-                {
-                    ID = dalOrder.ID,
-                    CustomerName = dalOrder.CustomerName,
-                    CustomerEmail = dalOrder.CustomerEmail,
-                    CustomerAdress = dalOrder.CustomerAdress,
-                    OrderDate = dalOrder.OrderDate,
-                    Status = (BO.OrderStatus),//fix this
-                    ShipDate = DateTime.Now,
-                    DeliveryDate = dalOrder.DeliveryDate,
-                    Items = //fix this
-                    TotalPrice //fix this
-                };
+                BO.Order order = Get(id);
 
                 return order;
             }
@@ -135,19 +123,7 @@ namespace BlImplementation
 
                 dalOrder.DeliveryDate = DateTime.Now;
 
-                BO.Order order = new BO.Order()
-                {
-                    ID = dalOrder.ID,
-                    CustomerName = dalOrder.CustomerName,
-                    CustomerEmail = dalOrder.CustomerEmail,
-                    CustomerAdress = dalOrder.CustomerAdress,
-                    OrderDate = dalOrder.OrderDate,
-                    Status = (BO.OrderStatus),//fix this
-                    ShipDate = dalOrder.ShipDate,
-                    DeliveryDate = DateTime.Now,
-                    Items = //fix this
-                    TotalPrice //fix this
-                };
+                BO.Order order = Get(id);
 
                 return order;
             }
