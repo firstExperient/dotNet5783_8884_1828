@@ -34,7 +34,6 @@ internal class Cart : ICart
             //the product is not in cart
             if (product.InStock <= 0)
                 throw new BO.OutOfStockException("product " + id + " is out of stock");
-            //fix this - what to do with the id
             cart.Items.Add(new BO.OrderItem()
             {
                 ProductId = id,

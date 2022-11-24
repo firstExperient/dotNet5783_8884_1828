@@ -148,6 +148,7 @@ namespace BlTest
         private static void TestingOrder()
         {
             int choice = 0, orderId;
+            DateTime date;
             BO.Order order = new BO.Order();
             Console.WriteLine(" - Enter 0 to return to main menu");
             Console.WriteLine(" - a. Enter 1 to track an order");
@@ -189,12 +190,16 @@ namespace BlTest
                 case 5:
                     Console.WriteLine("Enter order id:");
                     Int32.TryParse(Console.ReadLine(), out orderId);
-                    _bl.Order.ShipOrder(orderId);
+                    Console.WriteLine("Enter order shipping date:");
+                    DateTime.TryParse(Console.ReadLine(), out date);
+                    _bl.Order.ShipOrder(orderId,date);
                     break;
                 case 6:
                     Console.WriteLine("Enter order id:");
                     Int32.TryParse(Console.ReadLine(), out orderId);
-                    _bl.Order.DeliverOrder(orderId);
+                    Console.WriteLine("Enter order delivery date:");
+                    DateTime.TryParse(Console.ReadLine(), out date);
+                    _bl.Order.DeliverOrder(orderId, date);
                     break;
                 default:
                     Console.WriteLine("\nError! input is not valid");

@@ -48,7 +48,7 @@ public class Order
     /// <summary>
     /// the list of the items
     /// </summary>
-    List<OrderItem> Items { get; set; }
+    public List<OrderItem> Items { get; set; }
 
     /// <summary>
     /// the order's total price

@@ -17,21 +17,25 @@ namespace BlImplementation
             List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
             List<BO.OrderForList> blOrders = new List<BO.OrderForList>();
 
-            // TODO: for each to calculate the total price - fix this
-            double totalPrice = 0;
 
-
-            foreach (DO.Order item in dalOrders)
+            foreach (DO.Order order in dalOrders)
             {
+                double totalPrice = 0;
+                //figuring order status
                 BO.OrderStatus status = BO.OrderStatus.Confirmed;
-                if (item.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
-                if (item.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
+                if (order.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
+                if (order.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
+
+                //figuring order total price
+                List<DO.OrderItem> orderItems = (List<DO.OrderItem>)Dal.OrderItem.GetAllItemsInOrder(order.ID);
+                foreach (var item in orderItems) totalPrice += item.Price * item.Amount;
+
                 blOrders.Add(new BO.OrderForList()
                 {
-                    ID = item.ID,
-                    CustomerName = item.CustomerName,
+                    ID = order.ID,
+                    CustomerName = order.CustomerName,
                     Status = status,
-                    AmountOfItems = dalOrders.Count,
+                    AmountOfItems =  orderItems.Count,
                     TotalPrice = totalPrice
                 });
             }
@@ -41,19 +45,35 @@ namespace BlImplementation
         public BO.Order Get(int id)
         {
             if (id < 0) throw new BO.NegativeNumberException("order ID property cannot be a negative number");
-
-            BO.Order order;
-
             try
             {
                 DO.Order dalOrder = Dal.Order.Get(id);
+                List<DO.OrderItem> dalOrderItems = (List<DO.OrderItem>)Dal.OrderItem.GetAllItemsInOrder(dalOrder.ID);
 
-                // TODO: for each to calculate the total price
+                //creating the orderItem list for the order and figuring order total price 
+                List<BO.OrderItem> blOrderItems = new();
                 double totalPrice = 0;
+                foreach (var item in dalOrderItems) {
+                    DO.Product product = Dal.Product.Get(item.ProductId);
+                    totalPrice += item.Price * item.Amount;
+                    blOrderItems.Add(new BO.OrderItem()
+                    {
+                        ID = item.ID,
+                        Name = product.Name,
+                        ProductId = item.ProductId,
+                        Price = item.Price,
+                        Amount = item.Amount,
+                        TotalPrice = item.Amount * item.Price,
+                    });
+
+                };
+     
+                //figuring order status
                 BO.OrderStatus status = BO.OrderStatus.Confirmed;
                 if (dalOrder.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
                 if (dalOrder.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
-                order = new BO.Order()
+
+                BO.Order blOrder = new BO.Order()
                 {
                     ID = dalOrder.ID,
                     CustomerName = dalOrder.CustomerName,
@@ -63,42 +83,41 @@ namespace BlImplementation
                     Status = status, 
                     ShipDate = dalOrder.ShipDate,
                     DeliveryDate = dalOrder.DeliveryDate,
-                    Items = , // fix this
-                    TotalPrice = dalOrder.Items.count //fix this
+                    Items = blOrderItems, 
+                    TotalPrice = totalPrice,
                 };
             
 
-                return order;
+                return blOrder;
             }
             catch (DO.NotFoundException e)
             {
-                throw new BO.NotFoundException("Order not found", e);
+                throw new BO.NotFoundException(e.Message, e);
             }
         }
         #endregion
 
         #region UPDATE
 
-        public BO.Order ShipOrder(int id)
+        public BO.Order ShipOrder(int id, DateTime shipDate)
         {
             try
             {
                 DO.Order dalOrder = Dal.Order.Get(id);
 
-                if (DateTime.Now > dalOrder.ShipDate)
-                {
-                    throw new BO.NotYetShippedException("Order hasn't shipped yet");
-                }
+                if (shipDate > DateTime.Now)
+                    throw new BO.IntegrityDamageException("cannot set order ship date to a future date");
 
-                // TODO: for each to calculate the total price
-                double totalPrice = 0;
+                if (dalOrder.ShipDate != DateTime.MinValue)
+                    throw new BO.IntegrityDamageException("cannot set order ship date, order already shipped");
 
+                if (shipDate == DateTime.MinValue)
+                    throw new BO.NullValueException("ship date cannot be null - 1.1.1");
+                
+                dalOrder.ShipDate = shipDate;
+                Dal.Order.Update(dalOrder);
 
-                dalOrder.DeliveryDate = DateTime.Now;
-
-                BO.Order order = Get(id);
-
-                return order;
+                return Get(id);
             }
             catch (DO.NotFoundException e)
             {
@@ -106,26 +125,28 @@ namespace BlImplementation
             }
         }
 
-        public BO.Order DeliverOrder(int id)
+        public BO.Order DeliverOrder(int id,DateTime deliveryDate)
         {
             try
             {
                 DO.Order dalOrder = Dal.Order.Get(id);
 
-                if (dalOrder.ShipDate > dalOrder.DeliveryDate)
-                {
-                    throw new BO.NotYetDeliveredException("Order hasn't delivered yet");
-                }
+                if (deliveryDate > DateTime.Now)
+                    throw new BO.IntegrityDamageException("cannot set order delivery date to a future date");
 
-                // TODO: for each to calculate the total price
-                double totalPrice = 0;
+                if(dalOrder.ShipDate == DateTime.MinValue)
+                    throw new BO.IntegrityDamageException("cannot set order delivery date before setting order shipping date");
 
+                if (dalOrder.DeliveryDate != DateTime.MinValue)
+                    throw new BO.IntegrityDamageException("cannot set order delivery date, order already delivered");
 
-                dalOrder.DeliveryDate = DateTime.Now;
+                if (deliveryDate == DateTime.MinValue)
+                    throw new BO.NullValueException("delivery date cannot be null - 1.1.1");
 
-                BO.Order order = Get(id);
+                dalOrder.DeliveryDate = deliveryDate;
+                Dal.Order.Update(dalOrder);
 
-                return order;
+                return Get(id);
             }
             catch (DO.NotFoundException e)
             {
@@ -135,7 +156,7 @@ namespace BlImplementation
 
         public void UpdateOrder(BO.Order order)
         {
-
+              //fix this
         }
 
         #endregion
@@ -154,11 +175,26 @@ namespace BlImplementation
             {
                 DO.Order dalOrder = Dal.Order.Get(id);
 
+                //figuring order status
+                BO.OrderStatus status = BO.OrderStatus.Confirmed;
+                if (dalOrder.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
+                if (dalOrder.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
+
+                //figuring the trackingList
+                List<(DateTime, string)> tracking = new();
+                tracking.Add((dalOrder.OrderDate, "order confirmed"));
+
+                if(dalOrder.ShipDate != DateTime.MinValue)
+                    tracking.Add((dalOrder.ShipDate, "order shipped"));
+
+                if (dalOrder.DeliveryDate != DateTime.MinValue)
+                    tracking.Add((dalOrder.DeliveryDate, "order delivered"));
+
                 orderTracking = new BO.OrderTracking()
                 {
                     ID = dalOrder.ID,
-                    Status =  (BO.OrderStatus)//fix this I don't know how to continue,
-
+                    Status =  status,
+                    TrackingList = tracking,
                 };
                 return orderTracking;
             }

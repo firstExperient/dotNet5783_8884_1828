@@ -6,7 +6,7 @@ namespace BO;
 public class OrderTracking
 {
     /// <summary>
-    /// Unique ID of this order tracking
+    /// order id
     /// </summary>
     public int ID { get; set; }
 
@@ -15,16 +15,20 @@ public class OrderTracking
     /// </summary>
     public OrderStatus Status { get; set; }
 
-    //fix this add list with pairs of descreption and date
-
+    
+    public List<(DateTime, string)> TrackingList = new();
     /// <summary>
     /// a string of the order-tracking details
     /// </summary>
     public override string ToString()
     {
+        string tracking = "";
+        foreach ((DateTime date, string msg) in TrackingList) tracking += date + ": " + msg + "\n";
         return $@"
-        Order-Tracking ID: {ID}
+        Order ID: {ID}
         status: {Status}
+        Tracking: 
+        {tracking}
         ";
     }
 }
