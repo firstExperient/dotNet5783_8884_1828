@@ -23,7 +23,7 @@ public class OrderTracking
     public override string ToString()
     {
         string tracking = "";
-        foreach ((DateTime date, string msg) in TrackingList) tracking += date + ": " + msg + "\n";
+        foreach ((DateTime date, string msg) in TrackingList) tracking += "\n\t\tDate: " + date + "\n\t\tDescreption: " + msg + "\n";
         return $@"
         Order ID: {ID}
         status: {Status}

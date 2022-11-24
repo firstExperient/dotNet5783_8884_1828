@@ -44,7 +44,7 @@ public class ProductItem
         Name: {Name}
         Category:  {Category}
         Price: {Price}
-        Amount in stock: {InStock}
+        Product is in stock: {InStock}
         Amount of items ordered: {Amount}
         ";
     }
