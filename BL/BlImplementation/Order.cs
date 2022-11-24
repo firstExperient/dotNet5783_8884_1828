@@ -2,6 +2,7 @@
 using BO;
 using Dal;
 using DO;
+using System.Collections.Generic;
 
 namespace BlImplementation
 {
@@ -9,14 +10,26 @@ namespace BlImplementation
     {
         private DalApi.IDal Dal = new DalList();
 
+        #region GET
+
         public IEnumerable<OrderForList> GetAll()
         {
-            IEnumerable<OrderForList> list = new List<OrderForList>();
-            foreach (Order order in Dal.Order)
-            {
+            List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
+            List<BO.OrderForList> blOrders = new List<BO.OrderForList>();
+            double totalPrice = 0; // fix this
 
+            foreach (DO.Order item in dalOrders)
+            {
+                blOrders.Add(new BO.OrderForList()
+                {
+                    ID = item.ID,
+                    CustomerName = item.CustomerName,
+                    // Status=BO.Enums.OrderStatus, //fix this
+                    AmountOfItems = dalOrders.Count,
+                    TotalPrice = totalPrice
+                });
             }
-            return list;
+            return blOrders;
         }
 
         public BO.Order Get(int id)
@@ -35,68 +48,90 @@ namespace BlImplementation
                         CustomerEmail = dalOrder.CustomerEmail,
                         CustomerAdress = dalOrder.CustomerAdress,
                         OrderDate = dalOrder.OrderDate,
-                        // Status = 
+                        // Status = BO.Enums.OrderStatus, //fix this
                         ShipDate = dalOrder.ShipDate,
                         DeliveryDate = dalOrder.DeliveryDate,
                         // Items = 
-                        TotalPrice = 20.0 // זו הכוונה?
+                        // TotalPrice =  הם רוצים שנבחר לבד?
                     };
-
-                } catch (Exception)
-                {
-                    //fix this
-                    throw;
+                    return order;
                 }
-                return order;
+                catch (DO.NotFoundException e)
+                {
+                    throw new BO.NotFoundException("Order not found", e);
+                }
             }
         }
+        #endregion
 
-        public Order ShipOrder(int id)
+
+        #region UPDATE
+
+        public BO.Order ShipOrder(int id)
         {
+            BO.Order order;
 
-            // do like this (and change of course)
-            bool flag = false;
-            for (int i = 0; i < DataSource.Orders.Count; i++)
+            try
             {
-                if (DataSource.Orders[i].ID == order.ID)
-                {
-                    DataSource.Orders[i] = order;
-                    flag = true;
-                    break;
-                }
-            }
-            if (!flag) throw new AlreadyExistsException("Order not found");
+                DO.Order dalOrder = Dal.Order.Get(id);
 
+                IEnumerable<DO.Order> orderList = Dal.Order.GetAll();
 
-            //or like this (and change of course)
-            BO.Order order = BO.Order.Find((x) => x.ID == id);
-            if (order == null)
-                throw new Exception(); //fix this
-            try {
-
-
+                int numOfOrders = orderList.Count();
 
             } catch (Exception)
             {
                 //fix this
                 throw;
             }
-            return ;
+            return order;
         }
     
         public Order DeliverOrder(int id)
         {
+            DO.Order DalOrder = Dal.Order.Get(id);
+            BO.Order order = DalOrder.Items cart.Items.Find((x) => x.ID == id);
 
-        }
 
-        public OrderTracking TrackOrder(int id)
-        {
-
+            for (int i = 0; i <BO.Order cart.Items.Count; i++)
+            {
+                if (cart.Items[i].ProductId == id)//the product is already in cart
+                {
+                    //fix this
+                    //האם הכמות היא לפי הכמות הכללית פחות מה שכבר יש או רק פחות האחד שהוא מוסיף?
+                }
+            }
         }
 
         public void UpdateOrder(Order order)
         {
 
         }
+
+        #endregion
+
+        #region TRACK
+
+        public OrderTracking TrackOrder(int id)
+        {
+            BO.OrderTracking orderTracking;
+            try
+            {
+                DO.Order dalOrder = Dal.Order.Get(id);
+
+                orderTracking = new BO.OrderTracking()
+                {
+                    ID = dalOrder.ID,
+                 //   Status =  (BO.OrderStatus)// I don't know how to continue,
+
+                };
+                return orderTracking;
+            }
+            catch (DO.NotFoundException e)
+            {
+                throw new BO.NotFoundException("order not found", e);
+            }
+        }
+        #endregion
     }
 }
