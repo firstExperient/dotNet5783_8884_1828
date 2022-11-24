@@ -20,8 +20,15 @@ internal class Cart : ICart
             {
                 if (cart.Items[i].ProductId == id)//the product is already in cart
                 {
-                    //fix this
-                    //האם הכמות היא לפי הכמות הכללית פחות מה שכבר יש או רק פחות האחד שהוא מוסיף?
+                    if(product.InStock >= cart.Items[i].Amount + 1)//there is enough in stock to add another one to the order item
+                    {
+                        cart.Items[i].Amount++;
+                        //adding according to the current price
+                        cart.Items[i].TotalPrice += product.Price;
+                        cart.TotalPrice += product.Price;
+                        return cart;
+                    }
+                    throw new BO.OutOfStockException("product " + id + " is out of stock");
                 }
             }
             //the product is not in cart
