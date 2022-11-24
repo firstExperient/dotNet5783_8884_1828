@@ -1,29 +1,17 @@
 ﻿using BlApi;
-
 using Dal;
-
-
 namespace BlImplementation;
 
-internal class Order:IOrder 
+internal class Order : IOrder 
 {
     private DalApi.IDal Dal = new DalList();
 
     #region GET
 
-        /// <summary>
-        /// a function that returns a list of all the orders that are in the BO. 
-        /// </summary>
-        /// <returns>list of orders</returns>
-        public IEnumerable<BO.OrderForList> GetAll()
-        {
-            List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
-            List<BO.OrderForList> blOrders = new List<BO.OrderForList>();
     public IEnumerable<BO.OrderForList> GetAll()
     {
         List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
         List<BO.OrderForList> blOrders = new List<BO.OrderForList>();
-
 
         foreach (DO.Order order in dalOrders)
         {
@@ -72,7 +60,6 @@ internal class Order:IOrder
                     Amount = item.Amount,
                     TotalPrice = item.Amount * item.Price,
                 });
-
             };
  
             //figuring order status
@@ -120,7 +107,7 @@ internal class Order:IOrder
 
             if (shipDate == DateTime.MinValue)
                 throw new BO.NullValueException("ship date cannot be null - 1.1.1");
-            
+
             dalOrder.ShipDate = shipDate;
             Dal.Order.Update(dalOrder);
 
@@ -163,18 +150,46 @@ internal class Order:IOrder
 
     public void UpdateOrder(BO.Order order)
     {
-          //fix this
-    }
+        // fix this
 
+        try
+        {
+            // delivery date:
+
+            if (order.DeliveryDate > DateTime.Now)
+                throw new BO.IntegrityDamageException("cannot set order delivery date to a future date");
+
+            if (order.ShipDate == DateTime.MinValue)
+                throw new BO.IntegrityDamageException("cannot set order delivery date before setting order shipping date");
+
+            if (order.DeliveryDate != DateTime.MinValue)
+                throw new BO.IntegrityDamageException("cannot set order delivery date, order already delivered");
+
+            if (order.DeliveryDate == DateTime.MinValue)
+                throw new BO.NullValueException("delivery date cannot be null - 1.1.1");
+
+
+            // shipping date:
+            if (order.ShipDate > DateTime.Now)
+                throw new BO.IntegrityDamageException("cannot set order shipping date to a future date");
+
+            if (order.ShipDate != DateTime.MinValue)
+                throw new BO.IntegrityDamageException("cannot set order shipping date, order already delivered");
+
+            if (order.ShipDate == DateTime.MinValue)
+                throw new BO.NullValueException("shipping date cannot be null - 1.1.1");
+
+
+        }
+        catch (DO.NotFoundException e)
+        {
+            throw new BO.NotFoundException("Order not found", e);
+        }
+    }
     #endregion
 
     #region TRACK
 
-    /// <summary>
-    /// a function for the maneger to manage orders
-    /// </summary>
-    /// <param name="id">id of order</param>
-    /// <returns>order-tracking of the asked order (by id)</returns>
     public BO.OrderTracking TrackOrder(int id)
     {
         BO.OrderTracking orderTracking;

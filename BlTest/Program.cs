@@ -1,12 +1,15 @@
 ﻿using BlApi;
 using BlImplementation;
-using System.Linq.Expressions;
 
 namespace BlTest
 {
     internal class Program
     {
         #region main
+
+        /// <summary>
+        /// this is the main program of the BlTest
+        /// </summary>
         private static void Main(string[] args)
         {
             int choice = MainMenu();
@@ -87,6 +90,7 @@ namespace BlTest
         static private BO.Cart _cart = new BO.Cart();
 
         #region testing product
+
         /// <summary>
         /// The product menu
         /// </summary>
@@ -147,6 +151,11 @@ namespace BlTest
                     break;
             }
         }
+
+        /// <summary>
+        /// with this function the user can enter a product's data
+        /// </summary>
+        /// <returns>the product with the data the user entered</returns>
         private static BO.Product ReadProductData()
         {
             int inStock, category,id;
@@ -234,6 +243,11 @@ namespace BlTest
                     break;
             }
         }
+
+        /// <summary>
+        /// with this function the user can enter an order's data
+        /// </summary>
+        /// <returns>the order with the data the user entered</returns>
         private static BO.Order ReadOrderData()
         {
             string name, mail, adress;
@@ -270,7 +284,9 @@ namespace BlTest
 
         #region testing cart
 
-        
+        /// <summary>
+        /// the testing function
+        /// </summary>
         private static void TestingCart()
         {
             int choice = 0, productId,amount;
@@ -319,6 +335,5 @@ namespace BlTest
             }
         }
         #endregion
-
     }
 }
