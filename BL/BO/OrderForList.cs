@@ -18,7 +18,7 @@ public class OrderForList
     public OrderStatus Status { get; set; }
 
     /// <summary>
-    /// Amount of items in the order list
+    /// Amount of items in the order 
     /// </summary>
     public int AmountOfItems { get; set; }
 

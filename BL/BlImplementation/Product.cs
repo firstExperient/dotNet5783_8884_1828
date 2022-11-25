@@ -65,7 +65,6 @@ internal class Product : IProduct
             int amount = 0;
             if (orderItem != null)
                 amount = orderItem.Amount; 
-            //fix this - check this - should the instock consider the amount that the costumer already have in cart?
             product = new BO.ProductItem()
             {
                 ID = dalProduct.ID,
@@ -156,7 +155,12 @@ internal class Product : IProduct
     #endregion
 
     #region Helpers
-
+    /// <summary>
+    /// check validation of a BO.Product object, throw if there are unvalid values
+    /// </summary>
+    /// <param name="product">a product to validate</param>
+    /// <exception cref="BO.NegativeNumberException">ID,Price or InStock are negative number</exception>
+    /// <exception cref="BO.NullValueException">Name is null</exception>
     private void checkValid(BO.Product product)
     {
         if (product.ID < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");

@@ -65,7 +65,7 @@ namespace BlTest
         }
 
         /// <summary>
-        /// the user must choose an option in the main menu
+        /// the main menu of the project
         /// </summary>
         private static int MainMenu()
         {
@@ -285,12 +285,12 @@ namespace BlTest
         #region testing cart
 
         /// <summary>
-        /// the testing function
+        /// the cart menu
         /// </summary>
         private static void TestingCart()
         {
             int choice = 0, productId,amount;
-            string customerName, email, adress;
+            
             Console.WriteLine(" - Enter 0 to return to main menu");
             Console.WriteLine(" - a. Enter 1 to add an item to cart");
             Console.WriteLine(" - b. Enter 2 to update an item amount in cart");
@@ -321,12 +321,12 @@ namespace BlTest
                     break;
                 case 3:
                     Console.WriteLine("Enter customer name:");
-                    customerName = Console.ReadLine();
+                    _cart.CustomerName = Console.ReadLine();
                     Console.WriteLine("Enter customer email:");
-                    email = Console.ReadLine();
+                    _cart.CustomerEmail = Console.ReadLine();
                     Console.WriteLine("Enter customer adress:");
-                    adress = Console.ReadLine();
-                    _bl.Cart.ConfirmOrder(_cart, customerName, email, adress);
+                    _cart.CustomerAdress = Console.ReadLine();
+                    _bl.Cart.ConfirmOrder(_cart);
                     _cart = new BO.Cart();
                     break;
                 default:

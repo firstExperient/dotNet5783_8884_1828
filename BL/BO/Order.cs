@@ -33,7 +33,7 @@ public class Order
     /// the status of the order
     /// </summary>
     public OrderStatus Status { get; set; }
-    //public DateTime PaymentDate { get; set; } not sure that is needed
+    
 
     /// <summary>
     /// the order shipping date

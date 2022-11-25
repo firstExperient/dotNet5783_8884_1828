@@ -30,7 +30,7 @@ public class ProductItem
     public int Amount { get; set; }
 
     /// <summary>
-    /// this is to know how many watches have left in stock
+    /// whether or not there are items from this product left in stock
     /// </summary>
     public bool InStock { get; set; }
 

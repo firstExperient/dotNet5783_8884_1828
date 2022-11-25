@@ -24,7 +24,7 @@ public class Product
     public Category Category { get; set; }
 
     /// <summary>
-    /// this is to know how many watches have left in stock
+    /// the amount of items from this product left in stock
     /// </summary>
     public int InStock { get; set; }
 

@@ -15,17 +15,17 @@ public class OrderItem
     public int ProductId { get; set; }
 
     /// <summary>
-    /// the name of this order-item
+    /// the name of the product
     /// </summary>
     public string Name { get; set; }
 
     /// <summary>
-    /// the price of the item (watch) specific order
+    /// the price of the item (watch) in a specific order
     /// </summary>
     public double Price { get; set; }
 
     /// <summary>
-    /// the amount of items (wathes) in this order-item
+    /// the amount of items (wathes) 
     /// </summary>
     public int Amount { get; set; }
 

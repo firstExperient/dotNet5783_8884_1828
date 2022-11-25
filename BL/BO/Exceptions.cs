@@ -3,24 +3,15 @@
 namespace BO;
 
 /// <summary>
-/// a class for all exceptions:
+/// exception for when a value that should be not-negative contain a negative number
 /// </summary>
 public class NegativeNumberException : Exception
 {
 
-    /// <summary>
-    /// exception for when user entered a negative number (usually for ID's)
-    /// </summary>
-    /// <param name="msg">the messege the user will receive</param>
     public NegativeNumberException(string msg) : base(msg)
     {
 
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns>a string of the error</returns>
+    }    
     public override string ToString()
     {
         
@@ -33,7 +24,7 @@ public class NegativeNumberException : Exception
 
 
 /// <summary>
-/// exception for when an integrity damage has occured
+/// exception for when an integrity damage has occured (like worng dates order)
 /// </summary>
 public class IntegrityDamageException : Exception
 {
@@ -52,7 +43,7 @@ public class IntegrityDamageException : Exception
 }
 
 /// <summary>
-/// exception for when a value is null
+/// exception for when a value that must be not null contain a null value
 /// </summary>
 public class NullValueException : Exception
 {
@@ -72,7 +63,7 @@ public class NullValueException : Exception
 }
 
 /// <summary>
-/// exception for when an item has'nt found
+/// exception for when an item hasn't found
 /// </summary>
 public class NotFoundException : Exception
 {
@@ -97,7 +88,7 @@ public class NotFoundException : Exception
 
 
 /// <summary>
-/// exception for when an item already exists
+/// exception for when there is an attempt to add an item that already exists
 /// </summary>
 public class AlreadyExistsException : Exception
 {
@@ -122,7 +113,7 @@ public class AlreadyExistsException : Exception
 
 
 /// <summary>
-/// exception for when an item is out of stock
+/// exception for when there is an attempt to consume a product that is out of stock
 /// </summary>
 public class OutOfStockException : Exception
 {

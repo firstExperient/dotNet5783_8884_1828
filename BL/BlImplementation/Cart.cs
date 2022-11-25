@@ -101,19 +101,19 @@ internal class Cart : ICart
 
     #region confirm order
 
-    public void ConfirmOrder(BO.Cart cart, string customerName, string email, string adress)
+    public void ConfirmOrder(BO.Cart cart)
     {
-        if (customerName == null || customerName == "") throw new BO.NullValueException("customer name cannot be null or an empty string");
-        if(email == null || email == "")throw new BO.NullValueException("customer email cannot be null or an empty string");
-        if(adress == null || adress == "")throw new BO.NullValueException("customer address cannot be null or an empty string");
-        //fix this - add validation checks
+        if (cart.CustomerName == null || cart.CustomerName == "") throw new BO.NullValueException("customer name cannot be null or an empty string");
+        if(cart.CustomerEmail == null || cart.CustomerEmail == "")throw new BO.NullValueException("customer email cannot be null or an empty string");
+        if(cart.CustomerAdress == null || cart.CustomerAdress == "")throw new BO.NullValueException("customer address cannot be null or an empty string");
+        
 
         int orderId = Dal.Order.Add(new DO.Order()//add the order to database
         {
             //no need to add id - auto id is generete
-            CustomerName = customerName,
-            CustomerEmail = email,
-            CustomerAdress = adress,
+            CustomerName = cart.CustomerName,
+            CustomerEmail = cart.CustomerEmail,
+            CustomerAdress = cart.CustomerAdress,
             OrderDate = DateTime.Now,
             ShipDate = DateTime.MinValue,
             DeliveryDate = DateTime.MinValue,
@@ -124,8 +124,13 @@ internal class Cart : ICart
             try
             {
                 product = Dal.Product.Get(item.ProductId);
+                if (item.Amount <= 0)
+                    throw new BO.NegativeNumberException("item amount property must be a positive number");
                 if (product.InStock < item.Amount)
                     throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
+                if (item.Price < 0)
+                    throw new BO.NegativeNumberException("item price property cannot be a negative number");
+
                 product.InStock -= item.Amount;
                 Dal.OrderItem.Add(new OrderItem()
                 {

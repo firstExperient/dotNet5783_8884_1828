@@ -105,6 +105,9 @@ internal class Order : IOrder
             if (dalOrder.ShipDate != DateTime.MinValue)
                 throw new BO.IntegrityDamageException("cannot set order ship date, order already shipped");
 
+            if(shipDate < dalOrder.OrderDate)
+                throw new BO.IntegrityDamageException("cannot set order ship date to before order creating date");
+
             if (shipDate == DateTime.MinValue)
                 throw new BO.NullValueException("ship date cannot be null - 1.1.1");
 
@@ -133,6 +136,9 @@ internal class Order : IOrder
 
             if (dalOrder.DeliveryDate != DateTime.MinValue)
                 throw new BO.IntegrityDamageException("cannot set order delivery date, order already delivered");
+
+            if (deliveryDate < dalOrder.ShipDate)
+                throw new BO.IntegrityDamageException("cannot set order delivery date to before order shipping date");
 
             if (deliveryDate == DateTime.MinValue)
                 throw new BO.NullValueException("delivery date cannot be null - 1.1.1");

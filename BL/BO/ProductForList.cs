@@ -20,7 +20,7 @@ public class ProductForList
     public double Price { get; set; }
 
     /// <summary>
-    /// the name of the category of the watch
+    /// the category of the watch
     /// </summary>
     public Category Category { get; set; }
 
