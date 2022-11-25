@@ -43,7 +43,7 @@ public class IntegrityDamageException : Exception
 }
 
 /// <summary>
-/// exception for when a value that must be not null contain a null value
+/// exception for when a value that must be not null contains a null value
 /// </summary>
 public class NullValueException : Exception
 {
@@ -63,7 +63,7 @@ public class NullValueException : Exception
 }
 
 /// <summary>
-/// exception for when an item hasn't found
+/// exception for when an item wasn't found
 /// </summary>
 public class NotFoundException : Exception
 {

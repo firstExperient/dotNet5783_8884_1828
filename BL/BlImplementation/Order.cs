@@ -165,33 +165,31 @@ internal class Order : IOrder
             if (dalOrder.ShipDate != DateTime.MinValue)
                 throw new BO.IntegrityDamageException("cannot change an order after it was shipped");
 
-            //first the function will delete all the previous data for each item, and then it will remake it according to the update data
+            //first the function will delete all the previous data for each item, and then it will remake it according to the updated data
 
             foreach (var item in order.Items)//for each item - validate it, and then save it in the database
             {
-                
-                    DO.Product product = Dal.Product.Get(item.ProductId);
-                    if (item.Amount <= 0)
-                        throw new BO.NegativeNumberException("item amount property must be a positive number");
-                    if (product.InStock < item.Amount)
-                        throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
-                    if (item.Price < 0)
-                        throw new BO.NegativeNumberException("item price property cannot be a negative number");
+                DO.Product product = Dal.Product.Get(item.ProductId);
+                if (item.Amount <= 0)
+                    throw new BO.NegativeNumberException("item amount property must be a positive number");
+                if (product.InStock < item.Amount)
+                    throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
+                if (item.Price < 0)
+                    throw new BO.NegativeNumberException("item price property cannot be a negative number");
 
                 DO.OrderItem preOrderItem = Dal.OrderItem.GetItemByIds(item.ProductId, order.ID);
 
-                    product.InStock -= item.Amount;
-                    Dal.OrderItem.Add(new DO.OrderItem()
-                    {
-                        //no need to add id - auto id is generete
-                        OrderId = order.ID,
-                        ProductId = item.ProductId,
-                        Amount = item.Amount,
-                        Price = item.Price,
-                    });
-                    Dal.Product.Update(product);//update the amount of product in stock
-                }
-
+                product.InStock -= item.Amount;
+                Dal.OrderItem.Add(new DO.OrderItem()
+                {
+                    //no need to add id - auto id is generete
+                    OrderId = order.ID,
+                    ProductId = item.ProductId,
+                    Amount = item.Amount,
+                    Price = item.Price,
+                });
+                Dal.Product.Update(product);//update the amount of product in stock
+            }
         }
         catch (DO.NotFoundException e)
         {
