@@ -91,7 +91,7 @@ internal class DalOrderItem: IOrderItem
                 break;
             }
         }
-        if (!flag) throw new AlreadyExistsException("Order item not found");
+        if (!flag) throw new NotFoundException("Order item not found");
     }
 
     #endregion
