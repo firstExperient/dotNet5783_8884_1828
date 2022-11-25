@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using BO;
 using Dal;
 namespace BlImplementation;
 
@@ -160,36 +161,41 @@ internal class Order : IOrder
 
         try
         {
-            // delivery date:
+            DO.Order dalOrder = Dal.Order.Get(order.ID);
+            if (dalOrder.ShipDate != DateTime.MinValue)
+                throw new BO.IntegrityDamageException("cannot change an order after it was shipped");
 
-            if (order.DeliveryDate > DateTime.Now)
-                throw new BO.IntegrityDamageException("cannot set order delivery date to a future date");
+            //first the function will delete all the previous data for each item, and then it will remake it according to the update data
 
-            if (order.ShipDate == DateTime.MinValue)
-                throw new BO.IntegrityDamageException("cannot set order delivery date before setting order shipping date");
+            foreach (var item in order.Items)//for each item - validate it, and then save it in the database
+            {
+                
+                    DO.Product product = Dal.Product.Get(item.ProductId);
+                    if (item.Amount <= 0)
+                        throw new BO.NegativeNumberException("item amount property must be a positive number");
+                    if (product.InStock < item.Amount)
+                        throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
+                    if (item.Price < 0)
+                        throw new BO.NegativeNumberException("item price property cannot be a negative number");
 
-            if (order.DeliveryDate != DateTime.MinValue)
-                throw new BO.IntegrityDamageException("cannot set order delivery date, order already delivered");
+                DO.OrderItem preOrderItem = Dal.OrderItem.GetItemByIds(item.ProductId, order.ID);
 
-            if (order.DeliveryDate == DateTime.MinValue)
-                throw new BO.NullValueException("delivery date cannot be null - 1.1.1");
-
-
-            // shipping date:
-            if (order.ShipDate > DateTime.Now)
-                throw new BO.IntegrityDamageException("cannot set order shipping date to a future date");
-
-            if (order.ShipDate != DateTime.MinValue)
-                throw new BO.IntegrityDamageException("cannot set order shipping date, order already delivered");
-
-            if (order.ShipDate == DateTime.MinValue)
-                throw new BO.NullValueException("shipping date cannot be null - 1.1.1");
-
+                    product.InStock -= item.Amount;
+                    Dal.OrderItem.Add(new DO.OrderItem()
+                    {
+                        //no need to add id - auto id is generete
+                        OrderId = order.ID,
+                        ProductId = item.ProductId,
+                        Amount = item.Amount,
+                        Price = item.Price,
+                    });
+                    Dal.Product.Update(product);//update the amount of product in stock
+                }
 
         }
         catch (DO.NotFoundException e)
         {
-            throw new BO.NotFoundException("Order not found", e);
+            throw new BO.NotFoundException(e.Message, e);
         }
     }
     #endregion
