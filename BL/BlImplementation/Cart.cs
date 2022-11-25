@@ -1,6 +1,6 @@
 ﻿using BlApi;
 using Dal;
-using DO;
+
 
 namespace BlImplementation;
 
@@ -132,7 +132,7 @@ internal class Cart : ICart
                     throw new BO.NegativeNumberException("item price property cannot be a negative number");
 
                 product.InStock -= item.Amount;
-                Dal.OrderItem.Add(new OrderItem()
+                Dal.OrderItem.Add(new DO.OrderItem()
                 {
                     //no need to add id - auto id is generete
                     OrderId = orderId,
