@@ -31,7 +31,7 @@ namespace Dal;
         {
             if (DataSource.Orders[i].ID == id) return DataSource.Orders[i];
         }
-        throw new AlreadyExistsException("Order not found");
+        throw new NotFoundException("Order not found");
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ namespace Dal;
                 break;
             }
         }
-        if (!flag) throw new AlreadyExistsException("Order not found"); 
+        if (!flag) throw new NotFoundException("Order not found"); 
     }
 
     #endregion
