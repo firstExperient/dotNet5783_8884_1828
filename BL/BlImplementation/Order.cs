@@ -157,40 +157,44 @@ internal class Order : IOrder
 
     public void UpdateOrder(BO.Order order)
     {
-        // fix this
-
+        
         try
         {
             DO.Order dalOrder = Dal.Order.Get(order.ID);
             if (dalOrder.ShipDate != DateTime.MinValue)
                 throw new BO.IntegrityDamageException("cannot change an order after it was shipped");
 
-            //first the function will delete all the previous data for each item, and then it will remake it according to the update data
-
-            foreach (var item in order.Items)//for each item - validate it, and then save it in the database
+            foreach (var item in order.Items)//for each item - validate it,calculate the new number in stock and then save it in the database
             {
+                if (item.Amount < 0)
+                    throw new BO.NegativeNumberException("item amount property must be a positive number");
                 
-                    DO.Product product = Dal.Product.Get(item.ProductId);
-                    if (item.Amount <= 0)
-                        throw new BO.NegativeNumberException("item amount property must be a positive number");
-                    if (product.InStock < item.Amount)
-                        throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
-                    if (item.Price < 0)
-                        throw new BO.NegativeNumberException("item price property cannot be a negative number");
-
-                DO.OrderItem preOrderItem = Dal.OrderItem.GetItemByIds(item.ProductId, order.ID);
-
-                    product.InStock -= item.Amount;
-                    Dal.OrderItem.Add(new DO.OrderItem()
+                DO.OrderItem preOrderItem = Dal.OrderItem.GetItemByIds(order.ID, item.ProductId);
+                DO.Product product = Dal.Product.Get(item.ProductId);
+                if(preOrderItem.Amount > item.Amount)//decreasing the number of item to purchase
+                {
+                    product.InStock += preOrderItem.Amount - item.Amount;//increasing the number of products in stock 
+                    Dal.Product.Update(product);
+                    if (item.Amount == 0)//deleting the item
                     {
-                        //no need to add id - auto id is generete
-                        OrderId = order.ID,
-                        ProductId = item.ProductId,
-                        Amount = item.Amount,
-                        Price = item.Price,
-                    });
-                    Dal.Product.Update(product);//update the amount of product in stock
+                        Dal.OrderItem.Delete(preOrderItem.ID);
+                    }
+                    else //updating the new amount
+                    {
+                        preOrderItem.Amount = item.Amount;
+                        Dal.OrderItem.Update(preOrderItem);
+                    }
                 }
+                if(preOrderItem.Amount < item.Amount)//increasing the number of item to purchase
+                {
+                    if (product.InStock < item.Amount - preOrderItem.Amount)//the addition to the amount of items is more than the amount in stock
+                        throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
+                    product.InStock -= item.Amount - preOrderItem.Amount;//decreasing the number of products in stock 
+                    Dal.Product.Update(product);
+                    preOrderItem.Amount = item.Amount;//setting the item new amount
+                    Dal.OrderItem.Update(preOrderItem);
+                }
+            }
 
         }
         catch (DO.NotFoundException e)

@@ -98,7 +98,7 @@ namespace BlTest
         {
             int choice = 0, id;
             BO.Product product;
-            Console.WriteLine(" - Enter 0 to return to main menu");
+            Console.WriteLine("\n - Enter 0 to return to main menu");
             Console.WriteLine(" - a. Enter 1 to add a product");
             Console.WriteLine(" - b. Enter 2 to get a product by id (administrator view)");
             Console.WriteLine(" - c. Enter 3 to get all products");
@@ -187,7 +187,7 @@ namespace BlTest
             int choice = 0, orderId;
             DateTime date;
             BO.Order order = new BO.Order();
-            Console.WriteLine(" - Enter 0 to return to main menu");
+            Console.WriteLine("\n - Enter 0 to return to main menu");
             Console.WriteLine(" - a. Enter 1 to track an order");
             Console.WriteLine(" - b. Enter 2 to get an order by id");
             Console.WriteLine(" - c. Enter 3 to get all orders");
@@ -245,38 +245,33 @@ namespace BlTest
         }
 
         /// <summary>
-        /// with this function the user can enter an order's data
+        /// read the updated order data
         /// </summary>
         /// <returns>the order with the data the user entered</returns>
         private static BO.Order ReadOrderData()
         {
-            string name, mail, adress;
-            DateTime orderDate, ship, delivery;
-            int id;
+            
+            List<BO.OrderItem> items = new List<BO.OrderItem>();
+            int id, choice, amount, productId;
             Console.WriteLine("Enter order id:");
             Int32.TryParse(Console.ReadLine(), out id);
-            Console.WriteLine("Enter customer name:");
-            name = Console.ReadLine();
-            Console.WriteLine("Enter customer mail:");
-            mail = Console.ReadLine();
-            Console.WriteLine("Enter customer adress:");
-            adress = Console.ReadLine();
-            Console.WriteLine("Enter the date of the order:");
-            DateTime.TryParse(Console.ReadLine(), out orderDate);
-            Console.WriteLine("Enter the shipping date:");
-            DateTime.TryParse(Console.ReadLine(), out ship);
-            Console.WriteLine("Enter the delivery date:");
-            DateTime.TryParse(Console.ReadLine(), out delivery);
-            //fix this - add the other property of order
+            Console.WriteLine("Enter 1 to enter new item data, Enter 0 to finish");
+            Int32.TryParse(Console.ReadLine(), out choice);
+            while(choice != 0)
+            {
+                Console.WriteLine("Enter the product id:");
+                Int32.TryParse(Console.ReadLine(), out productId);
+                Console.WriteLine("Enter the new amount:");
+                Int32.TryParse(Console.ReadLine(), out amount);
+                items.Add(new BO.OrderItem() { ProductId = productId, Amount = amount });
+                Console.WriteLine("Enter 1 to enter new item data, Enter 0 to finish");
+                Int32.TryParse(Console.ReadLine(), out choice);
+            }
+            
             BO.Order order = new BO.Order()
             {
                 ID = id,
-                CustomerName = name,
-                CustomerEmail = mail,
-                CustomerAdress = adress,
-                OrderDate = orderDate,
-                ShipDate = ship,
-                DeliveryDate = delivery
+                Items = items
             };
             return order;
         }
@@ -291,7 +286,7 @@ namespace BlTest
         {
             int choice = 0, productId,amount;
             
-            Console.WriteLine(" - Enter 0 to return to main menu");
+            Console.WriteLine("\n - Enter 0 to return to main menu");
             Console.WriteLine(" - a. Enter 1 to add an item to cart");
             Console.WriteLine(" - b. Enter 2 to update an item amount in cart");
             Console.WriteLine(" - c. Enter 3 to confirm order");;
