@@ -12,7 +12,7 @@ public class ProductForList
     /// <summary>
     /// the name of the watch
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// the price of the watch
@@ -22,7 +22,7 @@ public class ProductForList
     /// <summary>
     /// the category of the watch
     /// </summary>
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 
     /// <summary>
     /// a string of each product details in the list 

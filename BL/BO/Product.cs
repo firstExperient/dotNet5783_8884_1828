@@ -11,7 +11,7 @@ public class Product
     /// <summary>
     /// the name of the watch
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// the price of the watch
@@ -21,7 +21,7 @@ public class Product
     /// <summary>
     /// the name of the category of the watch
     /// </summary>
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 
     /// <summary>
     /// the amount of items from this product left in stock

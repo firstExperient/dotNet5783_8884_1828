@@ -12,7 +12,7 @@ public class ProductItem
     /// <summary>
     /// the name of the watch
     /// </summary>
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     /// <summary>
     /// the price of the watch
@@ -22,7 +22,7 @@ public class ProductItem
     /// <summary>
     /// the name of the category of the watch
     /// </summary>
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 
     /// <summary>
     /// Amount of items ordered

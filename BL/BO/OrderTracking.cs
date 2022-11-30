@@ -13,26 +13,27 @@ public class OrderTracking
     /// <summary>
     /// the status of this order tracking
     /// </summary>
-    public OrderStatus Status { get; set; }
+    public OrderStatus? Status { get; set; }
 
     
     /// <summary>
     /// a list of dates and a string represent the order status at that date
     /// </summary>
-    public List<(DateTime, string)> TrackingList = new();
+    public List<(DateTime?, string?)> TrackingList = new();
 
     /// <summary>
     /// a string of the order-tracking details
     /// </summary>
     public override string ToString()
     {
-        string tracking = "";
-        foreach ((DateTime date, string msg) in TrackingList) tracking += "\n\t\tDate: " + date + "\n\t\tDescreption: " + msg + "\n";
-        return $@"
-        Order ID: {ID}
-        status: {Status}
-        Tracking: 
-        {tracking}
-        ";
+        //string tracking = "";
+        //foreach ((DateTime date, string msg) in TrackingList) tracking += "\n\t\tDate: " + date + "\n\t\tDescreption: " + msg + "\n";
+        //return $@"
+        //Order ID: {ID}
+        //status: {Status}
+        //Tracking: 
+        //{tracking}
+        //";
+        return "";
     }
 }

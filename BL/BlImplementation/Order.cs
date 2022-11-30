@@ -93,7 +93,7 @@ internal class Order : IOrder
 
     #region UPDATE
 
-    public BO.Order ShipOrder(int id, DateTime shipDate)
+    public BO.Order ShipOrder(int id, DateTime? shipDate)
     {
         try
         {
@@ -122,7 +122,7 @@ internal class Order : IOrder
         }
     }
 
-    public BO.Order DeliverOrder(int id,DateTime deliveryDate)
+    public BO.Order DeliverOrder(int id,DateTime? deliveryDate)
     {
         try
         {
@@ -218,7 +218,7 @@ internal class Order : IOrder
             if (dalOrder.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
 
             //figuring the trackingList
-            List<(DateTime, string)> tracking = new();
+            List<(DateTime?, string?)> tracking = new();
             tracking.Add((dalOrder.OrderDate, "order confirmed"));
 
             if(dalOrder.ShipDate != DateTime.MinValue)
