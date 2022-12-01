@@ -62,16 +62,17 @@ public class Order
     {
         return "";
         //string temp = "";
-        //foreach(OrderItem item in Items)
+        //foreach (OrderItem item in Items)
         //{
         //    temp = temp + "\n" + item;
         //}
+        
         //return $@"
         //Order ID: {ID}
         //Customer name: {CustomerName}
         //Customer email: {CustomerEmail}
         //Customer address: {CustomerAdress}
-        //Order date: {OrderDate.Day}:{OrderDate.Month}:{OrderDate.Year}
+        //Order date: {(OrderDate.HasValue ? OrderDate.ToString() : "")}
         //Order status: {Status}
         //Ship date: {ShipDate.Day}:{ShipDate.Month}:{ShipDate.Year}
         //Delivery date: {DeliveryDate.Day}:{DeliveryDate.Month}:{DeliveryDate.Year}

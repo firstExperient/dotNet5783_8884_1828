@@ -14,10 +14,10 @@ public partial class ProductListWindow : Window
     private IBl bl;
     public ProductListWindow(IBl Bl)
     {
+        InitializeComponent();
         bl = Bl;
         ProductsListview.ItemsSource = bl.Product.GetAll();
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
-        InitializeComponent();
     }
 
 }

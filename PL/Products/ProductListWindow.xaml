@@ -25,7 +25,7 @@
                />
             <Label Grid.Column="0" Content="Category:" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top"/>
         </Grid>
-        <ListView Grid.Row="1" x:Name="ProductsListview" d:ItemsSource="{d:SampleData ItemCount=5}" >
+        <ListView Grid.Row="1" Name="ProductsListview" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
