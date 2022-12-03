@@ -52,15 +52,14 @@ public struct Order
     /// </summary>
     public override string ToString()
     {
-        return "";
-        //return $@"
-        //Order ID={ID}
-        //Customer name={CustomerName}
-        //Customer email={CustomerEmail}
-        //Customer address={CustomerAdress}
-        //Order date={OrderDate.Day}:{OrderDate.Month}:{OrderDate.Year}
-        //Ship date={ShipDate.Day}:{ShipDate.Month}:{ShipDate.Year}
-        //Delivery date={DeliveryDate.Day}:{DeliveryDate.Month}:{DeliveryDate.Year}
-        //";
+        return $@"
+        Order ID: {ID}
+        Customer name: {CustomerName}
+        Customer email: {CustomerEmail}
+        Customer address: {CustomerAdress}
+        Order date: {(OrderDate.HasValue ? OrderDate.Value.ToString() : "" )}
+        Ship date: {(ShipDate.HasValue ? ShipDate.Value.ToString() : "")}
+        Delivery date: {(DeliveryDate.HasValue ? DeliveryDate.Value.ToString() : "")}
+        ";
     }
 }

@@ -6,7 +6,7 @@ public interface ICrud<T>
 {
     int Add(T value);
     T Get(int id);
-    IEnumerable<T> GetAll();
+    IEnumerable<T?> GetAll();
     void Update(T value);
     void Delete(int id);
 }
