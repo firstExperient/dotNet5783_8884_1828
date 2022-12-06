@@ -17,7 +17,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
-              <ComboBox 
+            <ComboBox 
+                SelectionChanged="myListBox_SelectionChanged"
+           Background="HoneyDew"
                 Name="CategorySelector"
                 HorizontalAlignment= "Stretch"
                 VerticalAlignment="Stretch"
@@ -32,6 +34,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
     </Grid>
 </Window>

@@ -6,7 +6,14 @@
         xmlns:local="clr-namespace:PL.Products"
         mc:Ignorable="d"
         Title="ProductWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid HorizontalAlignment="Left" Width="800">
+        <Grid.RowDefinitions>
+           
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="49*"/>
+            <ColumnDefinition Width="751*"/>
+        </Grid.ColumnDefinitions>
+
     </Grid>
 </Window>

@@ -2,7 +2,7 @@
 using BlApi;
 using System;
 using System.Windows;
-
+using System.Windows.Controls;
 
 namespace PL.Products;
 
@@ -20,4 +20,12 @@ public partial class ProductListWindow : Window
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
     }
 
-}
+    void myListBox_SelectionChanged(object sender, SelectionChangedEventArgs args)
+    {
+
+    }
+        /*  private void OnComboBoxChanged(object sender, EventArgs e)
+          {
+
+          }*/
+    }
