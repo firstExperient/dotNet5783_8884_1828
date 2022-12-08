@@ -12,6 +12,10 @@ namespace PL.Products;
 public partial class ProductListWindow : Window
 {
     private IBl bl;
+
+/*  [System.ComponentModel.Bindable(true)]
+    [System.ComponentModel.Browsable(false)]
+    public object SelectedItem { get; set; }  */
     public ProductListWindow(IBl Bl)
     {
         InitializeComponent();
@@ -22,7 +26,7 @@ public partial class ProductListWindow : Window
 
     void CategorySelectionChanged(object sender, SelectionChangedEventArgs args)
     {
-        MessageBox.Show("selection :");
+        MessageBox.Show("selection :" + ComboBox.SelectedItemProperty);
     }
 
 

@@ -8,9 +8,9 @@
         Title="ProductListWindow" Height="640" Width="800">
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="44*"/>
+            <RowDefinition Height="519*"/>
+            <RowDefinition Height="Auto" MinHeight="61.04"/>
         </Grid.RowDefinitions>
         <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Margin="0,-1,0,1">
             <Grid.ColumnDefinitions>
@@ -25,15 +25,15 @@
                 VerticalAlignment="Stretch"
                 Grid.Column="1"
                />
-            <Label Grid.Column="0" Content="Category:" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top"/>
+            <Label Grid.Column="0" Content="Category:" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" FontSize="20"/>
         </Grid>
-        <ListView Grid.Row="1" Name="ProductsListview" >
+        <ListView Name="ProductsListview" Grid.Row="1" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Name="AddNewProduct" Content="Add New Product" HorizontalAlignment="Left" Margin="621,513,0,34" Grid.Row="1" Width="151" Click="AddNewProductButton_Click"/>
+        <Button Name="AddNewProduct" Content="Add New Product" HorizontalAlignment="Left" Margin="624,15,0,13" Grid.Row="2" Width="151" Click="AddNewProductButton_Click"/>
     </Grid>
 </Window>
