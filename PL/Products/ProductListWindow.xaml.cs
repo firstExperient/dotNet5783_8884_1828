@@ -1,5 +1,5 @@
-﻿
-using BlApi;
+﻿using BlApi;
+using BlImplementation;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,12 +20,14 @@ public partial class ProductListWindow : Window
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
     }
 
-    void myListBox_SelectionChanged(object sender, SelectionChangedEventArgs args)
+    void CategorySelectionChanged(object sender, SelectionChangedEventArgs args)
+    {
+        MessageBox.Show("selection :");
+    }
+
+
+    private void AddNewProductButton_Click(object sender, RoutedEventArgs e)
     {
 
     }
-        /*  private void OnComboBoxChanged(object sender, EventArgs e)
-          {
-
-          }*/
-    }
+}

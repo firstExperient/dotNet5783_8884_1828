@@ -18,8 +18,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
             <ComboBox 
-                SelectionChanged="myListBox_SelectionChanged"
-           Background="HoneyDew"
+                SelectionChanged="CategorySelectionChanged"
+                Background="HoneyDew"
                 Name="CategorySelector"
                 HorizontalAlignment= "Stretch"
                 VerticalAlignment="Stretch"
@@ -34,5 +34,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Name="AddNewProduct" Content="Add New Product" HorizontalAlignment="Left" Margin="621,513,0,34" Grid.Row="1" Width="151" Click="AddNewProductButton_Click"/>
     </Grid>
 </Window>
