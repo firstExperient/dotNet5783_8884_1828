@@ -92,7 +92,7 @@ internal class Program
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    product = _dalList.Product.Get(id);
+                    product = _dalList.Product.Get(p => p?.ID == id);
                     Console.Write(product);
                 }
                 catch (Exception e)
@@ -102,8 +102,8 @@ internal class Program
 
                 break;
             case 3:
-                IEnumerable<Product> products = _dalList.Product.GetAll();
-                foreach (Product item in products)
+                IEnumerable<Product?> products = _dalList.Product.GetAll(null);
+                foreach (Product? item in products)
                 {
                     Console.Write(item);
                 }
@@ -143,7 +143,7 @@ internal class Program
     {
         int inStock, category,id;
         double price;
-        string name;
+        string? name;
         Console.WriteLine("Enter the product id:");
         Int32.TryParse(Console.ReadLine(), out id);
         Console.WriteLine("Enter product name:");
@@ -191,7 +191,7 @@ internal class Program
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    order = _dalList.Order.Get(id);
+                    order = _dalList.Order.Get(o => o?.ID == id);
                     Console.Write(order);
                 }
                 catch (Exception e)
@@ -201,8 +201,8 @@ internal class Program
 
                 break;
             case 3:
-                IEnumerable<Order> orders = _dalList.Order.GetAll();
-                foreach (Order item in orders)
+                IEnumerable<Order?> orders = _dalList.Order.GetAll(null);
+                foreach (Order? item in orders)
                 {
                     Console.Write(item);
                 }
@@ -241,7 +241,7 @@ internal class Program
     }
     private static Order ReadOrderData()
     {
-        string name, mail, adress;
+        string? name, mail, adress;
         DateTime orderDate, ship, delivery;
         Console.WriteLine("Enter customer name:");
         name = Console.ReadLine();
@@ -278,7 +278,7 @@ internal class Program
     {
         int choice = 0, id, productId;
         OrderItem orderItem = new OrderItem();
-        IEnumerable<OrderItem> items;
+        IEnumerable<OrderItem?> items;
 
         Console.WriteLine(" - a. Enter 1 to add an order item");
         Console.WriteLine(" - b. Enter 2 to get an order item by id");
@@ -305,7 +305,7 @@ internal class Program
                 Int32.TryParse(Console.ReadLine(), out id);
                 try
                 {
-                    orderItem = _dalList.OrderItem.Get(id);
+                    orderItem = _dalList.OrderItem.Get(oi => oi?.ID == id);
                     Console.Write(orderItem);
                 }
                 catch (Exception e)
@@ -315,8 +315,8 @@ internal class Program
 
                 break;
             case 3:
-                items = _dalList.OrderItem.GetAll();
-                foreach (OrderItem item in items)
+                items = _dalList.OrderItem.GetAll(null);
+                foreach (OrderItem? item in items)
                 {
                     Console.Write(item);
                 }
@@ -328,7 +328,7 @@ internal class Program
                 Int32.TryParse(Console.ReadLine(), out productId);
                 try
                 {
-                    orderItem = _dalList.OrderItem.GetItemByIds(id, productId);
+                    orderItem = _dalList.OrderItem.Get(oi => oi?.ProductId == productId && oi?.OrderId == id);
                     Console.Write(orderItem);
                 }
                 catch (Exception e)
@@ -339,8 +339,8 @@ internal class Program
             case 5:
                 Console.WriteLine("Enter order id:");
                 Int32.TryParse(Console.ReadLine(), out id);
-                items = _dalList.OrderItem.GetAllItemsInOrder(id);
-                foreach (OrderItem item in items)
+                items = _dalList.OrderItem.GetAll(oi => oi?.OrderId == id);
+                foreach (OrderItem? item in items)
                 {
                     Console.Write(item);
                 }

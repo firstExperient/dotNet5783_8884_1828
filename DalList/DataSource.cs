@@ -186,7 +186,7 @@ internal static class DataSource
             for (int j = 0; j < itemPerOrder; j++)
             {
                 int productIndex = Random.Next(0, Products.Count);//selecting a random product to add
-                AddOrderItem(Products[productIndex].ID, Orders[i].ID, Products[productIndex].Price, Random.Next(1, 5));
+                AddOrderItem(Products[productIndex]!.Value.ID, Orders[i]!.Value.ID, Products[productIndex]!.Value.Price, Random.Next(1, 5));
             }
         }
     }
