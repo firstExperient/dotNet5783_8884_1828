@@ -2,6 +2,7 @@
 using DalApi;
 using System.Diagnostics;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 namespace Dal;
 
@@ -18,7 +19,7 @@ internal class DalProduct : IProduct
        
         for (int i = 0; i < DataSource.Products.Count; i++)
         {
-            if (DataSource.Products[i].ID == product.ID)
+            if (DataSource.Products[i].HasValue && DataSource.Products[i]!.Value.ID == product.ID)
             {
                 throw new AlreadyExistsException("product with id: " + product.ID + " already exists");
             }
@@ -36,22 +37,30 @@ internal class DalProduct : IProduct
     /// </summary>
     /// <param name="id">ID of watch to get</param>
     /// <returns>the watch that has the given ID</returns>
-    public Product Get(int id)
+    //public Product Get(int id)
+    //{
+    //    for (int i = 0; i < DataSource.Products.Count; i++)
+    //    {
+    //        if (DataSource.Products[i].HasValue && DataSource.Products[i]!.Value.ID == id) return (Product)DataSource.Products[i]!;
+    //    }
+    //    throw new NotFoundException("Product not found");
+    //}
+    public Product Get(Predicate<Product?> match)
     {
-        for (int i = 0; i < DataSource.Products.Count; i++)
-        {
-            if (DataSource.Products[i].ID == id) return DataSource.Products[i];
-        }
-        throw new NotFoundException("Product not found");
+        Product? product = DataSource.Products.Find(match);
+        if (product == null) throw new NotFoundException("Product not found");
+        return (Product)product!;
     }
 
     /// <summary>
     /// a function that returns all the watches
     /// </summary>
     /// <returns>an array of all watches</returns>
-    public IEnumerable<Product> GetAll()
+    public IEnumerable<Product?> GetAll(Predicate<Product?>? match)
     {
-        return new List<Product>(DataSource.Products);
+        if (match == null)
+            return new List<Product?>(DataSource.Products);
+        return DataSource.Products.FindAll(match);
     }
 
     #endregion
@@ -67,7 +76,7 @@ internal class DalProduct : IProduct
         bool flag = false;
         for (int i = 0; i < DataSource.Products.Count; i++)
         {
-            if (DataSource.Products[i].ID == product.ID)
+            if (DataSource.Products[i].HasValue && DataSource.Products[i]!.Value.ID == product.ID)
             {
                 DataSource.Products[i] = product;
                 flag = true;
@@ -91,7 +100,7 @@ internal class DalProduct : IProduct
         int i = 0;
         for (; i < DataSource.Products.Count; i++)
         {
-            if (DataSource.Products[i].ID == id)
+            if (DataSource.Products[i].HasValue && DataSource.Products[i]!.Value.ID == id)
             {
                 flag = true;
                 break;

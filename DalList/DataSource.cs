@@ -27,7 +27,7 @@ internal static class DataSource
     /// <summary>
     /// a list of the watches
     /// </summary>
-    internal static List<Product> Products = new List<Product>();
+    internal static List<Product?> Products = new List<Product?>();
 
     /// <summary>
     /// this function adds a new watch
@@ -42,7 +42,7 @@ internal static class DataSource
 
         for (int i = 0; i < Products.Count; i++)
         {
-            if (Products[i].ID == id)
+            if (Products[i].HasValue && Products[i]!.Value.ID == id)
             {
                 id = Random.Next(100000, 1000000);
                 i = 0;
@@ -62,7 +62,7 @@ internal static class DataSource
     /// a list of the orders
     /// </summary>
 
-    internal static List<Order> Orders = new List<Order>();
+    internal static List<Order?> Orders = new List<Order?>();
 
     /// <summary>
     /// this function adds a new order
@@ -91,7 +91,7 @@ internal static class DataSource
     /// <summary>
     /// a list of the order-items
     /// </summary>
-    internal static List<OrderItem> OrderItems = new List<OrderItem>();
+    internal static List<OrderItem?> OrderItems = new List<OrderItem?>();
 
     /// <summary>
     ///  this function adds a new order-item

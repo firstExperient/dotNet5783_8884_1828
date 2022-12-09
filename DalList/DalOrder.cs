@@ -25,22 +25,31 @@ namespace Dal;
     /// </summary>
     /// <param name="id">ID of order to get</param>
     /// <returns>the order that has the given ID</returns>
-    public Order Get(int id)
+    //public Order Get(int id)
+    //{
+    //    for (int i = 0; i < DataSource.Orders.Count; i++)
+    //    {
+    //        if (DataSource.Orders[i].HasValue &&  DataSource.Orders[i]!.Value.ID == id) return (Order)DataSource.Orders[i]!;
+    //    }
+    //    throw new NotFoundException("Order not found");
+    //}
+
+    public Order Get(Predicate<Order?> match)
     {
-        for (int i = 0; i < DataSource.Orders.Count; i++)
-        {
-            if (DataSource.Orders[i].ID == id) return DataSource.Orders[i];
-        }
-        throw new NotFoundException("Order not found");
+        Order? order = DataSource.Orders.Find(match);
+        if(order == null) throw new NotFoundException("Order not found");
+        return (Order)order!;
     }
 
     /// <summary>
     /// a function that returns all the orders
     /// </summary>
     /// <returns>a list of all orders</returns>
-    public IEnumerable<Order> GetAll()
+    public IEnumerable<Order?> GetAll(Predicate<Order?>? match)
     {
-        return new List<Order>(DataSource.Orders);
+        if(match == null)
+            return new List<Order?>(DataSource.Orders);
+        return DataSource.Orders.FindAll(match);
     }
 
     #endregion
@@ -56,7 +65,7 @@ namespace Dal;
         bool flag = false;
         for (int i = 0; i < DataSource.Orders.Count; i++)
         {
-            if (DataSource.Orders[i].ID == order.ID)
+            if (DataSource.Orders[i].HasValue && DataSource.Orders[i]!.Value.ID == order.ID)
             {
                 DataSource.Orders[i] = order;
                 flag = true;
@@ -80,7 +89,7 @@ namespace Dal;
         int i = 0;
         for (; i < DataSource.Orders.Count; i++)
         {
-            if (DataSource.Orders[i].ID == id)
+            if (DataSource.Orders[i].HasValue && DataSource.Orders[i]!.Value.ID == id)
             {
                 flag = true;
                 break;

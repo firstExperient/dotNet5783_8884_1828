@@ -17,6 +17,6 @@ public partial class MainWindow : Window
     private IBl bl = new BlImplementation.Bl();
     private void ShowProductsButton_Click(object sender, RoutedEventArgs e)
     {
-        new ProductListWindow(bl).Show();
+        new ProductListWindow().Show();
     }
 }

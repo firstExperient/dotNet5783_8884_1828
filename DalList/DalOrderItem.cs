@@ -2,6 +2,8 @@
 using static Dal.DataSource;
 using System.Diagnostics;
 using DalApi;
+using System.Text.RegularExpressions;
+
 namespace Dal;
 
 internal class DalOrderItem: IOrderItem
@@ -27,50 +29,33 @@ internal class DalOrderItem: IOrderItem
     /// </summary>
     /// <param name="id">ID of order-item to get</param>
     /// <returns>the order-item that has the given ID</returns>
-    public OrderItem Get(int id)
+    //public OrderItem Get(int id)
+    //{
+    //    for (int i = 0; i < DataSource.OrderItems.Count; i++)
+    //    {
+    //        if (DataSource.OrderItems[i].HasValue &&  DataSource.OrderItems[i]!.Value.ID == id) return (OrderItem)DataSource.OrderItems[i]!;
+    //    }
+    //    throw new NotFoundException("Order item not found");
+    //}
+    public OrderItem Get(Predicate<OrderItem?> match)
     {
-        for (int i = 0; i < DataSource.OrderItems.Count; i++)
-        {
-            if (DataSource.OrderItems[i].ID == id) return DataSource.OrderItems[i];
-        }
-        throw new NotFoundException("Order item not found");
+        OrderItem? orderItem = DataSource.OrderItems.Find(match);
+        if(orderItem == null) throw new NotFoundException("Order item not found");
+        return (OrderItem)orderItem!;
     }
 
     /// <summary>
     /// a function that returns all the order-items
     /// </summary>
     /// <returns>an array of all order-items</returns>
-    public IEnumerable<OrderItem> GetAll()
+    public IEnumerable<OrderItem?> GetAll(Predicate<OrderItem?>? match)
     {
-        return new List<OrderItem>(DataSource.OrderItems);
+        if (match == null)
+            return new List<OrderItem?>(DataSource.OrderItems);
+        return DataSource.OrderItems.FindAll(match);
     }
 
-    /// <summary>
-    /// a function that returns the order-item that has the same orderID and productID as given in params
-    /// </summary>
-    /// <param name="orderId">ID of order to get in the order-item</param>
-    /// <param name="productId">ID of watch to get in the order-item</param>
-    /// <returns>the order-item that has the same IDs as asked</returns> 
-    public OrderItem GetItemByIds(int orderId,int productId)
-    {
-        for (int i = 0; i < DataSource.OrderItems.Count; i++)
-        {
-            if (DataSource.OrderItems[i].OrderId == orderId && DataSource.OrderItems[i].ProductId == productId) 
-                return DataSource.OrderItems[i];
-        }
-        throw new NotFoundException("Order item not found");
-    }
 
-    /// <summary>
-    /// this function returns all the items in the order that has the same ID as given in params
-    /// </summary>
-    /// <param name="orderId">ID of order</param>
-    /// <returns>an array of all the items in the specific order</returns>
-    public IEnumerable<OrderItem> GetAllItemsInOrder(int orderId)
-    {
-        List<OrderItem> orderItems = DataSource.OrderItems.FindAll(orderItem => orderItem.OrderId == orderId);
-        return orderItems;
-    }
 
     #endregion
 
@@ -84,7 +69,7 @@ internal class DalOrderItem: IOrderItem
         bool flag = false;
         for (int i = 0; i < DataSource.OrderItems.Count; i++)
         {
-            if (DataSource.OrderItems[i].ID == orderItem.ID)
+            if (DataSource.OrderItems[i].HasValue && DataSource.OrderItems[i]!.Value.ID == orderItem.ID)
             {
                 DataSource.OrderItems[i] = orderItem;
                 flag = true;
@@ -107,7 +92,7 @@ internal class DalOrderItem: IOrderItem
         int i = 0;
         for (; i < DataSource.OrderItems.Count; i++)
         {
-            if (DataSource.OrderItems[i].ID == id)
+            if (DataSource.OrderItems[i].HasValue && DataSource.OrderItems[i]!.Value.ID == id)
             {
                 flag = true;
                 break;
