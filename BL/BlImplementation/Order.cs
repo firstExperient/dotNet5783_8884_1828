@@ -10,29 +10,34 @@ internal class Order : IOrder
 
     public IEnumerable<BO.OrderForList?> GetAll()
     {
-        List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
-        List<BO.OrderForList> blOrders = new List<BO.OrderForList>();
+        List<DO.Order?> dalOrders = (List<DO.Order?>)Dal.Order.GetAll(null);
+        List<BO.OrderForList?> blOrders = new List<BO.OrderForList?>();
 
-        foreach (DO.Order order in dalOrders)
+        foreach (DO.Order? order in dalOrders)
         {
-            double totalPrice = 0;
-            //figuring order status
-            BO.OrderStatus status = BO.OrderStatus.Confirmed;
-            if (order.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
-            if (order.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
-
-            //figuring order total price
-            List<DO.OrderItem> orderItems = (List<DO.OrderItem>)Dal.OrderItem.GetAllItemsInOrder(order.ID);
-            foreach (var item in orderItems) totalPrice += item.Price * item.Amount;
-
-            blOrders.Add(new BO.OrderForList()
+            if(order != null)
             {
-                ID = order.ID,
-                CustomerName = order.CustomerName,
-                Status = status,
-                AmountOfItems =  orderItems.Count,
-                TotalPrice = totalPrice
-            });
+                double totalPrice = 0;
+                //figuring order status
+                BO.OrderStatus status = BO.OrderStatus.Confirmed;
+                if (order!.Value.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
+                if (order!.Value.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
+
+                //figuring order total price
+                List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)Dal.OrderItem.GetAll(o=>o?.OrderId == order!.Value.ID);
+                foreach (var item in orderItems) 
+                    if(item != null)
+                        totalPrice += item!.Value.Price * item!.Value.Amount;
+
+                blOrders.Add(new BO.OrderForList()
+                {
+                    ID = order!.Value.ID,
+                    CustomerName = order!.Value.CustomerName,
+                    Status = status,
+                    AmountOfItems = orderItems.Count,
+                    TotalPrice = totalPrice
+                });
+            }
         }
         return blOrders;
     }
@@ -42,24 +47,27 @@ internal class Order : IOrder
         if (id < 0) throw new BO.NegativeNumberException("order ID property cannot be a negative number");
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(id);
-            List<DO.OrderItem> dalOrderItems = (List<DO.OrderItem>)Dal.OrderItem.GetAllItemsInOrder(dalOrder.ID);
+            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == id);
+            List<DO.OrderItem?> dalOrderItems = (List<DO.OrderItem?>)Dal.OrderItem.GetAll(oi => oi?.OrderId == dalOrder.ID);
 
             //creating the orderItem list for the order and figuring order total price 
-            List<BO.OrderItem> blOrderItems = new();
+            List<BO.OrderItem?> blOrderItems = new();
             double totalPrice = 0;
             foreach (var item in dalOrderItems) {
-                DO.Product product = Dal.Product.Get(item.ProductId);
-                totalPrice += item.Price * item.Amount;
-                blOrderItems.Add(new BO.OrderItem()
+                if(item != null)
                 {
-                    ID = item.ID,
-                    Name = product.Name,
-                    ProductId = item.ProductId,
-                    Price = item.Price,
-                    Amount = item.Amount,
-                    TotalPrice = item.Amount * item.Price,
-                });
+                    DO.Product product = Dal.Product.Get(p => p?.ID == item!.Value.ProductId);
+                    totalPrice += item!.Value.Price * item!.Value.Amount;
+                    blOrderItems.Add(new BO.OrderItem()
+                    {
+                        ID = item!.Value.ID,
+                        Name = product.Name,
+                        ProductId = item!.Value.ProductId,
+                        Price = item!.Value.Price,
+                        Amount = item!.Value.Amount,
+                        TotalPrice = item!.Value.Amount * item!.Value.Price,
+                    });
+                } 
             };
  
             //figuring order status
@@ -97,7 +105,7 @@ internal class Order : IOrder
     {
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(id);
+            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == id);
 
             if (shipDate > DateTime.Now)
                 throw new BO.IntegrityDamageException("cannot set order ship date to a future date");
@@ -126,7 +134,7 @@ internal class Order : IOrder
     {
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(id);
+            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == id);
 
             if (deliveryDate > DateTime.Now)
                 throw new BO.IntegrityDamageException("cannot set order delivery date to a future date");
@@ -159,42 +167,44 @@ internal class Order : IOrder
         
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(order.ID);
+            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == order.ID);
             if (dalOrder.ShipDate != DateTime.MinValue)
                 throw new BO.IntegrityDamageException("cannot change an order after it was shipped");
-
-            foreach (var item in order.Items)//for each item - validate it,calculate the new number in stock and then save it in the database
+            if(order.Items != null)
             {
-                if (item.Amount < 0)
-                    throw new BO.NegativeNumberException("item amount property must be a positive number");
-                
-                DO.OrderItem preOrderItem = Dal.OrderItem.GetItemByIds(order.ID, item.ProductId);
-                DO.Product product = Dal.Product.Get(item.ProductId);
-                if(preOrderItem.Amount > item.Amount)//decreasing the number of item to purchase
+                foreach (var item in order.Items)//for each item - validate it,calculate the new number in stock and then save it in the database
                 {
-                    product.InStock += preOrderItem.Amount - item.Amount;//increasing the number of products in stock 
-                    Dal.Product.Update(product);
-                    if (item.Amount == 0)//deleting the item
+                    if(item == null) continue;
+                    if (item.Amount < 0)
+                        throw new BO.NegativeNumberException("item amount property must be a positive number");
+
+                    DO.OrderItem preOrderItem = Dal.OrderItem.Get(oi => oi?.OrderId == order.ID && oi?.ProductId == item.ProductId);
+                    DO.Product product = Dal.Product.Get(p => p?.ID == item.ProductId);
+                    if (preOrderItem.Amount > item.Amount)//decreasing the number of item to purchase
                     {
-                        Dal.OrderItem.Delete(preOrderItem.ID);
+                        product.InStock += preOrderItem.Amount - item.Amount;//increasing the number of products in stock 
+                        Dal.Product.Update(product);
+                        if (item.Amount == 0)//deleting the item
+                        {
+                            Dal.OrderItem.Delete(preOrderItem.ID);
+                        }
+                        else //updating the new amount
+                        {
+                            preOrderItem.Amount = item.Amount;
+                            Dal.OrderItem.Update(preOrderItem);
+                        }
                     }
-                    else //updating the new amount
+                    if (preOrderItem.Amount < item.Amount)//increasing the number of item to purchase
                     {
-                        preOrderItem.Amount = item.Amount;
+                        if (product.InStock < item.Amount - preOrderItem.Amount)//the addition to the amount of items is more than the amount in stock
+                            throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
+                        product.InStock -= item.Amount - preOrderItem.Amount;//decreasing the number of products in stock 
+                        Dal.Product.Update(product);
+                        preOrderItem.Amount = item.Amount;//setting the item new amount
                         Dal.OrderItem.Update(preOrderItem);
                     }
                 }
-                if(preOrderItem.Amount < item.Amount)//increasing the number of item to purchase
-                {
-                    if (product.InStock < item.Amount - preOrderItem.Amount)//the addition to the amount of items is more than the amount in stock
-                        throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
-                    product.InStock -= item.Amount - preOrderItem.Amount;//decreasing the number of products in stock 
-                    Dal.Product.Update(product);
-                    preOrderItem.Amount = item.Amount;//setting the item new amount
-                    Dal.OrderItem.Update(preOrderItem);
-                }
             }
-
         }
         catch (DO.NotFoundException e)
         {
@@ -210,7 +220,7 @@ internal class Order : IOrder
         BO.OrderTracking orderTracking;
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(id);
+            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == id);
 
             //figuring order status
             BO.OrderStatus status = BO.OrderStatus.Confirmed;

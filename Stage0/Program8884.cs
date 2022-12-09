@@ -11,7 +11,7 @@ namespace Stage0
         static partial void welcome8884()
         {
             Console.Write("Enter your name: ");
-            string name = Console.ReadLine();
+            string? name = Console.ReadLine();
             Console.WriteLine("{0}, welcome to my first console application", name);
         }
     }

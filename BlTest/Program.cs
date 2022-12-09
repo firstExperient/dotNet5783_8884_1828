@@ -97,7 +97,6 @@ namespace BlTest
         private static void TestingProduct()
         {
             int choice = 0, id;
-            BO.Product product;
             Console.WriteLine("\n - Enter 0 to return to main menu");
             Console.WriteLine(" - a. Enter 1 to add a product");
             Console.WriteLine(" - b. Enter 2 to get a product by id (administrator view)");
@@ -160,7 +159,7 @@ namespace BlTest
         {
             int inStock, category,id;
             double price;
-            string name;
+            string? name;
             Console.WriteLine("Enter the product ID:");
             Int32.TryParse(Console.ReadLine(), out id);
             Console.WriteLine("Enter product name:");
@@ -216,7 +215,7 @@ namespace BlTest
                     Console.Write(_bl.Order.Get(orderId));
                     break;
                 case 3:
-                    foreach (BO.OrderForList item in _bl.Order.GetAll())
+                    foreach (BO.OrderForList? item in _bl.Order.GetAll())
                     {
                         Console.Write(item);
                     }
@@ -251,7 +250,7 @@ namespace BlTest
         private static BO.Order ReadOrderData()
         {
             
-            List<BO.OrderItem> items = new List<BO.OrderItem>();
+            List<BO.OrderItem?> items = new List<BO.OrderItem?>();
             int id, choice, amount, productId;
             Console.WriteLine("Enter order id:");
             Int32.TryParse(Console.ReadLine(), out id);

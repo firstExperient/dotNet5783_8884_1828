@@ -18,7 +18,7 @@ internal class Product : IProduct
                 ID = item.ID,
                 Name = item.Name,
                 Price = item.Price,
-                Category = (DO.Category)item.Category,
+                Category = item.Category.HasValue ? (DO.Category)item.Category : null,
                 InStock = item.InStock,
             });
         }
@@ -34,10 +34,10 @@ internal class Product : IProduct
 
     public void Delete(int id)
     {
-        List<DO.OrderItem> orderItems = (List<DO.OrderItem>)Dal.OrderItem.GetAll();
-        foreach (DO.OrderItem item in orderItems)
+        List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)Dal.OrderItem.GetAll(null);
+        foreach (DO.OrderItem? item in orderItems)
         {
-            if (item.ProductId == id)
+            if (item?.ProductId == id)
                 throw new BO.IntegrityDamageException("cannot delete the product without hurting data integrity. There are orders for the product");
         }
         try
@@ -59,8 +59,10 @@ internal class Product : IProduct
         BO.ProductItem product;
         try
         {
-            DO.Product dalProduct = Dal.Product.Get(id);
-            BO.OrderItem orderItem = cart.Items.Find((x) => x.ProductId == id);
+            DO.Product dalProduct = Dal.Product.Get(p => p?.ID == id);
+            BO.OrderItem? orderItem = null;
+            if (cart.Items != null)
+                orderItem = cart.Items!.Find((x) => x?.ProductId == id);
             int amount = 0;
             if (orderItem != null)
                 amount = orderItem.Amount; 
@@ -68,7 +70,7 @@ internal class Product : IProduct
             {
                 ID = dalProduct.ID,
                 Name = dalProduct.Name,
-                Category = (BO.Category)dalProduct.Category,
+                Category = dalProduct.Category.HasValue ? (BO.Category)dalProduct.Category : null,
                 Price = dalProduct.Price,
                 InStock = dalProduct.InStock > 0 ? true : false,
                 Amount = amount
@@ -87,12 +89,12 @@ internal class Product : IProduct
         BO.Product product;
         try
         {
-            DO.Product dalProduct = Dal.Product.Get(id);
+            DO.Product dalProduct = Dal.Product.Get(p => p?.ID == id);
             product = new BO.Product()
             {
                 ID = dalProduct.ID,
                 Name = dalProduct.Name,
-                Category = (BO.Category)dalProduct.Category,
+                Category = dalProduct.Category.HasValue ? (BO.Category)dalProduct.Category : null,
                 Price = dalProduct.Price,
                 InStock = dalProduct.InStock,
             };
@@ -109,19 +111,20 @@ internal class Product : IProduct
     /// turns them to ProductForList type and return them in a list
     /// </summary>
     /// <returns>all the products in a list</returns>
-    public IEnumerable<BO.ProductForList> GetAll()
+    public IEnumerable<BO.ProductForList?> GetAll()
     {
-        List<DO.Product> dalProducts = (List<DO.Product>)Dal.Product.GetAll();
-        List<BO.ProductForList> blProducts = new List<BO.ProductForList>();
-        foreach (DO.Product item in dalProducts)
+        List<DO.Product?> dalProducts = (List<DO.Product?>)Dal.Product.GetAll(null);
+        List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
+        foreach (DO.Product? item in dalProducts)
         {
-            blProducts.Add(new BO.ProductForList()
-            {
-                ID = item.ID,
-                Name = item.Name,
-                Price = item.Price,
-                Category = (BO.Category)item.Category
-            });
+            if(item.HasValue)
+                blProducts.Add(new BO.ProductForList()
+                {
+                    ID = item!.Value.ID,
+                    Name = item!.Value.Name,
+                    Price = item!.Value.Price,
+                    Category = item!.Value.Category.HasValue ? (BO.Category)item!.Value.Category : null,
+                });
         }
         return blProducts;
     }
@@ -141,7 +144,7 @@ internal class Product : IProduct
                 ID = item.ID,
                 Name = item.Name,
                 Price = item.Price,
-                Category = (DO.Category)item.Category,
+                Category = item.Category.HasValue ? (DO.Category)item.Category : null,
                 InStock = item.InStock,
             });
         }
