@@ -118,8 +118,8 @@ internal class Cart : ICart
             CustomerEmail = cart.CustomerEmail,
             CustomerAdress = cart.CustomerAdress,
             OrderDate = DateTime.Now,
-            ShipDate = DateTime.MinValue,
-            DeliveryDate = DateTime.MinValue,
+            ShipDate = null,
+            DeliveryDate = null,
         });
         if (cart.Items == null) throw new BO.NullValueException("cart items cannot be null when confirming an order");
         foreach (var item in cart.Items)//add each item 

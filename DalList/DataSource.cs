@@ -73,7 +73,7 @@ internal static class DataSource
     /// <param name="orderDate">the order date</param>
     /// <param name="shipDate">the shipment date</param>
     /// <param name="deliveryDate">the deliveration date</param>
-    private static void AddOrder(string customerName, string customerEmail, string customerAdress, DateTime orderDate, DateTime shipDate, DateTime deliveryDate)
+    private static void AddOrder(string customerName, string customerEmail, string customerAdress, DateTime? orderDate, DateTime? shipDate, DateTime? deliveryDate)
     {
         int id = Config.OrderId;
         Orders.Add(new Order()
@@ -174,7 +174,7 @@ internal static class DataSource
             DateTime orderDate = (DateTime.Now).Add(new TimeSpan(-Random.Next(24, 400), Random.Next(0, 60), Random.Next(0, 60)));
             DateTime ship = orderDate.Add(new TimeSpan(Random.Next(12, 96), Random.Next(0, 60), Random.Next(0, 60)));
             DateTime delivery = ship.Add(new TimeSpan(Random.Next(12, 96), Random.Next(0, 60), Random.Next(0, 60)));
-            AddOrder(customerName[i % 10], email[i % 10], adress[i % 10], orderDate, ship < DateTime.Now ? ship : DateTime.MinValue, delivery < DateTime.Now ? delivery : DateTime.MinValue);
+            AddOrder(customerName[i % 10], email[i % 10], adress[i % 10], orderDate, ship < DateTime.Now ? ship : null, delivery < DateTime.Now ? delivery : null);
         }
 
         //orderItems:

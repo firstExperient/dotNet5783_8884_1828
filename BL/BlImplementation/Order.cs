@@ -20,8 +20,8 @@ internal class Order : IOrder
                 double totalPrice = 0;
                 //figuring order status
                 BO.OrderStatus status = BO.OrderStatus.Confirmed;
-                if (order!.Value.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
-                if (order!.Value.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
+                if (order!.Value.ShipDate != null) status = BO.OrderStatus.Shipped;
+                if (order!.Value.DeliveryDate != null) status = BO.OrderStatus.Delivered;
 
                 //figuring order total price
                 List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)Dal.OrderItem.GetAll(o=>o?.OrderId == order!.Value.ID);
@@ -72,8 +72,8 @@ internal class Order : IOrder
  
             //figuring order status
             BO.OrderStatus status = BO.OrderStatus.Confirmed;
-            if (dalOrder.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
-            if (dalOrder.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
+            if (dalOrder.ShipDate != null) status = BO.OrderStatus.Shipped;
+            if (dalOrder.DeliveryDate != null) status = BO.OrderStatus.Delivered;
 
             BO.Order blOrder = new BO.Order()
             {
@@ -110,14 +110,14 @@ internal class Order : IOrder
             if (shipDate > DateTime.Now)
                 throw new BO.IntegrityDamageException("cannot set order ship date to a future date");
 
-            if (dalOrder.ShipDate != DateTime.MinValue)
+            if (dalOrder.ShipDate != null)
                 throw new BO.IntegrityDamageException("cannot set order ship date, order already shipped");
 
             if(shipDate < dalOrder.OrderDate)
                 throw new BO.IntegrityDamageException("cannot set order ship date to before order creating date");
 
-            if (shipDate == DateTime.MinValue)
-                throw new BO.NullValueException("ship date cannot be null - 1.1.1");
+            if (shipDate == null)
+                throw new BO.NullValueException("ship date cannot be null");
 
             dalOrder.ShipDate = shipDate;
             Dal.Order.Update(dalOrder);
@@ -139,17 +139,17 @@ internal class Order : IOrder
             if (deliveryDate > DateTime.Now)
                 throw new BO.IntegrityDamageException("cannot set order delivery date to a future date");
 
-            if(dalOrder.ShipDate == DateTime.MinValue)
+            if(dalOrder.ShipDate == null)
                 throw new BO.IntegrityDamageException("cannot set order delivery date before setting order shipping date");
 
-            if (dalOrder.DeliveryDate != DateTime.MinValue)
+            if (dalOrder.DeliveryDate != null)
                 throw new BO.IntegrityDamageException("cannot set order delivery date, order already delivered");
 
             if (deliveryDate < dalOrder.ShipDate)
                 throw new BO.IntegrityDamageException("cannot set order delivery date to before order shipping date");
 
-            if (deliveryDate == DateTime.MinValue)
-                throw new BO.NullValueException("delivery date cannot be null - 1.1.1");
+            if (deliveryDate == null)
+                throw new BO.NullValueException("delivery date cannot be null");
 
             dalOrder.DeliveryDate = deliveryDate;
             Dal.Order.Update(dalOrder);
@@ -168,7 +168,7 @@ internal class Order : IOrder
         try
         {
             DO.Order dalOrder = Dal.Order.Get(o => o?.ID == order.ID);
-            if (dalOrder.ShipDate != DateTime.MinValue)
+            if (dalOrder.ShipDate != null)
                 throw new BO.IntegrityDamageException("cannot change an order after it was shipped");
             if(order.Items != null)
             {
@@ -224,17 +224,17 @@ internal class Order : IOrder
 
             //figuring order status
             BO.OrderStatus status = BO.OrderStatus.Confirmed;
-            if (dalOrder.ShipDate != DateTime.MinValue) status = BO.OrderStatus.Shipped;
-            if (dalOrder.DeliveryDate != DateTime.MinValue) status = BO.OrderStatus.Delivered;
+            if (dalOrder.ShipDate != null) status = BO.OrderStatus.Shipped;
+            if (dalOrder.DeliveryDate != null) status = BO.OrderStatus.Delivered;
 
             //figuring the trackingList
             List<(DateTime?, string?)> tracking = new();
             tracking.Add((dalOrder.OrderDate, "order confirmed"));
 
-            if(dalOrder.ShipDate != DateTime.MinValue)
+            if(dalOrder.ShipDate != null)
                 tracking.Add((dalOrder.ShipDate, "order shipped"));
 
-            if (dalOrder.DeliveryDate != DateTime.MinValue)
+            if (dalOrder.DeliveryDate != null)
                 tracking.Add((dalOrder.DeliveryDate, "order delivered"));
 
             orderTracking = new BO.OrderTracking()
