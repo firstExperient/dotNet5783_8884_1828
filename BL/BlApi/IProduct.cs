@@ -8,7 +8,7 @@ public interface IProduct
     /// get all the products from the database, return a list of ProductForList 
     /// </summary>
     /// <returns>a list of BO.ProductForList objects</returns>
-    public IEnumerable<ProductForList> GetAll();
+    public IEnumerable<ProductForList?> GetAll();
 
     /// <summary>
     /// get a product from the database using id, returns a Product.

@@ -8,7 +8,7 @@ internal class Order : IOrder
 
     #region GET
 
-    public IEnumerable<BO.OrderForList> GetAll()
+    public IEnumerable<BO.OrderForList?> GetAll()
     {
         List<DO.Order> dalOrders = (List<DO.Order>)Dal.Order.GetAll();
         List<BO.OrderForList> blOrders = new List<BO.OrderForList>();

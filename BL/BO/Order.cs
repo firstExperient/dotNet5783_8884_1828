@@ -48,7 +48,7 @@ public class Order
     /// <summary>
     /// the list of the items
     /// </summary>
-    public List<OrderItem?> Items { get; set; } = new();
+    public List<OrderItem?>? Items { get; set; } = new();
 
     /// <summary>
     /// the order's total price
@@ -60,24 +60,24 @@ public class Order
     /// </summary>
     public override string ToString()
     {
-        return "";
-        //string temp = "";
-        //foreach (OrderItem item in Items)
-        //{
-        //    temp = temp + "\n" + item;
-        //}
-        
-        //return $@"
-        //Order ID: {ID}
-        //Customer name: {CustomerName}
-        //Customer email: {CustomerEmail}
-        //Customer address: {CustomerAdress}
-        //Order date: {(OrderDate.HasValue ? OrderDate.ToString() : "")}
-        //Order status: {Status}
-        //Ship date: {ShipDate.Day}:{ShipDate.Month}:{ShipDate.Year}
-        //Delivery date: {DeliveryDate.Day}:{DeliveryDate.Month}:{DeliveryDate.Year}
-        //Total Price: {TotalPrice}
-        //Items list: {temp}
-        //";
+        string temp = "";
+        if(Items != null)
+            foreach (OrderItem? item in Items)
+            {
+                if(item != null)
+                    temp = temp + "\n" + item;
+            }
+        return $@"
+        Order ID: {ID}
+        Customer name: {CustomerName}
+        Customer email: {CustomerEmail}
+        Customer address: {CustomerAdress}
+        Order date: {(OrderDate.HasValue ? OrderDate.ToString() : "")}
+        Order status: {Status}
+        Ship date: {(ShipDate.HasValue ? ShipDate.Value.ToString() : "")}
+        Delivery date: {(DeliveryDate.HasValue ? DeliveryDate.Value.ToString() : "")}
+        Total Price: {TotalPrice}
+        Items list: {temp}
+        ";
     }
 }

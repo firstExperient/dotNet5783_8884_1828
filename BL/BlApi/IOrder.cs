@@ -8,7 +8,7 @@ public interface IOrder
     /// returns an order list of all the orders in the database. 
     /// </summary>
     /// <returns>list of OrderForList</returns>
-    public IEnumerable<OrderForList> GetAll();
+    public IEnumerable<OrderForList?> GetAll();
 
     /// <summary>
     /// returns the requested BO order, by its ID
