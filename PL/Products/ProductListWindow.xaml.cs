@@ -1,9 +1,8 @@
-﻿
-using BlApi;
+﻿using BlApi;
 using BlImplementation;
 using System;
 using System.Windows;
-
+using System.Windows.Controls;
 
 namespace PL.Products;
 
@@ -18,6 +17,11 @@ public partial class ProductListWindow : Window
         InitializeComponent();
         ProductsListview.ItemsSource = bl.Product.GetAll();
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
+    }
+
+    void CategorySelectionChanged(object sender, SelectionChangedEventArgs args)
+    {
+        MessageBox.Show("selection :" + ComboBox.SelectedItemProperty);
     }
 
     private void CategorySelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
