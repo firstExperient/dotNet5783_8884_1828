@@ -6,25 +6,26 @@
         xmlns:local="clr-namespace:PL.Products"
         mc:Ignorable="d"
         Title="ProductWindow" Height="450" Width="800">
-    <Grid HorizontalAlignment="Left" Width="800">
-        <Grid.RowDefinitions>
+	<Grid HorizontalAlignment="Left" Width="800">
+		<Grid.RowDefinitions>
 
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="49*"/>
-            <ColumnDefinition Width="751*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,92,0,0" TextWrapping="Wrap" Text="ID: " VerticalAlignment="Top"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="351,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,133,0,0" TextWrapping="Wrap" Text="Category: " VerticalAlignment="Top"/>
-        <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="351,129,0,0" VerticalAlignment="Top" Width="120" Text="None"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,176,0,0" TextWrapping="Wrap" Text="Name: " VerticalAlignment="Top"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="351,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="226,215,0,0" TextWrapping="Wrap" Text="Price: " VerticalAlignment="Top" RenderTransformOrigin="0.709,2.882"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="226,251,0,0" TextWrapping="Wrap" Text="In Stock: " VerticalAlignment="Top"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="351,249,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="351,213,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Grid.Column="1" Content="Add" HorizontalAlignment="Left" Margin="226,301,0,0" VerticalAlignment="Top"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="49*"/>
+			<ColumnDefinition Width="751*"/>
+		</Grid.ColumnDefinitions>
+		<TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,92,0,0" TextWrapping="Wrap" Text="ID: " VerticalAlignment="Top"/>
+		<TextBox Name="ProductIdInput" Grid.Column="1" HorizontalAlignment="Left" Margin="351,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+		<TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,133,0,0" TextWrapping="Wrap" Text="Category: " VerticalAlignment="Top"/>
+		<ComboBox Name="ProductCategoryInput" Grid.Column="1" HorizontalAlignment="Left" Margin="351,129,0,0" VerticalAlignment="Top" Width="120" Text="None"/>
+		<TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,176,0,0" TextWrapping="Wrap" Text="Name: " VerticalAlignment="Top"/>
+		<TextBox Name="ProductNameInput" Grid.Column="1" HorizontalAlignment="Left" Margin="351,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+		<TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="226,215,0,0" TextWrapping="Wrap" Text="Price: " VerticalAlignment="Top" RenderTransformOrigin="0.709,2.882"/>
+		<TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="226,251,0,0" TextWrapping="Wrap" Text="In Stock: " VerticalAlignment="Top"/>
+		<TextBox Name="ProductInStockInput" Grid.Column="1" HorizontalAlignment="Left" Margin="351,249,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+		<TextBox Name="ProductPriceInput" Grid.Column="1" HorizontalAlignment="Left" Margin="351,213,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+		<Button Name="ConfirmAddBtn" Grid.Column="1" Content="Add" HorizontalAlignment="Left" Margin="226,301,0,0" VerticalAlignment="Top" Click="ConfirmAddBtn_Click"/>
+		<Button x:Name="ConfirmUpdateBtn" Grid.Column="1" Content="Update" HorizontalAlignment="Left" Margin="428,300,0,0" VerticalAlignment="Top" Click="ConfirmUpdateBtn_Click"/>
 
-    </Grid>
+	</Grid>
 </Window>

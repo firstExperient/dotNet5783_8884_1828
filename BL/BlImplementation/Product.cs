@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using BO;
 using Dal;
 
 namespace BlImplementation;
@@ -129,6 +130,25 @@ internal class Product : IProduct
         return blProducts;
     }
 
+    public IEnumerable<ProductForList?> GetByCategory(BO.Category category)
+    {
+        List<DO.Product?> dalProducts = (List<DO.Product?>)Dal.Product.GetAll((product) => product?.Category == (DO.Category)category);
+        List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
+        foreach (DO.Product? item in dalProducts)
+        {
+            if (item.HasValue)
+                blProducts.Add(new BO.ProductForList()
+                {
+                    ID = item!.Value.ID,
+                    Name = item!.Value.Name,
+                    Price = item!.Value.Price,
+                    Category = item!.Value.Category.HasValue ? (BO.Category)item!.Value.Category : null,
+                });
+        }
+        return blProducts;
+    }
+
+
     /// <summary>
     /// gets all the products with the category wanted from the data layer
     /// turns them to ProductForList type and return them in a list
@@ -177,6 +197,7 @@ internal class Product : IProduct
         }
     }
 
+  
     #endregion
 
     #region Helpers

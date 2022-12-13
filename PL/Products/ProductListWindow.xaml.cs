@@ -22,19 +22,17 @@ public partial class ProductListWindow : Window
 
     void CategorySelectionChanged(object sender, SelectionChangedEventArgs args)
     {
-        // TODO: call get-products function from BL filtered by category and display
-
-        
-        string selection = ComboBox.SelectedItemProperty.ToString();
-        MessageBox.Show(ComboBox.DataContextProperty.ToString());
-
-        InitializeComponent();
-        ProductsListview.ItemsSource = bl.Product.GetByCategory(selection.ToString());
-        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
+        ProductsListview.ItemsSource = bl.Product.GetByCategory((BO.Category)CategorySelector.SelectedItem);
     }
 
     private void AddNewProductButton_Click(object sender, RoutedEventArgs e)
     {
         new ProductWindow().Show();
+    }
+
+    private void ProductsListview_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        BO.ProductForList selectedProduct = (BO.ProductForList)ProductsListview.Items[ProductsListview.SelectedIndex];
+        new ProductWindow(selectedProduct.ID).Show();
     }
 }

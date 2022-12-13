@@ -27,10 +27,13 @@
                />
             <Label Grid.Column="0" Content="Category:" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" FontSize="20"/>
         </Grid>
-        <ListView Name="ProductsListview" Grid.Row="1" >
+        <ListView Name="ProductsListview" Grid.Row="1" MouseDoubleClick="ProductsListview_MouseDoubleClick">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header="ID"/>
+                    <GridViewColumn Header="Name"/>
+                    <GridViewColumn Header="Category"/>
+                    <GridViewColumn Header="Price"/>
                 </GridView>
             </ListView.View>
         </ListView>
