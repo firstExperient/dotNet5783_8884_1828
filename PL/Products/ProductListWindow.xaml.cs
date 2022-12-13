@@ -21,11 +21,14 @@ public partial class ProductListWindow : Window
 
     void CategorySelectionChanged(object sender, SelectionChangedEventArgs args)
     {
-        MessageBox.Show("selection :" + ComboBox.SelectedItemProperty);
+        string selection = ComboBox.SelectedItemProperty.ToString();
+
+        // TODO: call get-products function from BL filtered by category
+
+        MessageBox.Show("selection :" + selection);
     }
-
-    private void CategorySelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    private void AddNewProductButton_Click(object sender, RoutedEventArgs e)
     {
-
+        //new ProductListWindow().Show();
     }
 }

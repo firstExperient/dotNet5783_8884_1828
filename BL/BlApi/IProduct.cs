@@ -11,6 +11,12 @@ public interface IProduct
     public IEnumerable<ProductForList?> GetAll();
 
     /// <summary>
+    /// get all the products with the category wanted from the database, return a list of ProductForList 
+    /// </summary>
+    /// <returns>a list of BO.ProductForList filtered by category</returns>
+    public IEnumerable<ProductForList?> GetByCategory();
+
+    /// <summary>
     /// get a product from the database using id, returns a Product.
     /// for the administrator view
     /// </summary>
@@ -25,7 +31,7 @@ public interface IProduct
     /// <param name="id">id of the product</param>
     /// <param name="cart">the customer cart</param>
     /// <returns>BO.ProductItem object</returns>
-    public ProductItem Get(int id,Cart cart);
+    public ProductItem Get(int id, Cart cart);
 
     /// <summary>
     /// add a new product to database
