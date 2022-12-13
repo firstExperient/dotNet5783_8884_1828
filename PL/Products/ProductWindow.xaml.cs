@@ -2,6 +2,9 @@
 using BlImplementation;
 using System;
 using System.Windows;
+using System.Windows.Controls;
+using BlApi;
+using BlImplementation;
 
 namespace PL.Products;
 
@@ -68,5 +71,25 @@ public partial class ProductWindow : Window
         bl.Product.Update(product);
         //fix this - how to update the list view?
         Close();
+    }
+
+/*    private void ID_TextChanged(object sender, EventArgs e)
+    {
+ 
+    }*/
+
+
+    private void addProduct_Click(object sender, RoutedEventArgs e)
+    {
+        // MessageBox.Show(id_input.Text);
+
+        bl.Product.Add(new Product()
+        {
+            ID = Int32.Parse(id_input.Text),
+            Name = name_input.Text,
+            Price = Int32.Parse(price_input.Text),
+            Category = "TODO: ",
+            InStock = Int32.Parse(inStock_input.Text),
+        });
     }
 }
