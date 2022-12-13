@@ -62,7 +62,7 @@ public partial class ProductWindow : Window
 
         BO.Product product = new BO.Product()
         {
-            ID = Convert.ToInt32(ProductIdInput.Text), 
+            ID = Convert.ToInt32(ProductIdInput.Text),
             Name = ProductNameInput.Text,
             Category = (BO.Category)ProductCategoryInput.SelectedItem,
             Price = Convert.ToDouble(ProductPriceInput.Text),
@@ -73,16 +73,8 @@ public partial class ProductWindow : Window
         Close();
     }
 
-  /*  private void addProduct_Click(object sender, RoutedEventArgs e)
-    {
-        
-        bl.Product.Add(new Product()
+    /*    private void ID_TextChanged(object sender, EventArgs e)
         {
-            ID = Int32.Parse(id_input.Text),
-            Name = name_input.Text,
-            Price = Int32.Parse(price_input.Text),
-            Category = "TODO: ",
-            InStock = Int32.Parse(inStock_input.Text),
-        });
-    }*/
+
+        }*/
 }
