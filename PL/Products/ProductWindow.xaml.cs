@@ -73,16 +73,9 @@ public partial class ProductWindow : Window
         Close();
     }
 
-/*    private void ID_TextChanged(object sender, EventArgs e)
+  /*  private void addProduct_Click(object sender, RoutedEventArgs e)
     {
- 
-    }*/
-
-
-    private void addProduct_Click(object sender, RoutedEventArgs e)
-    {
-        // MessageBox.Show(id_input.Text);
-
+        
         bl.Product.Add(new Product()
         {
             ID = Int32.Parse(id_input.Text),
@@ -91,5 +84,5 @@ public partial class ProductWindow : Window
             Category = "TODO: ",
             InStock = Int32.Parse(inStock_input.Text),
         });
-    }
+    }*/
 }
