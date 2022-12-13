@@ -8,12 +8,22 @@
         Title="ProductWindow" Height="450" Width="800">
     <Grid HorizontalAlignment="Left" Width="800">
         <Grid.RowDefinitions>
-           
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="49*"/>
             <ColumnDefinition Width="751*"/>
         </Grid.ColumnDefinitions>
+        <Button Grid.Column="1" Content="Add" HorizontalAlignment="Left" Margin="226,301,0,0" VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,166,0,0" TextWrapping="Wrap" Text="Name: " VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,92,0,0" TextWrapping="Wrap" Text="ID: " VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,127,0,0" TextWrapping="Wrap" Text="Category: " VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="225,0,0,0" TextWrapping="Wrap" Text="Price: " VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="226,251,0,0" TextWrapping="Wrap" Text="In Stock: " VerticalAlignment="Top"/>
+        <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="351,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="351,164,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="351,249,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Grid.Column="1" HorizontalAlignment="Left" Margin="351,207,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
 </Window>
