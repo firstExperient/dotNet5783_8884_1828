@@ -14,7 +14,7 @@ public interface IProduct
     /// get all the products with the category wanted from the database, return a list of ProductForList 
     /// </summary>
     /// <returns>a list of BO.ProductForList filtered by category</returns>
-    public IEnumerable<ProductForList?> GetByCategory();
+    public IEnumerable<ProductForList?> GetByCategory(string category);
 
     /// <summary>
     /// get a product from the database using id, returns a Product.

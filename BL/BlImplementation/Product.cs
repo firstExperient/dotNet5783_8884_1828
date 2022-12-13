@@ -129,6 +129,29 @@ internal class Product : IProduct
         return blProducts;
     }
 
+    /// <summary>
+    /// gets all the products with the category wanted from the data layer
+    /// turns them to ProductForList type and return them in a list
+    /// </summary>
+    /// <returns>all the products in a list</returns>
+    public IEnumerable<BO.ProductForList?> GetByCategory(string category)
+    {
+        List<DO.Product?> dalProducts = (List<DO.Product?>)Dal.Product.GetAll(null);
+        List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
+        foreach (DO.Product? item in dalProducts)
+        {
+            if (item.HasValue && (item!.Value.Category.HasValue.ToString()==category))
+
+                blProducts.Add(new BO.ProductForList()
+                {
+                    ID = item!.Value.ID,
+                    Name = item!.Value.Name,
+                    Price = item!.Value.Price,
+                    Category = item!.Value.Category.HasValue ? (BO.Category)item!.Value.Category : null,
+                });
+        }
+        return blProducts;
+    }
 
     #endregion
 
