@@ -1,6 +1,6 @@
 ﻿using BlApi;
 using Dal;
-using System.Data.SqlTypes;
+using System.Reflection;
 
 namespace BlImplementation;
 
@@ -14,14 +14,10 @@ internal class Product : IProduct
         checkValid(item);
         try
         {
-            Dal.Product.Add(new DO.Product()
+            Dal.Product.Add(Tools.Copy(item, new DO.Product()
             {
-                ID = item.ID,
-                Name = item.Name,
-                Price = item.Price,
-                Category = (DO.Category?) item.Category ,
-                InStock = item.InStock,
-            });
+                Category = (DO.Category?)item.Category,
+            }));
         }
         catch (DO.AlreadyExistsException e)
         {
@@ -57,26 +53,17 @@ internal class Product : IProduct
     public BO.ProductItem Get(int id, BO.Cart cart)
     {
         if (id < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
-        BO.ProductItem product;
         try
         {
             DO.Product dalProduct = Dal.Product.Get(p => p?.ID == id);
-            BO.OrderItem? orderItem = null;
-            if (cart.Items != null)
-                orderItem = cart.Items!.Find((x) => x?.ProductId == id);
-            int amount = 0;
-            if (orderItem != null)
-                amount = orderItem.Amount;
-            product = new BO.ProductItem()
+            BO.OrderItem? orderItem = cart.Items?.Find((x) => x?.ProductId == id);
+            int amount = orderItem?.Amount ?? 0;
+            return Tools.Copy(dalProduct, new BO.ProductItem()
             {
-                ID = dalProduct.ID,
-                Name = dalProduct.Name,
-                Category = (BO.Category?) dalProduct.Category,
-                Price = dalProduct.Price,
+                Category = (BO.Category?)dalProduct.Category,
                 InStock = dalProduct.InStock > 0 ? true : false,
                 Amount = amount
-            };
-            return product;
+            });
         }
         catch (DO.NotFoundException e)
         {
@@ -87,24 +74,19 @@ internal class Product : IProduct
     public BO.Product AdminGet(int id)
     {
         if (id < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
-        BO.Product product;
         try
         {
             DO.Product dalProduct = Dal.Product.Get(p => p?.ID == id);
-            product = new BO.Product()
+            return Tools.Copy(dalProduct, new BO.Product()
             {
-                ID = dalProduct.ID,
-                Name = dalProduct.Name,
                 Category = (BO.Category?)dalProduct.Category,
-                Price = dalProduct.Price,
-                InStock = dalProduct.InStock,
-            };
+            });
         }
         catch (DO.NotFoundException e)
         {
             throw new BO.NotFoundException("product not found", e);
         }
-        return product;
+        
     }
 
     /// <summary>
@@ -118,15 +100,9 @@ internal class Product : IProduct
         List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
         foreach (DO.Product? item in dalProducts)
         {
-            
-            if(item.HasValue)
-                blProducts.Add(new BO.ProductForList()
-                {
-                    ID = item!.Value.ID,
-                    Name = item!.Value.Name,
-                    Price = item!.Value.Price,
-                    Category = item!.Value.Category.HasValue ? (BO.Category)item!.Value.Category : null,
-                });
+            //didnt find a way to do this without checking if item is null, because i want to make comletely different thi each time
+            //since tha category is a different type, I had to copy it manually
+            blProducts.Add(item != null ? Tools.Copy(item, new BO.ProductForList() { Category = (BO.Category?)item?.Category }) : null);
         }
         return blProducts;
     }
@@ -143,15 +119,7 @@ internal class Product : IProduct
         List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
         foreach (DO.Product? item in dalProducts)
         {
-            //BO.ProductForList? product = Copy(item, new BO.ProductForList());
-            //if (item.HasValue)
-            //    blProducts.Add(Copy(item, new BO.ProductForList())
-            //    {
-            //        ID = item!.Value.ID,
-            //        Name = item!.Value.Name,
-            //        Price = item!.Value.Price,
-            //        Category = item!.Value.Category.HasValue ? (BO.Category)item!.Value.Category : null,
-            //    });
+            blProducts.Add(item != null ? Tools.Copy(item, new BO.ProductForList() { Category = (BO.Category?)item?.Category }) : null);
         }
         return blProducts;
     }
@@ -166,14 +134,7 @@ internal class Product : IProduct
         checkValid(item);
         try
         {
-            Dal.Product.Update(new DO.Product()
-            {
-                ID = item.ID,
-                Name = item.Name,
-                Price = item.Price,
-                Category = item.Category.HasValue ? (DO.Category)item.Category : null,
-                InStock = item.InStock,
-            });
+            Dal.Product.Update(Tools.Copy(item, new DO.Product() { Category =  (DO.Category?)item.Category  }));
         }
         catch (DO.NotFoundException e)
         {
@@ -199,24 +160,7 @@ internal class Product : IProduct
         if (product.InStock < 0) throw new BO.NegativeNumberException("product InStock property cannot be a negative number");
     }
 
-    private static S Copy<T,S>(T from, S to)where S:INullable where T:INullable
-    {
-        if (from == null || to == null)
-            throw new Exception("Must not specify null parameters");//fix this - change to the right error
-
-        var fromProps = from.GetType().GetProperties();
-        var toProps = to.GetType().GetProperties();
-        foreach (var p in fromProps.Where(prop => prop.CanRead && prop.CanWrite))
-        {
-            var same =  toProps.Where((prop) => prop.Name == p.Name && prop.PropertyType == p.PropertyType);
-            if(same.Count() != 0)
-            {
-                object? value = p.GetValue(from);
-                same.First().SetValue(to, value);//will always contain only one, because there cannot be two props with the same name 
-            }
-        }
-        return to;
-    }
+    
 
     #endregion
 }
