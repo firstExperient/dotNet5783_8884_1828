@@ -13,6 +13,11 @@ namespace PL.Products;
 public partial class ProductWindow : Window
 {
     private IBl bl = new Bl();
+
+
+    /// <summary>
+    /// This is the window to add a new product
+    /// </summary>
     public ProductWindow()
     {
         InitializeComponent();
@@ -23,6 +28,10 @@ public partial class ProductWindow : Window
         ConfirmUpdateBtn.Visibility = Visibility.Hidden;
     }
 
+
+    /// <summary>
+    /// This is the window to edit a product (by its ID)
+    /// </summary>
     public ProductWindow(int id)
     {
         InitializeComponent();
@@ -55,6 +64,9 @@ public partial class ProductWindow : Window
         }
     }
 
+    /// <summary>
+    /// This function adds a new product to the product list
+    /// </summary>
     private void ConfirmAddBtn_Click(object sender, RoutedEventArgs e)
     {
         BO.Product product = new BO.Product()
@@ -76,6 +88,9 @@ public partial class ProductWindow : Window
         }
     }
 
+    /// <summary>
+    /// This function updates the product with the new data the user entered
+    /// </summary>
     private void ConfirmUpdateBtn_Click(object sender, RoutedEventArgs e)
     {
         BO.Product product = new BO.Product()
@@ -97,12 +112,18 @@ public partial class ProductWindow : Window
         Close();
     }
 
+    /// <summary>
+    /// This function validates that the user entered an int type input
+    /// </summary>
     private void IntIntputValidate(object sender, System.Windows.Input.TextCompositionEventArgs e)
     {
         Regex regex = new Regex(@"\D");
         e.Handled = regex.IsMatch(e.Text);
     }
 
+    /// <summary>
+    /// This function validates that the user entered a double type input
+    /// </summary>
     private void DoubleInputValidate(object sender, System.Windows.Input.TextCompositionEventArgs e)
     {
         if (e.Text == "." && (sender as TextBox).Text.IndexOf('.') == -1)//fix this
@@ -112,6 +133,13 @@ public partial class ProductWindow : Window
             Regex regex = new Regex(@"\D");
             e.Handled = regex.IsMatch(e.Text);
         }
-        
+    }
+
+    /// <summary>
+    /// A function to go back to previous window by the back button 
+    /// </summary>
+    private void backButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 }
