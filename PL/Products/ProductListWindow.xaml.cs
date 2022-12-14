@@ -57,6 +57,7 @@ public partial class ProductListWindow : Window
     /// </summary>
     private void backButton_Click(object sender, RoutedEventArgs e)
     {
-       Close();
+        new MainWindow().Show();
+        Close();
     }
 }

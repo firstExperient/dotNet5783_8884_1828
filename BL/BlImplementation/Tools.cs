@@ -16,7 +16,7 @@ internal class Tools
     public static S Copy<T, S>(T from, S to)
     {
         if (from == null || to == null)
-            throw new Exception("Must not specify null parameters");//fix this - change to the right error
+            throw new BO.NullValueException("Must not specify null parameters");
 
         var fromProps = from.GetType().GetProperties();
         var toProps = to.GetType().GetProperties();

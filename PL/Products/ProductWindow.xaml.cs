@@ -126,7 +126,7 @@ public partial class ProductWindow : Window
     /// </summary>
     private void DoubleInputValidate(object sender, System.Windows.Input.TextCompositionEventArgs e)
     {
-        if (e.Text == "." && (sender as TextBox).Text.IndexOf('.') == -1)//fix this
+        if (e.Text == "." && (sender as TextBox).Text.IndexOf('.') == -1)
             e.Handled = false;
         else
         {
@@ -134,12 +134,5 @@ public partial class ProductWindow : Window
             e.Handled = regex.IsMatch(e.Text);
         }
     }
-
-    /// <summary>
-    /// A function to go back to previous window by the back button 
-    /// </summary>
-    private void backButton_Click(object sender, RoutedEventArgs e)
-    {
-        Close();
-    }
+    
 }
