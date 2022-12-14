@@ -10,11 +10,19 @@ namespace PL;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private IBl bl = new BlImplementation.Bl();
+    
+    /// <summary>
+    /// The main window of the program
+    /// </summary>
     public MainWindow()
     {
         InitializeComponent();
     }
-    private IBl bl = new BlImplementation.Bl();
+
+    /// <summary>
+    /// This fuction opens the product list window
+    /// </summary>
     private void ShowProductsButton_Click(object sender, RoutedEventArgs e)
     {
         new ProductListWindow().Show();
