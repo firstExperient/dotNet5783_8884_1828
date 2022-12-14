@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using Dal;
+using System.Data.SqlTypes;
 
 namespace BlImplementation;
 
@@ -136,8 +137,9 @@ internal class Product : IProduct
         List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
         foreach (DO.Product? item in dalProducts)
         {
+            BO.ProductForList? product = Copy(item, new BO.ProductForList());
             if (item.HasValue)
-                blProducts.Add(new BO.ProductForList()
+                blProducts.Add(Copy(item, new BO.ProductForList())
                 {
                     ID = item!.Value.ID,
                     Name = item!.Value.Name,
@@ -213,6 +215,25 @@ internal class Product : IProduct
         if (product.Name == null || product.Name == "") throw new BO.NullValueException("product Name property cannot be null or an empty string");
         if(product.Price < 0) throw new BO.NegativeNumberException("product Price property cannot be a negative number");
         if (product.InStock < 0) throw new BO.NegativeNumberException("product InStock property cannot be a negative number");
+    }
+
+    private static S Copy<T,S>(T from, S to)where S:INullable where T:INullable
+    {
+        if (from == null || to == null)
+            throw new Exception("Must not specify null parameters");//fix this - change to the right error
+
+        var fromProps = from.GetType().GetProperties();
+        var toProps = to.GetType().GetProperties();
+        foreach (var p in fromProps.Where(prop => prop.CanRead && prop.CanWrite))
+        {
+            var same =  toProps.Where((prop) => prop.Name == p.Name && prop.PropertyType == p.PropertyType);
+            if(same.Count() != 0)
+            {
+                object? value = p.GetValue(from);
+                same.First().SetValue(to, value);//will always contain only one, because there cannot be two props with the same name 
+            }
+        }
+        return to;
     }
 
     #endregion
