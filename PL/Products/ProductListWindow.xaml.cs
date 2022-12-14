@@ -27,13 +27,16 @@ public partial class ProductListWindow : Window
 
     private void AddNewProductButton_Click(object sender, RoutedEventArgs e)
     {
-        new ProductWindow().Show();
+        new ProductWindow().ShowDialog();
+        ProductsListview.ItemsSource = bl.Product.GetAll();
     }
 
     private void ProductsListview_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
         BO.ProductForList selectedProduct = (BO.ProductForList)ProductsListview.Items[ProductsListview.SelectedIndex];
-        new ProductWindow(selectedProduct.ID).Show();
+        new ProductWindow(selectedProduct.ID).ShowDialog();
+        ProductsListview.ItemsSource = bl.Product.GetAll();
+       
     }
 
     private void backButton_Click(object sender, RoutedEventArgs e)

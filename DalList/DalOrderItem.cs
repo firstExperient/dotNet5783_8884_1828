@@ -69,7 +69,7 @@ internal class DalOrderItem: IOrderItem
         bool flag = false;
         for (int i = 0; i < DataSource.OrderItems.Count; i++)
         {
-            if (DataSource.OrderItems[i].HasValue && DataSource.OrderItems[i]!.Value.ID == orderItem.ID)
+            if (DataSource.OrderItems[i]?.ID == orderItem.ID)
             {
                 DataSource.OrderItems[i] = orderItem;
                 flag = true;
@@ -92,7 +92,7 @@ internal class DalOrderItem: IOrderItem
         int i = 0;
         for (; i < DataSource.OrderItems.Count; i++)
         {
-            if (DataSource.OrderItems[i].HasValue && DataSource.OrderItems[i]!.Value.ID == id)
+            if (DataSource.OrderItems[i]?.ID == id)
             {
                 flag = true;
                 break;

@@ -1,6 +1,6 @@
 ﻿using BlApi;
-using BO;
 using Dal;
+using System.Data.SqlTypes;
 
 namespace BlImplementation;
 
@@ -19,7 +19,7 @@ internal class Product : IProduct
                 ID = item.ID,
                 Name = item.Name,
                 Price = item.Price,
-                Category = item.Category.HasValue ? (DO.Category)item.Category : null,
+                Category = (DO.Category?) item.Category ,
                 InStock = item.InStock,
             });
         }
@@ -66,12 +66,12 @@ internal class Product : IProduct
                 orderItem = cart.Items!.Find((x) => x?.ProductId == id);
             int amount = 0;
             if (orderItem != null)
-                amount = orderItem.Amount; 
+                amount = orderItem.Amount;
             product = new BO.ProductItem()
             {
                 ID = dalProduct.ID,
                 Name = dalProduct.Name,
-                Category = dalProduct.Category.HasValue ? (BO.Category)dalProduct.Category : null,
+                Category = (BO.Category?) dalProduct.Category,
                 Price = dalProduct.Price,
                 InStock = dalProduct.InStock > 0 ? true : false,
                 Amount = amount
@@ -95,7 +95,7 @@ internal class Product : IProduct
             {
                 ID = dalProduct.ID,
                 Name = dalProduct.Name,
-                Category = dalProduct.Category.HasValue ? (BO.Category)dalProduct.Category : null,
+                Category = (BO.Category?)dalProduct.Category,
                 Price = dalProduct.Price,
                 InStock = dalProduct.InStock,
             };
@@ -118,25 +118,8 @@ internal class Product : IProduct
         List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
         foreach (DO.Product? item in dalProducts)
         {
+            
             if(item.HasValue)
-                blProducts.Add(new BO.ProductForList()
-                {
-                    ID = item!.Value.ID,
-                    Name = item!.Value.Name,
-                    Price = item!.Value.Price,
-                    Category = item!.Value.Category.HasValue ? (BO.Category)item!.Value.Category : null,
-                });
-        }
-        return blProducts;
-    }
-
-    public IEnumerable<ProductForList?> GetByCategory(BO.Category category)
-    {
-        List<DO.Product?> dalProducts = (List<DO.Product?>)Dal.Product.GetAll((product) => product?.Category == (DO.Category)category);
-        List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
-        foreach (DO.Product? item in dalProducts)
-        {
-            if (item.HasValue)
                 blProducts.Add(new BO.ProductForList()
                 {
                     ID = item!.Value.ID,
@@ -154,24 +137,25 @@ internal class Product : IProduct
     /// turns them to ProductForList type and return them in a list
     /// </summary>
     /// <returns>all the products in a list</returns>
-    public IEnumerable<BO.ProductForList?> GetByCategory(string category)
+    public IEnumerable<BO.ProductForList?> GetByCategory(BO.Category category)
     {
-        List<DO.Product?> dalProducts = (List<DO.Product?>)Dal.Product.GetAll(null);
+        List<DO.Product?> dalProducts = (List<DO.Product?>)Dal.Product.GetAll((product) => product?.Category == (DO.Category)category);
         List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
         foreach (DO.Product? item in dalProducts)
         {
-            if (item.HasValue && (item!.Value.Category.HasValue.ToString()==category))
-
-                blProducts.Add(new BO.ProductForList()
-                {
-                    ID = item!.Value.ID,
-                    Name = item!.Value.Name,
-                    Price = item!.Value.Price,
-                    Category = item!.Value.Category.HasValue ? (BO.Category)item!.Value.Category : null,
-                });
+            //BO.ProductForList? product = Copy(item, new BO.ProductForList());
+            //if (item.HasValue)
+            //    blProducts.Add(Copy(item, new BO.ProductForList())
+            //    {
+            //        ID = item!.Value.ID,
+            //        Name = item!.Value.Name,
+            //        Price = item!.Value.Price,
+            //        Category = item!.Value.Category.HasValue ? (BO.Category)item!.Value.Category : null,
+            //    });
         }
         return blProducts;
     }
+
 
     #endregion
 
@@ -213,6 +197,25 @@ internal class Product : IProduct
         if (product.Name == null || product.Name == "") throw new BO.NullValueException("product Name property cannot be null or an empty string");
         if(product.Price < 0) throw new BO.NegativeNumberException("product Price property cannot be a negative number");
         if (product.InStock < 0) throw new BO.NegativeNumberException("product InStock property cannot be a negative number");
+    }
+
+    private static S Copy<T,S>(T from, S to)where S:INullable where T:INullable
+    {
+        if (from == null || to == null)
+            throw new Exception("Must not specify null parameters");//fix this - change to the right error
+
+        var fromProps = from.GetType().GetProperties();
+        var toProps = to.GetType().GetProperties();
+        foreach (var p in fromProps.Where(prop => prop.CanRead && prop.CanWrite))
+        {
+            var same =  toProps.Where((prop) => prop.Name == p.Name && prop.PropertyType == p.PropertyType);
+            if(same.Count() != 0)
+            {
+                object? value = p.GetValue(from);
+                same.First().SetValue(to, value);//will always contain only one, because there cannot be two props with the same name 
+            }
+        }
+        return to;
     }
 
     #endregion

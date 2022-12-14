@@ -19,7 +19,7 @@ internal class DalProduct : IProduct
        
         for (int i = 0; i < DataSource.Products.Count; i++)
         {
-            if (DataSource.Products[i].HasValue && DataSource.Products[i]!.Value.ID == product.ID)
+            if (DataSource.Products[i]?.ID == product.ID)
             {
                 throw new AlreadyExistsException("product with id: " + product.ID + " already exists");
             }
@@ -76,7 +76,7 @@ internal class DalProduct : IProduct
         bool flag = false;
         for (int i = 0; i < DataSource.Products.Count; i++)
         {
-            if (DataSource.Products[i].HasValue && DataSource.Products[i]!.Value.ID == product.ID)
+            if (DataSource.Products[i]?.ID == product.ID)
             {
                 DataSource.Products[i] = product;
                 flag = true;
@@ -100,7 +100,7 @@ internal class DalProduct : IProduct
         int i = 0;
         for (; i < DataSource.Products.Count; i++)
         {
-            if (DataSource.Products[i].HasValue && DataSource.Products[i]!.Value.ID == id)
+            if (DataSource.Products[i]?.ID == id)
             {
                 flag = true;
                 break;
