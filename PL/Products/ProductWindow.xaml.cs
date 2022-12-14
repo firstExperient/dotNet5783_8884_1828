@@ -1,10 +1,9 @@
 ﻿using BlApi;
 using BlImplementation;
 using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using BlApi;
-using BlImplementation;
 
 namespace PL.Products;
 
@@ -28,34 +27,32 @@ public partial class ProductWindow : Window
     {
         InitializeComponent();
         ProductCategoryInput.ItemsSource = Enum.GetValues(typeof(BO.Category));
-        BO.Product product = bl.Product.AdminGet(id);//fix this - add try and catch
-
-        //initilaize the values of the inputs
-        if (product.ID.GetType() == typeof(int))
+        try
         {
+            BO.Product product = bl.Product.AdminGet(id);
+
+            //initilaize the values of the inputs
             ProductIdInput.Text = product.ID.ToString();
-        }
-        if (product.Name.GetType() == typeof(string))
-        {
             ProductNameInput.Text = product.Name;
-        }
-        if (product.Price.GetType() == typeof(double))
-        {
             ProductPriceInput.Text = product.Price.ToString();
-        }
-        if (product.InStock.GetType() == typeof(int))
-        {
             ProductInStockInput.Text = product.InStock.ToString();
-        }
-        if (product.Category.GetType() == typeof(BO.Category))
-        {
             ProductCategoryInput.SelectedItem = product.Category;
-        }
 
-        //set the right look for the update mode
-        ConfirmAddBtn.Visibility = Visibility.Hidden;
-        ConfirmUpdateBtn.Visibility = Visibility.Visible;
-        ProductIdInput.IsEnabled = false;
+            //set the right look for the update mode
+            ConfirmAddBtn.Visibility = Visibility.Hidden;
+            ConfirmUpdateBtn.Visibility = Visibility.Visible;
+            ProductIdInput.IsEnabled = false;
+        }
+        catch (BO.NegativeNumberException)
+        {
+            MessageBox.Show("The product ID seems to be a negative number, which causes errors");
+            Close();
+        }
+        catch(BO.NotFoundException)
+        {
+            MessageBox.Show($"No product with id: {id} was found in database.");
+            Close();
+        }
     }
 
     private void ConfirmAddBtn_Click(object sender, RoutedEventArgs e)
@@ -68,9 +65,15 @@ public partial class ProductWindow : Window
             Price = Convert.ToDouble(ProductPriceInput.Text),
             InStock = Convert.ToInt32(ProductInStockInput.Text),
         };
-        bl.Product.Add(product);
-        //fix this - how to update the list view?
-        Close();
+        try
+        {
+            bl.Product.Add(product);
+            Close();
+        }
+        catch (BO.AlreadyExistsException)
+        {
+            MessageBox.Show($"There is already a product with id: {product.ID}, please choose a different ID for the product");
+        }
     }
 
     private void ConfirmUpdateBtn_Click(object sender, RoutedEventArgs e)
@@ -83,10 +86,32 @@ public partial class ProductWindow : Window
             Price = Convert.ToDouble(ProductPriceInput.Text),
             InStock = Convert.ToInt32(ProductInStockInput.Text),
         };
-        bl.Product.Update(product);
-        //fix this - how to update the list view?
+        try
+        {
+            bl.Product.Update(product);
+        }
+        catch (BO.NotFoundException)
+        {
+            MessageBox.Show($"No product with id: {product.ID} was found in database.");
+        }
         Close();
-        
     }
 
+    private void IntIntputValidate(object sender, System.Windows.Input.TextCompositionEventArgs e)
+    {
+        Regex regex = new Regex(@"\D");
+        e.Handled = regex.IsMatch(e.Text);
+    }
+
+    private void DoubleInputValidate(object sender, System.Windows.Input.TextCompositionEventArgs e)
+    {
+        if (e.Text == "." && (sender as TextBox).Text.IndexOf('.') == -1)//fix this
+            e.Handled = false;
+        else
+        {
+            Regex regex = new Regex(@"\D");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        
+    }
 }
