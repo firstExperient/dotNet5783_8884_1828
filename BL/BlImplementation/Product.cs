@@ -1,5 +1,4 @@
 ﻿using BlApi;
-using BO;
 using Dal;
 
 namespace BlImplementation;
@@ -19,7 +18,7 @@ internal class Product : IProduct
                 ID = item.ID,
                 Name = item.Name,
                 Price = item.Price,
-                Category = item.Category.HasValue ? (DO.Category)item.Category : null,
+                Category = (DO.Category?) item.Category ,
                 InStock = item.InStock,
             });
         }
@@ -66,12 +65,12 @@ internal class Product : IProduct
                 orderItem = cart.Items!.Find((x) => x?.ProductId == id);
             int amount = 0;
             if (orderItem != null)
-                amount = orderItem.Amount; 
+                amount = orderItem.Amount;
             product = new BO.ProductItem()
             {
                 ID = dalProduct.ID,
                 Name = dalProduct.Name,
-                Category = dalProduct.Category.HasValue ? (BO.Category)dalProduct.Category : null,
+                Category = (BO.Category?) dalProduct.Category,
                 Price = dalProduct.Price,
                 InStock = dalProduct.InStock > 0 ? true : false,
                 Amount = amount
@@ -95,7 +94,7 @@ internal class Product : IProduct
             {
                 ID = dalProduct.ID,
                 Name = dalProduct.Name,
-                Category = dalProduct.Category.HasValue ? (BO.Category)dalProduct.Category : null,
+                Category = (BO.Category?)dalProduct.Category,
                 Price = dalProduct.Price,
                 InStock = dalProduct.InStock,
             };
@@ -118,6 +117,7 @@ internal class Product : IProduct
         List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
         foreach (DO.Product? item in dalProducts)
         {
+            
             if(item.HasValue)
                 blProducts.Add(new BO.ProductForList()
                 {
@@ -130,7 +130,7 @@ internal class Product : IProduct
         return blProducts;
     }
 
-    public IEnumerable<ProductForList?> GetByCategory(BO.Category category)
+    public IEnumerable<BO.ProductForList?> GetByCategory(BO.Category category)
     {
         List<DO.Product?> dalProducts = (List<DO.Product?>)Dal.Product.GetAll((product) => product?.Category == (DO.Category)category);
         List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();

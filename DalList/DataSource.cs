@@ -42,7 +42,7 @@ internal static class DataSource
 
         for (int i = 0; i < Products.Count; i++)
         {
-            if (Products[i].HasValue && Products[i]!.Value.ID == id)
+            if (Products[i]?.ID == id)
             {
                 id = Random.Next(100000, 1000000);
                 i = 0;

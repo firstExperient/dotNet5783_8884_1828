@@ -65,7 +65,7 @@ namespace Dal;
         bool flag = false;
         for (int i = 0; i < DataSource.Orders.Count; i++)
         {
-            if (DataSource.Orders[i].HasValue && DataSource.Orders[i]!.Value.ID == order.ID)
+            if (DataSource.Orders[i]?.ID == order.ID)
             {
                 DataSource.Orders[i] = order;
                 flag = true;
@@ -89,7 +89,7 @@ namespace Dal;
         int i = 0;
         for (; i < DataSource.Orders.Count; i++)
         {
-            if (DataSource.Orders[i].HasValue && DataSource.Orders[i]!.Value.ID == id)
+            if (DataSource.Orders[i]?.ID == id)
             {
                 flag = true;
                 break;
