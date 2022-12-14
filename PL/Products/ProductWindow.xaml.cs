@@ -31,17 +31,33 @@ public partial class ProductWindow : Window
         BO.Product product = bl.Product.AdminGet(id);//fix this - add try and catch
 
         //initilaize the values of the inputs
-        ProductIdInput.Text = product.ID.ToString();
-        ProductNameInput.Text = product.Name;
-        ProductPriceInput.Text = product.Price.ToString();
-        ProductInStockInput.Text = product.InStock.ToString();
-        ProductCategoryInput.SelectedItem = product.Category;
+        if (product.ID.GetType() == typeof(int))
+        {
+            ProductIdInput.Text = product.ID.ToString();
+        }
+        if (product.Name.GetType() == typeof(string))
+        {
+            ProductNameInput.Text = product.Name;
+        }
+        if (product.Price.GetType() == typeof(double))
+        {
+            ProductPriceInput.Text = product.Price.ToString();
+        }
+        if (product.InStock.GetType() == typeof(int))
+        {
+            ProductInStockInput.Text = product.InStock.ToString();
+        }
+        if (product.Category.GetType() == typeof(BO.Category))
+        {
+            ProductCategoryInput.SelectedItem = product.Category;
+        }
 
         //set the right look for the update mode
         ConfirmAddBtn.Visibility = Visibility.Hidden;
         ConfirmUpdateBtn.Visibility = Visibility.Visible;
         ProductIdInput.IsEnabled = false;
     }
+
     private void ConfirmAddBtn_Click(object sender, RoutedEventArgs e)
     {
         BO.Product product = new BO.Product()
@@ -59,7 +75,6 @@ public partial class ProductWindow : Window
 
     private void ConfirmUpdateBtn_Click(object sender, RoutedEventArgs e)
     {
-
         BO.Product product = new BO.Product()
         {
             ID = Convert.ToInt32(ProductIdInput.Text),
@@ -71,6 +86,7 @@ public partial class ProductWindow : Window
         bl.Product.Update(product);
         //fix this - how to update the list view?
         Close();
+        
     }
 
 }
