@@ -16,24 +16,23 @@ internal class Cart : ICart
         try
         {
             DO.Product product = Dal.Product.Get(p => p?.ID == id);
-            if (cart.Items != null)
-                for (int i = 0; i < cart.Items.Count; i++)
+            cart.Items ??= new();
+            for (int i = 0; i < cart.Items.Count; i++)
+            {
+                if (cart.Items[i]?.ProductId == id)//the product is already in cart
                 {
-                    if (cart.Items[i]?.ProductId == id)//the product is already in cart
+                    if (product.InStock >= cart.Items[i]!.Amount + 1)//there is enough in stock to add another one to the order item
                     {
-                        if (product.InStock >= cart.Items[i]!.Amount + 1)//there is enough in stock to add another one to the order item
-                        {
-                            cart.Items[i]!.Amount++;
-                            //adding according to the current price
-                            cart.Items[i]!.TotalPrice += product.Price;
-                            cart.TotalPrice += product.Price;
-                            return cart;
-                        }
-                        throw new BO.OutOfStockException("product " + id + " is out of stock");
+                        cart.Items[i]!.Amount++;
+                        //adding according to the current price
+                        cart.Items[i]!.TotalPrice += product.Price;
+                        cart.TotalPrice += product.Price;
+                        return cart;
                     }
+                    throw new BO.OutOfStockException("product " + id + " is out of stock");
                 }
-            else
-                cart.Items = new();
+            }
+            
             //the product is not in cart
             if (product.InStock <= 0)
                 throw new BO.OutOfStockException("product " + id + " is out of stock");
@@ -137,14 +136,11 @@ internal class Cart : ICart
                         throw new BO.NegativeNumberException("item price property cannot be a negative number");
 
                     product.InStock -= item.Amount;
-                    Dal.OrderItem.Add(new DO.OrderItem()
+                    Dal.OrderItem.Add(Tools.Copy(item, new DO.OrderItem()
                     {
-                        //no need to add id - auto id is generete
+                        //no need to add id - auto id is generete, other propertys will be copied from item
                         OrderId = orderId,
-                        ProductId = item.ProductId,
-                        Amount = item.Amount,
-                        Price = item.Price,
-                    });
+                    }));
                     Dal.Product.Update(product);//update the amount of product in stock
                 }
                 catch (DO.NotFoundException e)
