@@ -16,8 +16,7 @@ public partial class ProductListWindow : Window
     public ProductListWindow()
     {
         InitializeComponent();
-        ProductsGrid.ItemsSource = bl.Product.GetAll();
-        //  ProductsListview.ItemsSource = bl.Product.GetAll();
+        ProductsListview.ItemsSource = bl.Product.GetAll();
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
     }
 
