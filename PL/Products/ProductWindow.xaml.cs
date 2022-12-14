@@ -86,7 +86,5 @@ public partial class ProductWindow : Window
         bl.Product.Update(product);
         //fix this - how to update the list view?
         Close();
-        
     }
-
 }

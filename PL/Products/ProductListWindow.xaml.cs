@@ -35,4 +35,9 @@ public partial class ProductListWindow : Window
         BO.ProductForList selectedProduct = (BO.ProductForList)ProductsListview.Items[ProductsListview.SelectedIndex];
         new ProductWindow(selectedProduct.ID).Show();
     }
+
+    private void backButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
