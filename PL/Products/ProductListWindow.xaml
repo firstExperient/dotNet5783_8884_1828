@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Products"
         mc:Ignorable="d"
-        Title="ProductListWindow" Height="640" Width="800">
+        Title="ProductListWindow" Height="580" Width="800">
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="44*"/>
@@ -38,8 +38,8 @@
             </ListView.View>
         </ListView>
 
-        <Button Name="AddNewProduct" Content="Add New Product"  Grid.Row="2" HorizontalAlignment="Right" Margin="5" Padding="5" Click="AddNewProductButton_Click"/>
-        <Button Name="backButton" Content="Back"  Grid.Row="2" HorizontalAlignment="Left" Margin="10,5,0,5" Padding="5" Click="backButton_Click" Width="106"/>
+        <Button Name="AddNewProduct" Content="Add New Product"  Grid.Row="2" HorizontalAlignment="Left" Margin="659,10,0,10" Padding="5" Click="AddNewProductButton_Click" Width="112"/>
+        <Button Name="backButton" Content="Back"  Grid.Row="2" HorizontalAlignment="Left" Margin="18,10,0,10" Padding="5" Click="backButton_Click" Width="94"/>
 
     </Grid>
 </Window>

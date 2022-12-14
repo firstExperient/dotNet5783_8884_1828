@@ -14,7 +14,6 @@ public partial class ProductWindow : Window
 {
     private IBl bl = new Bl();
 
-
     /// <summary>
     /// This is the window to add a new product
     /// </summary>
@@ -27,7 +26,6 @@ public partial class ProductWindow : Window
         ConfirmAddBtn.Visibility = Visibility.Visible;
         ConfirmUpdateBtn.Visibility = Visibility.Hidden;
     }
-
 
     /// <summary>
     /// This is the window to edit a product (by its ID)
