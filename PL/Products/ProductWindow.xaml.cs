@@ -73,8 +73,4 @@ public partial class ProductWindow : Window
         Close();
     }
 
-    /*    private void ID_TextChanged(object sender, EventArgs e)
-        {
-
-        }*/
 }

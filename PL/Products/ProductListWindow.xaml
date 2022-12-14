@@ -37,6 +37,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        
         <Button Name="AddNewProduct" Content="Add New Product"  Grid.Row="2" HorizontalAlignment="Right" Margin="5" Padding="5" Click="AddNewProductButton_Click"/>
+        <DataGrid Name="ProductsGrid" Grid.Row="1"/>
     </Grid>
 </Window>
