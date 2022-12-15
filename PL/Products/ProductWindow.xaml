@@ -26,6 +26,6 @@
         <TextBox Name="ProductPriceInput" Grid.Column="1" HorizontalAlignment="Left" Margin="351,213,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="DoubleInputValidate"/>
         <Button Name="ConfirmAddBtn" Grid.Column="1" Content="Add" HorizontalAlignment="Left" Margin="226,301,0,0" VerticalAlignment="Top" Click="ConfirmAddBtn_Click"/>
         <Button x:Name="ConfirmUpdateBtn" Grid.Column="1" Content="Update" HorizontalAlignment="Left" Margin="428,300,0,0" VerticalAlignment="Top" Click="ConfirmUpdateBtn_Click"/>
-
+        
     </Grid>
 </Window>

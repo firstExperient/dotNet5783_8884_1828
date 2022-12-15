@@ -26,5 +26,6 @@ public partial class MainWindow : Window
     private void ShowProductsButton_Click(object sender, RoutedEventArgs e)
     {
         new ProductListWindow().Show();
+        Close();
     }
 }

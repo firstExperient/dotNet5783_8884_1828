@@ -104,6 +104,7 @@ namespace BlTest
             Console.WriteLine(" - d. Enter 4 to update a product");
             Console.WriteLine(" - e. Enter 5 to delete a product");
             Console.WriteLine(" - f. Enter 6 to get a product for the catalog (costumer view)");
+            Console.WriteLine(" - f. Enter 7 to get all products by category");
 
             bool success = Int32.TryParse(Console.ReadLine(), out choice);
 
@@ -144,6 +145,15 @@ namespace BlTest
                     Console.WriteLine("Enter product id:");
                     Int32.TryParse(Console.ReadLine(), out id);
                     Console.Write(_bl.Product.Get(id,_cart));
+                    break;
+                case 7:
+                    int category;
+                    Console.WriteLine("Enter the product category (0 - men watch, 1 - women watch, 2 - children watch, 3 - smart watch, 4 - diving watch");
+                    Int32.TryParse(Console.ReadLine(), out category);
+                    foreach (var item in _bl.Product.GetByCategory((BO.Category)category))
+                    {
+                        Console.Write(item);
+                    }
                     break;
                 default:
                     Console.WriteLine("\nError! input is not valid");

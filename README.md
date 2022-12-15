@@ -1,5 +1,10 @@
-something i wanted to write
-# dotNet5783_8884_1828
-a project in c#
-welcome world
-stage 1 is finaly complete
+﻿בונוסים שבוצעו:
+1.
+שימוש ב-TryParse בתוכניות בדיקה BlTest/DalTest
+2.
+הוספת אפשרות של עדכון הזמנה ע"י מנהל החנות
+3.
+העברת נתונים בין מופעי ישויות BO⇔DO:
+בנייה ושימוש במתודות הרחבה גנריות עם reflection 
+4.
+שימוש ב Regex לודילציה של input בשכבת התצוגה
