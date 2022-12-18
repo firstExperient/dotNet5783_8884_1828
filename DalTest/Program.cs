@@ -94,7 +94,15 @@ internal class Program
         switch (choice)
         {
             case 1:
-                _dalList.Product.Add(ReadProductData());
+                try
+                {
+                    _dalList.Product.Add(ReadProductData());
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message);
+                }
+
                 break;
             case 2:
                 Console.WriteLine("Enter product id:");
