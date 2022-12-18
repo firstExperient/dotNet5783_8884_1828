@@ -1,6 +1,6 @@
 ﻿namespace DalApi;
 using System.Xml.Linq;
-
+using DO;
 static class DalConfig
 {
     internal static string? s_dalName;

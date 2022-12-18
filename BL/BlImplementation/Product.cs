@@ -1,12 +1,9 @@
 ﻿using BlApi;
-using Dal;
-using System.Reflection;
-
 namespace BlImplementation;
 
 internal class Product : IProduct
 {
-    private DalApi.IDal Dal = new DalList();
+    private DalApi.IDal? dal =  DalApi.Factory.Get();
 
     #region ADD
     public void Add(BO.Product item)
@@ -14,7 +11,10 @@ internal class Product : IProduct
         checkValid(item);
         try
         {
-            Dal.Product.Add(Tools.Copy(item, new DO.Product()
+            //I couldn't use the operator ? here. because i wanted to throw error if dal is null, and (?? throw...)
+            //works only in assignment like i did in the rest of the project
+            if (dal == null) throw new BO.AccessToDataFailedException("cannot access the data layer");
+            dal?.Product.Add(Tools.Copy(item, new DO.Product()
             {
                 Category = (DO.Category?)item.Category,
             }));
@@ -31,7 +31,7 @@ internal class Product : IProduct
 
     public void Delete(int id)
     {
-        List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)Dal.OrderItem.GetAll(null);
+        List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)(dal?.OrderItem.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"));
         foreach (DO.OrderItem? item in orderItems)
         {
             if (item?.ProductId == id)
@@ -39,7 +39,7 @@ internal class Product : IProduct
         }
         try
         {
-            Dal.Product.Delete(id);
+            dal.Product.Delete(id);
         }
         catch (DO.NotFoundException e)
         { 
@@ -55,7 +55,7 @@ internal class Product : IProduct
         if (id < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
         try
         {
-            DO.Product dalProduct = Dal.Product.Get(p => p?.ID == id);
+            DO.Product dalProduct = dal?.Product.Get(p => p?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
             BO.OrderItem? orderItem = cart.Items?.Find((x) => x?.ProductId == id);
             int amount = orderItem?.Amount ?? 0;
             return Tools.Copy(dalProduct, new BO.ProductItem()
@@ -76,7 +76,7 @@ internal class Product : IProduct
         if (id < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
         try
         {
-            DO.Product dalProduct = Dal.Product.Get(p => p?.ID == id);
+            DO.Product dalProduct = dal?.Product.Get(p => p?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
             return Tools.Copy(dalProduct, new BO.Product()
             {
                 Category = (BO.Category?)dalProduct.Category,
@@ -96,7 +96,7 @@ internal class Product : IProduct
     /// <returns>all the products in a list</returns>
     public IEnumerable<BO.ProductForList?> GetAll()
     {
-        List<DO.Product?> dalProducts = (List<DO.Product?>)Dal.Product.GetAll(null);
+        List<DO.Product?> dalProducts = (List<DO.Product?>)(dal?.Product.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"));
         List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
         foreach (DO.Product? item in dalProducts)
         {
@@ -115,7 +115,7 @@ internal class Product : IProduct
     /// <returns>all the products in a list</returns>
     public IEnumerable<BO.ProductForList?> GetByCategory(BO.Category category)
     {
-        List<DO.Product?> dalProducts = (List<DO.Product?>)Dal.Product.GetAll((product) => product?.Category == (DO.Category)category);
+        List<DO.Product?> dalProducts = (List<DO.Product?>)(dal?.Product.GetAll((product) => product?.Category == (DO.Category)category) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"));
         List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
         foreach (DO.Product? item in dalProducts)
         {
@@ -134,7 +134,8 @@ internal class Product : IProduct
         checkValid(item);
         try
         {
-            Dal.Product.Update(Tools.Copy(item, new DO.Product() { Category =  (DO.Category?)item.Category  }));
+            if (dal == null) throw new BO.AccessToDataFailedException("cannot access the data layer");
+            dal.Product.Update(Tools.Copy(item, new DO.Product() { Category =  (DO.Category?)item.Category  })) ;
         }
         catch (DO.NotFoundException e)
         {

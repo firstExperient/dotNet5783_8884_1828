@@ -132,3 +132,19 @@ public class OutOfStockException : Exception
     }
 }
 
+public class AccessToDataFailedException : Exception
+{
+
+    public AccessToDataFailedException(string msg) : base(msg)
+    {
+
+    }
+    public override string ToString()
+    {
+
+        return $@"
+        ERROR - AccessToDataFailedException:
+        {Message}
+        ";
+    }
+}

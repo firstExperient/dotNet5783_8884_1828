@@ -10,7 +10,7 @@ namespace PL;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private IBl bl = new BlImplementation.Bl();
+    private IBl? bl = BlApi.Factory.Get();
     
     /// <summary>
     /// The main window of the program

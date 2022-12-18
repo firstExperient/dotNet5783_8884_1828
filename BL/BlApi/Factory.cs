@@ -1,12 +1,10 @@
 ﻿using BlImplementation;
-namespace BlApi
+namespace BlApi;
 
+public static class Factory
 {
-    public class Factory
-    {
-        public static IBl Get() {
-            BlImplementation.Bl bl = new Bl();
-            return bl;
-        }
+    public static IBl Get() {
+        BlImplementation.Bl bl = new Bl();
+        return bl;
     }
 }

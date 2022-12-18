@@ -12,7 +12,7 @@ namespace PL.Products;
 /// </summary>
 public partial class ProductListWindow : Window
 {
-    private IBl bl = new Bl();
+    private IBl? bl = BlApi.Factory.Get();
 
     /// <summary>
     /// This is the window which displays the products in a list form
@@ -30,7 +30,7 @@ public partial class ProductListWindow : Window
     /// </summary>
     void CategorySelectionChanged(object sender, SelectionChangedEventArgs args)
     {
-        ProductsListview.ItemsSource = bl.Product.GetByCategory((BO.Category)CategorySelector.SelectedItem);
+        ProductsListview.ItemsSource = bl?.Product.GetByCategory((BO.Category)CategorySelector.SelectedItem);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public partial class ProductListWindow : Window
     private void AddNewProductButton_Click(object sender, RoutedEventArgs e)
     {
         new ProductWindow().ShowDialog();
-        ProductsListview.ItemsSource = bl.Product.GetAll();
+        ProductsListview.ItemsSource = bl?.Product.GetAll();
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public partial class ProductListWindow : Window
     {
         BO.ProductForList selectedProduct = (BO.ProductForList)ProductsListview.Items[ProductsListview.SelectedIndex];
         new ProductWindow(selectedProduct.ID).ShowDialog();
-        ProductsListview.ItemsSource = bl.Product.GetAll();
+        ProductsListview.ItemsSource = bl?.Product.GetAll();
     }
 
     /// <summary>

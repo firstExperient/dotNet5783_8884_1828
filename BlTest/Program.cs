@@ -60,6 +60,10 @@ namespace BlTest
                 {
                     Console.Write(e);
                 }
+                catch(BO.AccessToDataFailedException e)
+                {
+                    Console.Write(e);
+                }
                 //no general exception catch - to allow debuging 
             }
         }
@@ -85,7 +89,7 @@ namespace BlTest
         }
         #endregion
 
-        static private IBl _bl = new Bl();
+        static private IBl? _bl = BlApi.Factory.Get();
 
         static private BO.Cart _cart = new BO.Cart();
 
@@ -96,6 +100,11 @@ namespace BlTest
         /// </summary>
         private static void TestingProduct()
         {
+            if (_bl == null)
+            {
+                Console.WriteLine("error: cannot access the logic layer");
+                System.Environment.Exit(-1);
+            }
             int choice = 0, id;
             Console.WriteLine("\n - Enter 0 to return to main menu");
             Console.WriteLine(" - a. Enter 1 to add a product");
@@ -193,6 +202,11 @@ namespace BlTest
         /// </summary>
         private static void TestingOrder()
         {
+            if (_bl == null)
+            {
+                Console.WriteLine("error: cannot access the logic layer");
+                System.Environment.Exit(-1);
+            }
             int choice = 0, orderId;
             DateTime date;
             BO.Order order = new BO.Order();
@@ -260,7 +274,7 @@ namespace BlTest
         private static BO.Order ReadOrderData()
         {
             
-            List<BO.OrderItem?> items = new List<BO.OrderItem?>();
+            List<BO.OrderItem> items = new List<BO.OrderItem>();
             int id, choice, amount, productId;
             Console.WriteLine("Enter order id:");
             Int32.TryParse(Console.ReadLine(), out id);
@@ -293,6 +307,11 @@ namespace BlTest
         /// </summary>
         private static void TestingCart()
         {
+            if (_bl == null)
+            {
+                Console.WriteLine("error: cannot access the logic layer");
+                System.Environment.Exit(-1);
+            }
             int choice = 0, productId,amount;
             
             Console.WriteLine("\n - Enter 0 to return to main menu");

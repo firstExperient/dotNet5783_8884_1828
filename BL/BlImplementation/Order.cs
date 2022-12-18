@@ -1,16 +1,15 @@
 ﻿using BlApi;
-using Dal;
 namespace BlImplementation;
 
 internal class Order : IOrder 
 {
-    private DalApi.IDal Dal = new DalList();
+    private DalApi.IDal? dal = DalApi.Factory.Get();
 
     #region GET
 
     public IEnumerable<BO.OrderForList?> GetAll()
     {
-        List<DO.Order?> dalOrders = (List<DO.Order?>)Dal.Order.GetAll(null);
+        List<DO.Order?> dalOrders = (List<DO.Order?>)(dal?.Order.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"));
         List<BO.OrderForList?> blOrders = new List<BO.OrderForList?>();
 
         foreach (DO.Order? order in dalOrders)
@@ -22,7 +21,7 @@ internal class Order : IOrder
             if (order?.DeliveryDate != null) status = BO.OrderStatus.Delivered;
 
             //figuring order total price
-            List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)Dal.OrderItem.GetAll(o=>o?.OrderId == order?.ID);
+            List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)dal.OrderItem.GetAll(o=>o?.OrderId == order?.ID);
             foreach (var item in orderItems) 
                 totalPrice += item != null ? (double)(item?.Price * item?.Amount)! : 0;
 
@@ -41,14 +40,14 @@ internal class Order : IOrder
         if (id < 0) throw new BO.NegativeNumberException("order ID property cannot be a negative number");
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == id);
-            List<DO.OrderItem> dalOrderItems = (List<DO.OrderItem>)Dal.OrderItem.GetAll(oi => oi?.OrderId == dalOrder.ID);
+            DO.Order dalOrder = dal?.Order.Get(o => o?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"); 
+            List<DO.OrderItem> dalOrderItems = (List<DO.OrderItem>)dal.OrderItem.GetAll(oi => oi?.OrderId == dalOrder.ID);
 
             //creating the orderItem list for the order and figuring order total price 
             List<BO.OrderItem> blOrderItems = new();
             double totalPrice = 0;
             foreach (var item in dalOrderItems) {
-                DO.Product product = Dal.Product.Get(p => p?.ID == item.ProductId);
+                DO.Product product = dal.Product.Get(p => p?.ID == item.ProductId);
                 totalPrice +=  item.Price * item.Amount;
                 blOrderItems.Add(Tools.Copy(item,new BO.OrderItem()
                 {
@@ -83,7 +82,7 @@ internal class Order : IOrder
     {
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == id);
+            DO.Order dalOrder = dal?.Order.Get(o => o?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
 
             if (shipDate > DateTime.Now)
                 throw new BO.IntegrityDamageException("cannot set order ship date to a future date");
@@ -98,7 +97,7 @@ internal class Order : IOrder
                 throw new BO.NullValueException("ship date cannot be null");
 
             dalOrder.ShipDate = shipDate;
-            Dal.Order.Update(dalOrder);
+            dal.Order.Update(dalOrder);
 
             return Get(id);
         }
@@ -112,7 +111,7 @@ internal class Order : IOrder
     {
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == id);
+            DO.Order dalOrder = dal?.Order.Get(o => o?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
 
             if (deliveryDate > DateTime.Now)
                 throw new BO.IntegrityDamageException("cannot set order delivery date to a future date");
@@ -130,7 +129,7 @@ internal class Order : IOrder
                 throw new BO.NullValueException("delivery date cannot be null");
 
             dalOrder.DeliveryDate = deliveryDate;
-            Dal.Order.Update(dalOrder);
+            dal.Order.Update(dalOrder);
 
             return Get(id);
         }
@@ -145,7 +144,7 @@ internal class Order : IOrder
         
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == order.ID);
+            DO.Order dalOrder = dal?.Order.Get(o => o?.ID == order.ID) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
             if (dalOrder.ShipDate != null)
                 throw new BO.IntegrityDamageException("cannot change an order after it was shipped");
             order.Items ??= new();
@@ -154,20 +153,20 @@ internal class Order : IOrder
                 if (item.Amount < 0)
                     throw new BO.NegativeNumberException("item amount property must be a positive number");
 
-                DO.OrderItem preOrderItem = Dal.OrderItem.Get(oi => oi?.OrderId == order.ID && oi?.ProductId == item.ProductId);
-                DO.Product product = Dal.Product.Get(p => p?.ID == item.ProductId);
+                DO.OrderItem preOrderItem = dal.OrderItem.Get(oi => oi?.OrderId == order.ID && oi?.ProductId == item.ProductId);
+                DO.Product product = dal.Product.Get(p => p?.ID == item.ProductId);
                 if (preOrderItem.Amount > item.Amount)//decreasing the number of item to purchase
                 {
                     product.InStock += preOrderItem.Amount - item.Amount;//increasing the number of products in stock 
-                    Dal.Product.Update(product);
+                    dal.Product.Update(product);
                     if (item.Amount == 0)//deleting the item
                     {
-                        Dal.OrderItem.Delete(preOrderItem.ID);
+                        dal.OrderItem.Delete(preOrderItem.ID);
                     }
                     else //updating the new amount
                     {
                         preOrderItem.Amount = item.Amount;
-                        Dal.OrderItem.Update(preOrderItem);
+                        dal.OrderItem.Update(preOrderItem);
                     }
                 }
                 if (preOrderItem.Amount < item.Amount)//increasing the number of item to purchase
@@ -175,9 +174,9 @@ internal class Order : IOrder
                     if (product.InStock < item.Amount - preOrderItem.Amount)//the addition to the amount of items is more than the amount in stock
                         throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
                     product.InStock -= item.Amount - preOrderItem.Amount;//decreasing the number of products in stock 
-                    Dal.Product.Update(product);
+                    dal.Product.Update(product);
                     preOrderItem.Amount = item.Amount;//setting the item new amount
-                    Dal.OrderItem.Update(preOrderItem);
+                    dal.OrderItem.Update(preOrderItem);
                 }
             }
             
@@ -196,7 +195,7 @@ internal class Order : IOrder
         BO.OrderTracking orderTracking;
         try
         {
-            DO.Order dalOrder = Dal.Order.Get(o => o?.ID == id);
+            DO.Order dalOrder = dal?.Order.Get(o => o?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
 
             //figuring order status
             BO.OrderStatus status = BO.OrderStatus.Confirmed;

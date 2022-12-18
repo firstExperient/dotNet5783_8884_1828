@@ -1,13 +1,11 @@
 ﻿using BlApi;
-using Dal;
-using System.ComponentModel;
 
 
 namespace BlImplementation;
 
 internal class Cart : ICart
 {
-    private DalApi.IDal Dal = new DalList();
+    DalApi.IDal? dal = DalApi.Factory.Get();
 
     #region add item
 
@@ -15,7 +13,7 @@ internal class Cart : ICart
     {
         try
         {
-            DO.Product product = Dal.Product.Get(p => p?.ID == id);
+            DO.Product product = dal?.Product.Get(p => p?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
             cart.Items ??= new();
             for (int i = 0; i < cart.Items.Count; i++)
             {
@@ -63,7 +61,7 @@ internal class Cart : ICart
         if (id < 0) throw new BO.NegativeNumberException("product id property cannot be a negative number");
         try
         {
-            DO.Product product = Dal.Product.Get(p => p?.ID == id);
+            DO.Product product = dal?.Product.Get(p => p?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"); ;
             if(cart.Items != null)
                 for (int i = 0; i < cart.Items.Count; i++)
                 {
@@ -110,7 +108,7 @@ internal class Cart : ICart
         if(cart.CustomerAdress == null || cart.CustomerAdress == "")throw new BO.NullValueException("customer address cannot be null or an empty string");
         
 
-        int orderId = Dal.Order.Add(new DO.Order()//add the order to database
+        int orderId = dal?.Order.Add(new DO.Order()//add the order to database
         {
             //no need to add id - auto id is generete
             CustomerName = cart.CustomerName,
@@ -119,7 +117,7 @@ internal class Cart : ICart
             OrderDate = DateTime.Now,
             ShipDate = null,
             DeliveryDate = null,
-        });
+        }) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"); ;
         if (cart.Items == null) throw new BO.NullValueException("cart items cannot be null when confirming an order");
         foreach (var item in cart.Items)//add each item 
         {
@@ -127,7 +125,7 @@ internal class Cart : ICart
             if(item != null)
                 try
                 {
-                    product = Dal.Product.Get(p => p?.ID == item.ProductId);
+                    product = dal.Product.Get(p => p?.ID == item.ProductId);
                     if (item.Amount <= 0)
                         throw new BO.NegativeNumberException("item amount property must be a positive number");
                     if (product.InStock < item.Amount)
@@ -136,12 +134,12 @@ internal class Cart : ICart
                         throw new BO.NegativeNumberException("item price property cannot be a negative number");
 
                     product.InStock -= item.Amount;
-                    Dal.OrderItem.Add(Tools.Copy(item, new DO.OrderItem()
+                    dal.OrderItem.Add(Tools.Copy(item, new DO.OrderItem()
                     {
                         //no need to add id - auto id is generete, other propertys will be copied from item
                         OrderId = orderId,
                     }));
-                    Dal.Product.Update(product);//update the amount of product in stock
+                    dal.Product.Update(product);//update the amount of product in stock
                 }
                 catch (DO.NotFoundException e)
                 {

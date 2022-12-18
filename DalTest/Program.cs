@@ -1,5 +1,4 @@
-﻿using Dal;
-using DalApi;
+﻿using DalApi;
 using DO;
 
 internal class Program
@@ -7,6 +6,11 @@ internal class Program
     #region main
     private static void Main(string[] args)
     {
+        if (_dalList == null)
+        {
+            Console.WriteLine("error: cannot access data");
+            System.Environment.Exit(-1);
+        }
         int choice = MainMenu();
 
         /// <summary>
@@ -56,7 +60,7 @@ internal class Program
     }
     #endregion
 
-    static private IDal _dalList = new DalList();
+    static private IDal? _dalList = DalApi.Factory.Get();
 
     #region testing product
     /// <summary>
@@ -64,6 +68,11 @@ internal class Program
     /// </summary>
     private static void TestingProduct()
     {
+        if (_dalList == null)
+        {
+            Console.WriteLine("error: cannot access data");
+            System.Environment.Exit(-1);
+        }
         int choice = 0, id;
         Product product = new Product();
 
@@ -167,6 +176,11 @@ internal class Program
     /// </summary>
     private static void TestingOrder()
     {
+        if (_dalList == null)
+        {
+            Console.WriteLine("error: cannot access data");
+            System.Environment.Exit(-1);
+        }
         int choice = 0, id;
         Order order = new Order();
         Console.WriteLine(" - a. Enter 1 to add an order");
@@ -276,6 +290,11 @@ internal class Program
     /// </summary>
     private static void TestingOrderItem()
     {
+        if (_dalList == null)
+        {
+            Console.WriteLine("error: cannot access data");
+            System.Environment.Exit(-1);
+        }
         int choice = 0, id, productId;
         OrderItem orderItem = new OrderItem();
         IEnumerable<OrderItem?> items;

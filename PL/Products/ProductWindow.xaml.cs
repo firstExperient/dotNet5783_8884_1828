@@ -12,7 +12,7 @@ namespace PL.Products;
 /// </summary>
 public partial class ProductWindow : Window
 {
-    private IBl bl = new Bl();
+    private IBl? bl = BlApi.Factory.Get();
 
     /// <summary>
     /// This is the window to add a new product
@@ -77,7 +77,7 @@ public partial class ProductWindow : Window
         };
         try
         {
-            bl.Product.Add(product);
+            bl?.Product.Add(product);
             Close();
         }
         catch (BO.AlreadyExistsException)
@@ -101,7 +101,7 @@ public partial class ProductWindow : Window
         };
         try
         {
-            bl.Product.Update(product);
+            bl?.Product.Update(product);
         }
         catch (BO.NotFoundException)
         {
