@@ -9,9 +9,11 @@ public static class Factory
     {
         string dalType = s_dalName
             ?? throw new DalConfigException($"DAL name is not extracted from the configuration");
-        string dal = s_dalPackages[dalType]
+        string dal = s_dalPackages[dalType].dal
            ?? throw new DalConfigException($"Package for {dalType} is not found in packages list");
 
+        string? Namespace = s_dalPackages[dalType].Namespace;
+        string? Class = s_dalPackages[dalType].Class;
         try
         {
             Assembly.Load(dal ?? throw new DalConfigException($"Package {dal} is null"));
@@ -21,11 +23,11 @@ public static class Factory
             throw new DalConfigException($"Failed to load {dal}.dll package");
         }
 
-        Type? type = Type.GetType($"Dal.{dal}, {dal}")
-            ?? throw new DalConfigException($"Class Dal.{dal} was not found in {dal}.dll");
+        Type? type = Type.GetType($"{Namespace ?? "Dal"}.{Class ?? dal}, {dal}")
+            ?? throw new DalConfigException($"Class {Namespace ?? "Dal"}.{Class ?? dal} was not found in {dal}.dll");
 
         return type.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static)?
                    .GetValue(null) as IDal
-            ?? throw new DalConfigException($"Class {dal} is not singleton or Instance property not found");
+            ?? throw new DalConfigException($"Class {Class ?? dal} is not singleton or Instance property not found");
     }
 }

@@ -4,7 +4,7 @@ using DO;
 static class DalConfig
 {
     internal static string? s_dalName;
-    internal static Dictionary<string, string> s_dalPackages;
+    internal static Dictionary<string, (string dal,string? Namespace,string? Class)> s_dalPackages;
 
     static DalConfig()
     {
@@ -14,6 +14,7 @@ static class DalConfig
             ?? throw new DalConfigException("<dal> element is missing");
         var packages = dalConfig?.Element("dal-packages")?.Elements()
             ?? throw new DalConfigException("<dal-packages> element is missing");
-        s_dalPackages = packages.ToDictionary(p => "" + p.Name, p => p.Value);
+        packages.First().Attribute("namespace");
+        s_dalPackages = packages.ToDictionary(p => "" + p.Name, p => (p.Value,p.Attribute("namespace")?.Value,p.Attribute("class")?.Value));
     }
 }
