@@ -10,3 +10,5 @@
 שימוש ב Regex לודילציה של input בשכבת התצוגה
 5.
 שכלול של DalConfig שמאפשר שימוש במחלקה ו namespace שונים מהברירת מחדל באמצעות תויות
+6.
+שכלול של הסינגלטון של DalList כדי שיהיה Thread Safe ועם Lazy Initialization מירבי 
