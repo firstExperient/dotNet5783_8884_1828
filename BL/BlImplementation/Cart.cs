@@ -119,7 +119,8 @@ internal class Cart : ICart
             DeliveryDate = null,
         }) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"); ;
         if (cart.Items == null) throw new BO.NullValueException("cart items cannot be null when confirming an order");
-        foreach (var item in cart.Items)//add each item 
+
+        foreach (var item in cart.Items) //add each item 
         {
             DO.Product product;
             if(item != null)

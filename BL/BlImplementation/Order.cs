@@ -1,4 +1,6 @@
 ﻿using BlApi;
+using DO;
+
 namespace BlImplementation;
 
 internal class Order : IOrder 
@@ -14,7 +16,6 @@ internal class Order : IOrder
 
         foreach (DO.Order? order in dalOrders)
         {
-            double totalPrice = 0;
             //figuring order status
             BO.OrderStatus status = BO.OrderStatus.Confirmed;
             if (order?.ShipDate != null) status = BO.OrderStatus.Shipped;
@@ -22,8 +23,17 @@ internal class Order : IOrder
 
             //figuring order total price
             List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)dal.OrderItem.GetAll(o=>o?.OrderId == order?.ID);
-            foreach (var item in orderItems) 
-                totalPrice += item != null ? (double)(item?.Price * item?.Amount)! : 0;
+
+
+            double totalPrice = 0;
+
+            totalPrice =
+                from item in orderItems
+                where item != null
+                select (double)(item?.Price * item?.Amount).Sum();
+
+           // foreach (var item in orderItems) 
+             //   totalPrice += item != null ? (double)(item?.Price * item?.Amount)! : 0;
 
             blOrders.Add(order != null ? Tools.Copy(order,new BO.OrderForList()
             {
