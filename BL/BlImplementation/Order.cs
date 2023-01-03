@@ -27,13 +27,13 @@ internal class Order : IOrder
 
             double totalPrice = 0;
 
-            totalPrice =
-                from item in orderItems
-                where item != null
-                select (double)(item?.Price * item?.Amount).Sum();
+            //totalPrice =
+            //    from item in orderItems
+            //    where item != null
+            //    select (double)(item?.Price * item?.Amount).Sum();
 
-           // foreach (var item in orderItems) 
-             //   totalPrice += item != null ? (double)(item?.Price * item?.Amount)! : 0;
+            foreach (var item in orderItems)
+                totalPrice += item != null ? (double)(item?.Price * item?.Amount)! : 0;
 
             blOrders.Add(order != null ? Tools.Copy(order,new BO.OrderForList()
             {

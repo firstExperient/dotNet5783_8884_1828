@@ -1,6 +1,7 @@
 ﻿using BlApi;
 using BlImplementation;
 using System;
+using System.Collections;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,17 +15,27 @@ public partial class ProductWindow : Window
 {
     private IBl? bl = BlApi.Factory.Get();
 
+    private State state;
+    public static readonly DependencyProperty ProductProperty = DependencyProperty.Register(nameof(Product), typeof(BO.Product), typeof(ProductWindow));
+    public BO.Product Product {
+        get => (BO.Product)GetValue(ProductProperty);
+        set => SetValue(ProductProperty, value);
+        }
+
+    public static IEnumerable Categories = Enum.GetValues(typeof(BO.Category));
     /// <summary>
     /// This is the window to add a new product
     /// </summary>
     public ProductWindow()
     {
         InitializeComponent();
-        ProductCategoryInput.ItemsSource = Enum.GetValues(typeof(BO.Category));
+        state = State.Add;
+        Product = new();
+        //ProductCategoryInput.ItemsSource = Enum.GetValues(typeof(BO.Category));
 
         //set the right look for the add mode
-        ConfirmAddBtn.Visibility = Visibility.Visible;
-        ConfirmUpdateBtn.Visibility = Visibility.Hidden;
+        //ConfirmAddBtn.Visibility = Visibility.Visible;
+        //ConfirmUpdateBtn.Visibility = Visibility.Hidden;
     }
 
     /// <summary>
@@ -33,22 +44,15 @@ public partial class ProductWindow : Window
     public ProductWindow(int id)
     {
         InitializeComponent();
-        ProductCategoryInput.ItemsSource = Enum.GetValues(typeof(BO.Category));
+        state = State.Update;
+        //ProductCategoryInput.ItemsSource = Enum.GetValues(typeof(BO.Category));
         try
         {
-            BO.Product product = bl.Product.AdminGet(id);
-
-            //initilaize the values of the inputs
-            ProductIdInput.Text = product.ID.ToString();
-            ProductNameInput.Text = product.Name;
-            ProductPriceInput.Text = product.Price.ToString();
-            ProductInStockInput.Text = product.InStock.ToString();
-            ProductCategoryInput.SelectedItem = product.Category;
-
+            Product = bl.Product.AdminGet(id);
             //set the right look for the update mode
-            ConfirmAddBtn.Visibility = Visibility.Hidden;
-            ConfirmUpdateBtn.Visibility = Visibility.Visible;
-            ProductIdInput.IsEnabled = false;
+            //ConfirmAddBtn.Visibility = Visibility.Hidden;
+            //ConfirmUpdateBtn.Visibility = Visibility.Visible;
+            //ProductIdInput.IsEnabled = false;
         }
         catch (BO.NegativeNumberException)
         {
@@ -67,22 +71,22 @@ public partial class ProductWindow : Window
     /// </summary>
     private void ConfirmAddBtn_Click(object sender, RoutedEventArgs e)
     {
-        BO.Product product = new BO.Product()
-        {
-            ID = Convert.ToInt32(ProductIdInput.Text), //id is a vaild int, because of the input checking
-            Name = ProductNameInput.Text,
-            Category = (BO.Category)ProductCategoryInput.SelectedItem,
-            Price = Convert.ToDouble(ProductPriceInput.Text),
-            InStock = Convert.ToInt32(ProductInStockInput.Text),
-        };
+        //BO.Product product = new BO.Product()
+        //{
+        //    ID = Convert.ToInt32(ProductIdInput.Text), //id is a vaild int, because of the input checking
+        //    Name = ProductNameInput.Text,
+        //    Category = (BO.Category)ProductCategoryInput.SelectedItem,
+        //    Price = Convert.ToDouble(ProductPriceInput.Text),
+        //    InStock = Convert.ToInt32(ProductInStockInput.Text),
+        //};
         try
         {
-            bl?.Product.Add(product);
+            bl?.Product.Add(Product);
             Close();
         }
         catch (BO.AlreadyExistsException)
         {
-            MessageBox.Show($"There is already a product with id: {product.ID}, please choose a different ID for the product");
+            MessageBox.Show($"There is already a product with id: {Product.ID}, please choose a different ID for the product");
         }
     }
 
@@ -91,21 +95,21 @@ public partial class ProductWindow : Window
     /// </summary>
     private void ConfirmUpdateBtn_Click(object sender, RoutedEventArgs e)
     {
-        BO.Product product = new BO.Product()
-        {
-            ID = Convert.ToInt32(ProductIdInput.Text),
-            Name = ProductNameInput.Text,
-            Category = (BO.Category)ProductCategoryInput.SelectedItem,
-            Price = Convert.ToDouble(ProductPriceInput.Text),
-            InStock = Convert.ToInt32(ProductInStockInput.Text),
-        };
+        //BO.Product product = new BO.Product()
+        //{
+        //    ID = Convert.ToInt32(ProductIdInput.Text),
+        //    Name = ProductNameInput.Text,
+        //    Category = (BO.Category)ProductCategoryInput.SelectedItem,
+        //    Price = Convert.ToDouble(ProductPriceInput.Text),
+        //    InStock = Convert.ToInt32(ProductInStockInput.Text),
+        //};
         try
         {
-            bl?.Product.Update(product);
+            bl?.Product.Update(Product);
         }
         catch (BO.NotFoundException)
         {
-            MessageBox.Show($"No product with id: {product.ID} was found in database.");
+            MessageBox.Show($"No product with id: {Product.ID} was found in database.");
         }
         Close();
     }
