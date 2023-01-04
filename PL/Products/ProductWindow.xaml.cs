@@ -31,7 +31,6 @@ public partial class ProductWindow : Window
         InitializeComponent();
         state = State.Add;
         Product = new();
-        //ProductCategoryInput.ItemsSource = Enum.GetValues(typeof(BO.Category));
 
         //set the right look for the add mode
         //ConfirmAddBtn.Visibility = Visibility.Visible;
@@ -45,7 +44,6 @@ public partial class ProductWindow : Window
     {
         InitializeComponent();
         state = State.Update;
-        //ProductCategoryInput.ItemsSource = Enum.GetValues(typeof(BO.Category));
         try
         {
             Product = bl.Product.AdminGet(id);
@@ -71,14 +69,6 @@ public partial class ProductWindow : Window
     /// </summary>
     private void ConfirmAddBtn_Click(object sender, RoutedEventArgs e)
     {
-        //BO.Product product = new BO.Product()
-        //{
-        //    ID = Convert.ToInt32(ProductIdInput.Text), //id is a vaild int, because of the input checking
-        //    Name = ProductNameInput.Text,
-        //    Category = (BO.Category)ProductCategoryInput.SelectedItem,
-        //    Price = Convert.ToDouble(ProductPriceInput.Text),
-        //    InStock = Convert.ToInt32(ProductInStockInput.Text),
-        //};
         try
         {
             bl?.Product.Add(Product);
@@ -95,14 +85,6 @@ public partial class ProductWindow : Window
     /// </summary>
     private void ConfirmUpdateBtn_Click(object sender, RoutedEventArgs e)
     {
-        //BO.Product product = new BO.Product()
-        //{
-        //    ID = Convert.ToInt32(ProductIdInput.Text),
-        //    Name = ProductNameInput.Text,
-        //    Category = (BO.Category)ProductCategoryInput.SelectedItem,
-        //    Price = Convert.ToDouble(ProductPriceInput.Text),
-        //    InStock = Convert.ToInt32(ProductInStockInput.Text),
-        //};
         try
         {
             bl?.Product.Update(Product);
