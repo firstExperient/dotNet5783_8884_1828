@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using PL.Orders;
 using PL.Products;
 using System.Windows;
 
@@ -25,7 +26,7 @@ public partial class MainWindow : Window
     /// </summary>
     private void ShowProductsButton_Click(object sender, RoutedEventArgs e)
     {
-        new ProductListWindow().Show();
+        new OrderListWindow().Show();
         Close();
     }
 }

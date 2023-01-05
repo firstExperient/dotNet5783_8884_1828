@@ -17,13 +17,15 @@ public partial class ProductListWindow : Window
     public static readonly DependencyProperty ListProperty 
         = DependencyProperty.Register(nameof(ProductsList), typeof(IEnumerable<BO.ProductForList?>), typeof(ProductListWindow));
 
-    public static IEnumerable Categories = Enum.GetValues(typeof(BO.Category));
-
     public IEnumerable<BO.ProductForList?>? ProductsList
     {
         get => (IEnumerable<BO.ProductForList?>)GetValue(ListProperty);
-        set => SetValue(ListProperty,value);
+        set => SetValue(ListProperty, value);
     }
+
+    public static IEnumerable Categories = Enum.GetValues(typeof(BO.Category));
+
+   
     
     /// <summary>
     /// This is the window which displays the products in a list form

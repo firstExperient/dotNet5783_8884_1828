@@ -4,9 +4,49 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Orders"
+        xmlns:BO="clr-namespace:BO;assembly=BL"
         mc:Ignorable="d"
-        Title="OrderListWindow" Height="450" Width="800">
+        Title="OrderListWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        >
+    <Window.Resources>
+        <DataTemplate x:Key="Order" DataType="BO:OrderForList">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding ID}"></TextBlock>
+                <TextBlock Text="{Binding CustomerName}"></TextBlock>
+                <TextBlock Text="{Binding Status}"></TextBlock>
+                <TextBlock Text="{Binding AmountOfItems}"></TextBlock>
+                <TextBlock Text="{Binding TotalPrice}"></TextBlock>
+                <Button>Deliver</Button>
+                <Button>Ship</Button>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
-        
+        <ListView ItemsSource="{Binding OrdersList}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
+                    <GridViewColumn Header="Costumer name" DisplayMemberBinding="{Binding CustomerName}"></GridViewColumn>
+                    <GridViewColumn Header="amount of items" DisplayMemberBinding="{Binding AmountOfItems}"></GridViewColumn>
+                    <GridViewColumn Header="total price" DisplayMemberBinding="{Binding TotalPrice}"></GridViewColumn>
+                    <GridViewColumn Header="status" DisplayMemberBinding="{Binding Status}"></GridViewColumn>
+                    <GridViewColumn Header="ship order" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="ship"></Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                       </GridViewColumn>
+                    <GridViewColumn Header="deliver order">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="deliver"></Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
