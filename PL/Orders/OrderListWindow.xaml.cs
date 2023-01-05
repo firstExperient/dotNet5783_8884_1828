@@ -28,4 +28,14 @@ public partial class OrderListWindow : Window
         OrdersList = bl.Order.GetAll();
         InitializeComponent();
     }
+
+    private void updateOrder(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        var element = e.OriginalSource as FrameworkElement;
+        if (element != null && element.DataContext is BO.OrderForList)
+        {
+            new OrderWindow((element.DataContext as BO.OrderForList)!.ID).ShowDialog();
+            OrdersList = bl?.Order.GetAll();
+        }
+    }
 }

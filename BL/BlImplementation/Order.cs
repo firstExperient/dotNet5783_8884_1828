@@ -51,19 +51,22 @@ internal class Order : IOrder
         try
         {
             DO.Order dalOrder = dal?.Order.Get(o => o?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"); 
-            List<DO.OrderItem> dalOrderItems = (List<DO.OrderItem>)dal.OrderItem.GetAll(oi => oi?.OrderId == dalOrder.ID);
+            List<DO.OrderItem?> dalOrderItems = dal.OrderItem.GetAll(oi => oi?.OrderId == dalOrder.ID) as List<DO.OrderItem?> ?? throw new BO.NullValueException("encouter a null value");
 
             //creating the orderItem list for the order and figuring order total price 
             List<BO.OrderItem> blOrderItems = new();
             double totalPrice = 0;
-            foreach (var item in dalOrderItems) {
-                DO.Product product = dal.Product.Get(p => p?.ID == item.ProductId);
-                totalPrice +=  item.Price * item.Amount;
-                blOrderItems.Add(Tools.Copy(item,new BO.OrderItem()
-                {
-                    Name = product.Name,
-                    TotalPrice = item.Amount * item.Price,
-                }));
+            foreach (DO.OrderItem item in dalOrderItems) //temporary - fix this!!!
+            {
+                
+                    
+                    DO.Product product = dal.Product.Get(p => p?.ID == item.ProductId);
+                    totalPrice += item.Price * item.Amount;
+                    blOrderItems.Add(Tools.Copy(item, new BO.OrderItem()
+                    {
+                        Name = product.Name,
+                        TotalPrice = item.Amount * item.Price,
+                    }));
                  
             };
  

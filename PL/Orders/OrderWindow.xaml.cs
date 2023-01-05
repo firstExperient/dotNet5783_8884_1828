@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,31 @@ namespace PL.Orders
     /// </summary>
     public partial class OrderWindow : Window
     {
-        public OrderWindow()
+        private IBl? bl = BlApi.Factory.Get();
+
+        public static readonly DependencyProperty OrderProperty = DependencyProperty.Register(nameof(Order), typeof(BO.Order), typeof(OrderWindow));
+
+        public BO.Order Order
         {
+            get { return (BO.Order)GetValue(OrderProperty); }
+            set { SetValue(OrderProperty, value); }
+        }
+        public OrderWindow(int orderId)
+        {
+            Order = bl.Order.Get(orderId);
             InitializeComponent();
+        }
+
+        private void Remove_Item(object sender, RoutedEventArgs e)
+        {
+            //var element = e.OriginalSource as FrameworkElement;
+            //if (element != null && element.DataContext is BO.OrderItem)
+            //{
+                
+            //    new OrderWindow((element.DataContext as BO.OrderForList)!.ID).ShowDialog();
+            //    OrdersList = bl?.Order.GetAll();
+            //}
+            //(.DataContext as BO.OrderItem).ID
         }
     }
 }
