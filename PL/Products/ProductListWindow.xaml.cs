@@ -1,7 +1,7 @@
 ﻿using BlApi;
-using BlImplementation;
-using BO;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,14 +14,24 @@ public partial class ProductListWindow : Window
 {
     private IBl? bl = BlApi.Factory.Get();
 
+    public static readonly DependencyProperty ListProperty 
+        = DependencyProperty.Register(nameof(ProductsList), typeof(IEnumerable<BO.ProductForList?>), typeof(ProductListWindow));
+    public static IEnumerable Categories = Enum.GetValues(typeof(BO.Category));
+
+    public IEnumerable<BO.ProductForList?>? ProductsList
+    {
+        get => (IEnumerable<BO.ProductForList?>)GetValue(ListProperty);
+        set => SetValue(ListProperty,value);
+    }
+    
     /// <summary>
     /// This is the window which displays the products in a list form
     /// </summary>
     public ProductListWindow()
     {
         InitializeComponent();
-        ProductsListview.ItemsSource = bl.Product.GetAll();
-        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
+        ProductsList = bl.Product.GetAll();
+        //CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Category));
     }
 
 
@@ -30,7 +40,11 @@ public partial class ProductListWindow : Window
     /// </summary>
     void CategorySelectionChanged(object sender, SelectionChangedEventArgs args)
     {
-        ProductsListview.ItemsSource = bl?.Product.GetByCategory((BO.Category)CategorySelector.SelectedItem);
+        var element = args.OriginalSource as ComboBox;
+        if (element != null)
+        {
+            ProductsList = bl?.Product.GetByCategory((BO.Category)element.SelectedItem);
+        }
     }
 
     /// <summary>
@@ -39,7 +53,7 @@ public partial class ProductListWindow : Window
     private void AddNewProductButton_Click(object sender, RoutedEventArgs e)
     {
         new ProductWindow().ShowDialog();
-        ProductsListview.ItemsSource = bl?.Product.GetAll();
+        ProductsList = bl?.Product.GetAll();
     }
 
     /// <summary>
@@ -47,9 +61,16 @@ public partial class ProductListWindow : Window
     /// </summary>
     private void ProductsListview_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        BO.ProductForList selectedProduct = (BO.ProductForList)ProductsListview.Items[ProductsListview.SelectedIndex];
-        new ProductWindow(selectedProduct.ID).ShowDialog();
-        ProductsListview.ItemsSource = bl?.Product.GetAll();
+        //var element = ((e.OriginalSource as FrameworkElement).DataContext as BO.ProductForList).ID;
+        //var name = element?.Name;
+        //BO.ProductForList selectedProduct = (BO.ProductForList).Items[ProductsListview.SelectedIndex];
+        var element = e.OriginalSource as FrameworkElement;
+        if (element != null && element.DataContext is BO.ProductForList)
+        {
+            new ProductWindow((element.DataContext as BO.ProductForList)!.ID).ShowDialog();
+            ProductsList = bl?.Product.GetAll();
+        }
+        
     }
 
     /// <summary>

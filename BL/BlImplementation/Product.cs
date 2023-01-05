@@ -5,6 +5,7 @@ internal class Product : IProduct
 {
     private DalApi.IDal? dal =  DalApi.Factory.Get();
 
+
     #region ADD
     public void Add(BO.Product item)
     {
@@ -40,6 +41,7 @@ internal class Product : IProduct
         try
         {
             dal.Product.Delete(id);
+
         }
         catch (DO.NotFoundException e)
         { 
@@ -135,7 +137,7 @@ internal class Product : IProduct
         try
         {
             if (dal == null) throw new BO.AccessToDataFailedException("cannot access the data layer");
-            dal.Product.Update(Tools.Copy(item, new DO.Product() { Category =  (DO.Category?)item.Category  })) ;
+            dal.Product.Update(Tools.Copy(item, new DO.Product() { Category =  (DO.Category?)item.Category  }));
         }
         catch (DO.NotFoundException e)
         {

@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Products"
         mc:Ignorable="d"
-        Title="ProductListWindow" Height="580" Width="800">
+        Title="ProductListWindow" Height="580" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        >
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="44*"/>
@@ -18,16 +20,16 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
             <ComboBox 
+                ItemsSource="{x:Static local:ProductListWindow.Categories}"
                 SelectionChanged="CategorySelectionChanged"
                 Background="HoneyDew"
-                Name="CategorySelector"
                 HorizontalAlignment= "Stretch"
                 VerticalAlignment="Stretch"
                 Grid.Column="1" 
                />
             <Label Grid.Column="0" Content="Category:" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" FontSize="20"/>
         </Grid>
-        <ListView Name="ProductsListview" Grid.Row="1" MouseDoubleClick="ProductsListview_MouseDoubleClick">
+        <ListView ItemsSource="{Binding ProductsList}"  Grid.Row="1" MouseDoubleClick="ProductsListview_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}"/>
@@ -38,8 +40,8 @@
             </ListView.View>
         </ListView>
 
-        <Button Name="AddNewProduct" Content="Add New Product"  Grid.Row="2" HorizontalAlignment="Left" Margin="659,10,0,10" Padding="5" Click="AddNewProductButton_Click" Width="112"/>
-        <Button Name="backButton" Content="Back"  Grid.Row="2" HorizontalAlignment="Left" Margin="18,10,0,10" Padding="5" Click="backButton_Click" Width="94"/>
+        <Button  Content="Add New Product"  Grid.Row="2" HorizontalAlignment="Left" Margin="659,10,0,10" Padding="5" Click="AddNewProductButton_Click" Width="112"/>
+        <Button  Content="Back"  Grid.Row="2" HorizontalAlignment="Left" Margin="18,10,0,10" Padding="5" Click="backButton_Click" Width="94"/>
 
     </Grid>
 </Window>
