@@ -22,7 +22,7 @@ public interface IOrder
     /// <param name="id">id of order</param>
     /// <param name="shipDate">the date of the order shipping</param>
     /// <returns>the updated order</returns>
-    public Order ShipOrder(int id, DateTime? shipDate);
+    public Order ShipOrder(int id, DateTime? shipDate = null);
 
     /// <summary>
     /// updates the delivery date of the order
@@ -30,7 +30,7 @@ public interface IOrder
     /// <param name="id">id of order</param>
     /// <param name="shipDate">the date of the order shipping</param>
     /// <returns>the updated order</returns>
-    public Order DeliverOrder(int id, DateTime? deliveryDate);
+    public Order DeliverOrder(int id, DateTime? deliveryDate = null);
 
     /// <summary>
     /// tracks the order by id,

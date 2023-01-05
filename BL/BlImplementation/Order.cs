@@ -91,10 +91,11 @@ internal class Order : IOrder
 
     #region UPDATE
 
-    public BO.Order ShipOrder(int id, DateTime? shipDate)
+    public BO.Order ShipOrder(int id, DateTime? shipDate = null)
     {
         try
         {
+            shipDate ??= DateTime.Now;
             DO.Order dalOrder = dal?.Order.Get(o => o?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
 
             if (shipDate > DateTime.Now)
@@ -120,10 +121,11 @@ internal class Order : IOrder
         }
     }
 
-    public BO.Order DeliverOrder(int id,DateTime? deliveryDate)
+    public BO.Order DeliverOrder(int id,DateTime? deliveryDate = null)
     {
         try
         {
+            deliveryDate ??= DateTime.Now;
             DO.Order dalOrder = dal?.Order.Get(o => o?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
 
             if (deliveryDate > DateTime.Now)

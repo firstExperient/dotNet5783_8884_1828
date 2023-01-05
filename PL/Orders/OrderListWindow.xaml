@@ -27,7 +27,7 @@
             <ColumnDefinition Width="197*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <ListView MouseDoubleClick="updateOrder" ItemsSource="{Binding OrdersList}" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2">
+        <ListView MouseDoubleClick="UpdateOrder" ItemsSource="{Binding OrdersList}"  Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
@@ -38,14 +38,14 @@
                     <GridViewColumn Header="ship order" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="ship"></Button>
+                                <Button Content="ship" Click="ShipOrder"></Button>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="deliver order">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="deliver"></Button>
+                                <Button Content="deliver" Click="DeliverOrder"></Button>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

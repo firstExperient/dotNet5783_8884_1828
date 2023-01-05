@@ -46,6 +46,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.5*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -72,6 +73,10 @@
                     <TextBlock Text="{Binding Order.OrderDate}"/>
                     <TextBlock Text="{Binding Order.ShipDate}"/>
                     <TextBlock Text="{Binding Order.DeliveryDate}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <Button Content="ship" Click="ShipOrder"></Button>
+                    <Button Content="deliver" Click="DeliverOrder"></Button>
                 </StackPanel>
             </Grid>
             <ListView ItemTemplate="{StaticResource orderItem}" ItemsSource="{Binding Order.Items}">
