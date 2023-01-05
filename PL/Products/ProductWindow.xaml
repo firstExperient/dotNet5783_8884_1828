@@ -4,13 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Products"
+        xmlns:PL="clr-namespace:PL"
         mc:Ignorable="d"
         Title="ProductWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
-        
+        <PL:AddToVisible x:Key="AddToVisible"/>
+        <PL:UpdateToVisible x:Key="UpdateToVisible"/>
+        <PL:AddToEnable x:Key="AddToEnable"/>
     </Window.Resources>
-    <Grid HorizontalAlignment="Left" Width="800" DataContext="{Binding Product}">
+    <Grid HorizontalAlignment="Left" Width="800">
         <Grid.RowDefinitions>
 
         </Grid.RowDefinitions>
@@ -19,17 +22,17 @@
             <ColumnDefinition Width="751*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,92,0,0" TextWrapping="Wrap" Text="ID: " VerticalAlignment="Top"/>
-        <TextBox Text="{Binding ID, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Margin="351,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="IntIntputValidate"/>
+        <TextBox Text="{Binding Product.ID, Mode=TwoWay}" IsEnabled="{Binding State, Converter={StaticResource AddToEnable}}"  Grid.Column="1" HorizontalAlignment="Left" Margin="351,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="IntIntputValidate"/>
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,133,0,0" TextWrapping="Wrap" Text="Category: " VerticalAlignment="Top"/>
-        <ComboBox ItemsSource="{x:Static local:ProductWindow.Categories}" SelectedItem="{Binding Category, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Margin="351,129,0,0" VerticalAlignment="Top" Width="120" Text="None"/>
+        <ComboBox ItemsSource="{x:Static local:ProductWindow.Categories}" SelectedItem="{Binding Product.Category, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Margin="351,129,0,0" VerticalAlignment="Top" Width="120" Text="None"/>
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="224,176,0,0" TextWrapping="Wrap" Text="Name: " VerticalAlignment="Top"/>
-        <TextBox Text="{Binding Name, Mode=TwoWay}"  Grid.Column="1" HorizontalAlignment="Left" Margin="351,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding Product.Name, Mode=TwoWay}"  Grid.Column="1" HorizontalAlignment="Left" Margin="351,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="226,215,0,0" TextWrapping="Wrap" Text="Price: " VerticalAlignment="Top" RenderTransformOrigin="0.709,2.882"/>
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="226,251,0,0" TextWrapping="Wrap" Text="In Stock: " VerticalAlignment="Top"/>
-        <TextBox Text="{Binding InStock, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Margin="351,249,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="IntIntputValidate"/>
-        <TextBox Text="{Binding Price, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Margin="351,213,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="DoubleInputValidate"/>
-        <Button Grid.Column="1" Content="Add" HorizontalAlignment="Left" Margin="226,301,0,0" VerticalAlignment="Top" Click="ConfirmAddBtn_Click"/>
-        <Button Grid.Column="1" Content="Update" HorizontalAlignment="Left" Margin="428,300,0,0" VerticalAlignment="Top" Click="ConfirmUpdateBtn_Click"/>
+        <TextBox Text="{Binding Product.InStock, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Margin="351,249,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="IntIntputValidate"/>
+        <TextBox Text="{Binding Product.Price, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Left" Margin="351,213,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="DoubleInputValidate"/>
+        <Button Grid.Column="1" Visibility="{Binding State, Converter={StaticResource AddToVisible}}" Content="Add" HorizontalAlignment="Left" Margin="226,301,0,0" VerticalAlignment="Top" Click="ConfirmAddBtn_Click"/>
+        <Button Grid.Column="1"  Visibility="{Binding State, Converter={StaticResource UpdateToVisible}}" Content="Update" HorizontalAlignment="Left" Margin="428,300,0,0" VerticalAlignment="Top" Click="ConfirmUpdateBtn_Click"/>
         
     </Grid>
 </Window>

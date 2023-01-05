@@ -16,6 +16,7 @@ public partial class ProductListWindow : Window
 
     public static readonly DependencyProperty ListProperty 
         = DependencyProperty.Register(nameof(ProductsList), typeof(IEnumerable<BO.ProductForList?>), typeof(ProductListWindow));
+
     public static IEnumerable Categories = Enum.GetValues(typeof(BO.Category));
 
     public IEnumerable<BO.ProductForList?>? ProductsList
