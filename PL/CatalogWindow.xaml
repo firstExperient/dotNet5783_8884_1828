@@ -5,9 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="CatalogWindow" Height="450" Width="800"
+        Title="CatalogWindow" Height="450" Width="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <Grid>
-        
-    </Grid>
+        <Window.Resources>
+            <DataTemplate x:Key="Product" DataType="BO:ProductsForList">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ID}"></TextBlock>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock Text="{Binding Price}"></TextBlock>
+                    <TextBlock Text="{Binding Category}"></TextBlock>
+                    <TextBlock Text="{Binding Amount}"></TextBlock>
+                    <TextBlock Text="{Binding InStock}"></TextBlock>
+            </StackPanel>
+            </DataTemplate>
+        </Window.Resources>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="197*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <ListView MouseDoubleClick="AddProductToCart" ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
+                        <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"></GridViewColumn>
+                        <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}"></GridViewColumn>
+                        <GridViewColumn Header="amount of items" DisplayMemberBinding="{Binding Amount}"></GridViewColumn>
+                        <GridViewColumn Header="In Stock" DisplayMemberBinding="{Binding InStock}"></GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
 </Window>

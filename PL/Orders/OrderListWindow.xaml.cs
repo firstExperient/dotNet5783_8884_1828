@@ -39,6 +39,7 @@ public partial class OrderListWindow : Window
             OrdersList = new ObservableCollection<BO.OrderForList?>(bl?.Order.GetAll()!);
         }
     }
+
     private void ShipOrder(object sender, RoutedEventArgs e)
     {
         var element = e.OriginalSource as FrameworkElement;
