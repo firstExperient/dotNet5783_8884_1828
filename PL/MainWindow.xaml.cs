@@ -26,7 +26,7 @@ public partial class MainWindow : Window
     /// </summary>
     private void ShowProductsButton_Click(object sender, RoutedEventArgs e)
     {
-        new OrderListWindow().Show();
+        new OrderTrackingWindow().Show();
         Close();
     }
 }
