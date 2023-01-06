@@ -29,4 +29,10 @@ public partial class MainWindow : Window
         new OrderListWindow().Show();
         Close();
     }
+
+    private void NewOrderButton_Click(object sender, RoutedEventArgs e)
+    {
+        new CatalogWindow().Show();
+        Close();
+    }
 }
