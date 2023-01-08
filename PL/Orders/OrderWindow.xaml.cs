@@ -11,8 +11,8 @@ public partial class OrderWindow : Window
 {
     private IBl? bl = BlApi.Factory.Get();
 
-    public static readonly DependencyProperty StateProperty = DependencyProperty.Register(nameof(State), typeof(State), typeof(ProductWindow));
-    public State State
+    public static readonly DependencyProperty StateProperty = DependencyProperty.Register(nameof(StateO), typeof(State), typeof(ProductWindow));
+    public State StateO
     {
         get => (State)GetValue(StateProperty);
         set => SetValue(StateProperty, value);
@@ -27,7 +27,7 @@ public partial class OrderWindow : Window
     }
     public OrderWindow(int orderId, State state)
     {
-        State = state;
+        StateO = state;
         Order = bl.Order.Get(orderId);
         InitializeComponent();
     }

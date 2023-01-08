@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PL.Orders;
+using PL.Products;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,16 @@ namespace PL
         public Administration()
         {
             InitializeComponent();
+        }
+
+        private void ShowProducts(object sender, RoutedEventArgs e)
+        {
+            new ProductListWindow().Show();
+        }
+
+        private void ShowOrders(object sender, RoutedEventArgs e)
+        {
+            new OrderListWindow().Show();
         }
     }
 }

@@ -78,15 +78,15 @@
                     <TextBlock Text="{Binding Order.DeliveryDate}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="2">
-                    <Button Content="ship" IsEnabled="{Binding Order.Status, Converter={StaticResource ConfirmedToEnable}}"  Visibility="{Binding State, Converter={StaticResource UpdateToVisible}}" Click="ShipOrder"/>
-                    <Button Content="deliver" IsEnabled="{Binding Order.Status, Converter={StaticResource ShipedToEnable}}" Visibility="{Binding State, Converter={StaticResource UpdateToVisible}}"  Click="DeliverOrder"/>
+                    <Button Content="ship" IsEnabled="{Binding Order.Status, Converter={StaticResource ConfirmedToEnable}}"  Visibility="{Binding StateO, Converter={StaticResource UpdateToVisible}}" Click="ShipOrder"/>
+                    <Button Content="deliver" IsEnabled="{Binding Order.Status, Converter={StaticResource ShipedToEnable}}" Visibility="{Binding StateO, Converter={StaticResource UpdateToVisible}}"  Click="DeliverOrder"/>
                 </StackPanel>
                 <ListBox ItemsSource="{Binding Order.Items}" Grid.Row="1"  Grid.ColumnSpan="3" HorizontalAlignment="Center">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
                                 <ContentControl Content="{Binding}" />
-                                <Button Content="remove item" Click="Remove_Item" Visibility="{Binding State,Converter={StaticResource UpdateToVisible},RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}" IsEnabled="{Binding Order.Status,Converter={StaticResource ConfirmedToEnable},RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}"/>
+                                <Button Content="remove item" Click="Remove_Item" Visibility="{Binding StateO,Converter={StaticResource UpdateToVisible},RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}" IsEnabled="{Binding Order.Status,Converter={StaticResource ConfirmedToEnable},RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

@@ -24,15 +24,20 @@ public partial class MainWindow : Window
     /// <summary>
     /// This fuction opens the product list window
     /// </summary>
-    private void ShowProductsButton_Click(object sender, RoutedEventArgs e)
+    private void TrackOrder(object sender, RoutedEventArgs e)
     {
         new OrderTrackingWindow().Show();
         Close();
     }
 
-    private void NewOrderButton_Click(object sender, RoutedEventArgs e)
+    private void NewOrder(object sender, RoutedEventArgs e)
     {
         new CatalogWindow().Show();
+        Close();
+    }
+    private void Administration(object sender, RoutedEventArgs e)
+    {
+        new Administration().Show();
         Close();
     }
 }

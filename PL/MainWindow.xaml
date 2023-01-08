@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Name="ShowProductsButton" Content="Product" HorizontalAlignment="Left" Margin="360,168,0,0" VerticalAlignment="Top" Click="ShowProductsButton_Click" Width="76"/>
-        <Button Name="NewOrderButton" Content="New Order" HorizontalAlignment="Left" Margin="360,193,0,0" VerticalAlignment="Top" Click="NewOrderButton_Click" Width="76"/>
+        <Button  Content="administor" HorizontalAlignment="Left" Margin="360,168,0,0" VerticalAlignment="Top" Click="Administration" Width="76"/>
+        <Button Content="New Order" HorizontalAlignment="Left" Margin="360,193,0,0" VerticalAlignment="Top" Click="NewOrder" Width="76"/>
+        <Button Content="Track Order"  HorizontalAlignment="Left" Margin="360,219,0,0" VerticalAlignment="Top" Click="TrackOrder" Width="76"/>
         <Image HorizontalAlignment="Left" Height="100" Margin="228,244,0,0" VerticalAlignment="Top" Width="100" Source="https://images.unsplash.com/photo-1587925358603-c2eea5305bbc?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d3Jpc3R3YXRjaHxlbnwwfHwwfHw%3D&amp;w=1000&amp;q=80"/>
         <Image HorizontalAlignment="Left" Height="100" Margin="478,244,0,0" VerticalAlignment="Top" Width="100" Source="https://price4u.co.il/2184-thickbox_default/armani-wrist-watch-women-ar1926.jpg" RenderTransformOrigin="0.5,0.5">
             <Image.RenderTransform>
@@ -23,6 +24,8 @@
         <Image HorizontalAlignment="Left" Height="100" Margin="134,113,0,0" VerticalAlignment="Top" Width="100" Source="https://cdn.anscommerce.com/catalog/brandstore/johnson/17_7_20/Sale.jpg" RenderTransformOrigin="-0.71,0.525"/>
         <Image HorizontalAlignment="Left" Height="100" Margin="546,103,0,0" VerticalAlignment="Top" Width="100" Source="https://www.montredo.com/wp-content/uploads/2020/12/TAG-1-586x470.jpg"/>
         <Label Content="Watches Store" HorizontalAlignment="Left" Margin="316,59,0,0" VerticalAlignment="Top" Foreground="#FF115199" FontSize="24"/>
-        <Border BorderBrush="#FF115199" BorderThickness="1"/>
+        <Border BorderBrush="#FF115199" BorderThickness="1">
+           
+        </Border>
     </Grid>
 </Window>
