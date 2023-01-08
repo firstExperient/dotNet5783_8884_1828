@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using PL.Products;
 using System.Windows;
 
 namespace PL.Orders;
@@ -10,6 +11,13 @@ public partial class OrderWindow : Window
 {
     private IBl? bl = BlApi.Factory.Get();
 
+    public static readonly DependencyProperty StateProperty = DependencyProperty.Register(nameof(State), typeof(State), typeof(ProductWindow));
+    public State State
+    {
+        get => (State)GetValue(StateProperty);
+        set => SetValue(StateProperty, value);
+    }
+
     public static readonly DependencyProperty OrderProperty = DependencyProperty.Register(nameof(Order), typeof(BO.Order), typeof(OrderWindow));
 
     public BO.Order Order
@@ -17,8 +25,9 @@ public partial class OrderWindow : Window
         get { return (BO.Order)GetValue(OrderProperty); }
         set { SetValue(OrderProperty, value); }
     }
-    public OrderWindow(int orderId)
+    public OrderWindow(int orderId, State state)
     {
+        State = state;
         Order = bl.Order.Get(orderId);
         InitializeComponent();
     }

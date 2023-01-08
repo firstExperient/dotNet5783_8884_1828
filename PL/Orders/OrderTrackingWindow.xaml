@@ -11,13 +11,27 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="enter order id:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBox Text="{Binding OrderId}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="40" HorizontalAlignment="Left"/>
+        <TextBox Text="{Binding OrderId}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="60" />
+        <Button Click="GetOrderStatus" Grid.Column="2" Content="confirm" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        <TextBlock Text="Order status: " Grid.Row="1" HorizontalAlignment="Right"/>
+        <TextBlock Text="{Binding Order.Status}" Grid.Row="1" Grid.Column="1"/>
+        <ListView ItemsSource="{Binding Order.TrackingList}" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}"/>
+                    <GridViewColumn Header="Descreption" DisplayMemberBinding="{Binding Descreption}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Click="ShowOrderDetails" Content="Order details" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left"/>
     </Grid>
 </Window>

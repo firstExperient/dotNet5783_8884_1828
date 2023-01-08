@@ -8,7 +8,7 @@
         Title="CatalogWindow" Height="450" Width="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
         <Window.Resources>
-            <DataTemplate x:Key="Product" DataType="BO:ProductsForList">
+            <DataTemplate x:Key="Product" DataType="BO:ProductForList">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding ID}"></TextBlock>
                     <TextBlock Text="{Binding Name}"></TextBlock>
