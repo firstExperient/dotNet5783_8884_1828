@@ -5,13 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:BO="clr-namespace:BO;assembly=BL"
         xmlns:local="clr-namespace:PL.Orders"
+        xmlns:PL="clr-namespace:PL"
         mc:Ignorable="d"
         Title="OrderWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         >
     <Window.Resources>
-        <DataTemplate x:Key="orderItem" DataType="BO:OrderItem">
-            <Expander Header="{Binding Name}">
+        <PL:UpdateToVisible x:Key="UpdateToVisible"/>
+        <PL:ConfirmedToEnable x:Key="ConfirmedToEnable"/>
+        <PL:ShipedToEnable x:Key="ShipedToEnable"/>
+        <DataTemplate  DataType="{x:Type BO:OrderItem}">
+            <Expander Header="{Binding Name}" Width="250">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.5*"/>
@@ -35,7 +39,6 @@
                         <TextBox Text="{Binding Amount}"/>
                         <TextBlock Text="{Binding TotalPrice}"/>
                     </StackPanel>
-                    <Button Grid.Row="1" Click="Remove_Item">remove item</Button>
                 </Grid>
             </Expander>
         </DataTemplate>
@@ -75,9 +78,19 @@
                     <TextBlock Text="{Binding Order.DeliveryDate}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="2">
-                    <Button Content="ship" Click="ShipOrder"></Button>
-                    <Button Content="deliver" Click="DeliverOrder"></Button>
+                    <Button Content="ship" IsEnabled="{Binding Order.Status, Converter={StaticResource ConfirmedToEnable}}"  Visibility="{Binding State, Converter={StaticResource UpdateToVisible}}" Click="ShipOrder"/>
+                    <Button Content="deliver" IsEnabled="{Binding Order.Status, Converter={StaticResource ShipedToEnable}}" Visibility="{Binding State, Converter={StaticResource UpdateToVisible}}"  Click="DeliverOrder"/>
                 </StackPanel>
+                <ListBox ItemsSource="{Binding Order.Items}" Grid.Row="1"  Grid.ColumnSpan="3" HorizontalAlignment="Center">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <ContentControl Content="{Binding}" />
+                                <Button Content="remove item" Click="Remove_Item" Visibility="{Binding State,Converter={StaticResource UpdateToVisible},RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}" IsEnabled="{Binding Order.Status,Converter={StaticResource ConfirmedToEnable},RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </StackPanel>
     </Grid>

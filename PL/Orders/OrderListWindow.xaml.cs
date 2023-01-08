@@ -1,6 +1,4 @@
 ﻿
-using PL.Products;
-using System.Collections.Generic;
 using System.Windows;
 using BlApi;
 using System.Linq;
