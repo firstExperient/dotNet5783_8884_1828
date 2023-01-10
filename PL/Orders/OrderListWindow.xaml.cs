@@ -1,5 +1,4 @@
-﻿
-using PL.Products;
+﻿using PL.Products;
 using System.Collections.Generic;
 using System.Windows;
 using BlApi;
@@ -69,5 +68,4 @@ public partial class OrderListWindow : Window
             OrdersList[index].Status = bl?.Order.DeliverOrder(orderId).Status;
         }
     }
-
 }

@@ -1,9 +1,9 @@
 ﻿using BO;
-using PL.Orders;
 using System.Collections.ObjectModel;
 using System.Windows;
 using BlApi;
 using PL.Products;
+using PL.Orders;
 
 namespace PL
 {
@@ -31,11 +31,17 @@ namespace PL
         private void AddProductToCart(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var element = e.OriginalSource as FrameworkElement;
-            if (element != null && element.DataContext is BO.OrderForList)
+            if (element != null && element.DataContext is BO.ProductForList)
             {
                 new ProductWindow((element.DataContext as BO.ProductForList)!.ID).ShowDialog();
                 ProductsList = new ObservableCollection<BO.ProductForList?>(bl?.Product.GetAll()!);
             }
+        }
+
+        private void ShowProductViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            new ProductView().Show();
+            Close();
         }
     }
 }
