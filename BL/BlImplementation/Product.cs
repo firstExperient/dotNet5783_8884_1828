@@ -126,6 +126,23 @@ internal class Product : IProduct
         return blProducts;
     }
 
+    public IEnumerable<BO.ProductItem?> GetCatalog(BO.Cart cart)
+    {
+        IEnumerable<DO.Product?> products =   dal?.Product.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
+        List<BO.ProductItem?> productItems = new List<BO.ProductItem?>();
+        foreach (DO.Product? product in products)
+        {
+            BO.OrderItem? orderItem = cart.Items?.Find((x) => x?.ProductId == product?.ID);
+            int amount = orderItem?.Amount ?? 0;
+            productItems.Add(Tools.Copy(product, new BO.ProductItem()
+            {
+                Category = (BO.Category?)product?.Category,
+                InStock = product?.InStock > 0 ? true : false,
+                Amount = amount
+            }));
+        }
+        return productItems;
+    }
 
     #endregion
 

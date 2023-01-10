@@ -15,26 +15,37 @@ namespace PL
         private IBl? bl = BlApi.Factory.Get();
 
         public static readonly DependencyProperty ListProperty
-      = DependencyProperty.Register(nameof(ProductItem), typeof(ObservableCollection<BO.ProductForList?>), typeof(CatalogWindow));
+      = DependencyProperty.Register(nameof(ProductItem), typeof(ObservableCollection<BO.ProductItem?>), typeof(CatalogWindow));
 
-        public ObservableCollection<BO.ProductForList?> ProductsList
+        public ObservableCollection<BO.ProductItem?> ProductsList
         {
-            get => (ObservableCollection<BO.ProductForList?>)GetValue(ListProperty);
+            get => (ObservableCollection<BO.ProductItem?>)GetValue(ListProperty);
             set => SetValue(ListProperty, value);
         }
+
+        public static readonly DependencyProperty CartProperty
+      = DependencyProperty.Register(nameof(Cart), typeof(BO.Cart), typeof(CatalogWindow));
+
+        public BO.Cart? Cart
+        {
+            get => (BO.Cart)GetValue(CartProperty);
+            set => SetValue(CartProperty, value);
+        }
+
         public CatalogWindow()
         {
-            ProductsList = new ObservableCollection<BO.ProductForList?>(bl.Product.GetAll());
+            Cart = new BO.Cart();
+            ProductsList = new ObservableCollection<BO.ProductItem?>(bl.Product.GetCatalog(Cart));
             InitializeComponent();
         }
 
         private void AddProductToCart(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var element = e.OriginalSource as FrameworkElement;
-            if (element != null && element.DataContext is BO.ProductForList)
+            if (element != null && element.DataContext is BO.ProductItem)
             {
-                new ProductWindow((element.DataContext as BO.ProductForList)!.ID).ShowDialog();
-                ProductsList = new ObservableCollection<BO.ProductForList?>(bl?.Product.GetAll()!);
+                new ProductWindow((element.DataContext as BO.ProductItem)!.ID).ShowDialog();
+                ProductsList = new ObservableCollection<BO.ProductItem?>(bl?.Product.GetCatalog(Cart)!);
             }
         }
 

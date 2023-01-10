@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
+        xmlns:BO ="clr-namespace:BO;assembly=BL"
         mc:Ignorable="d"
         Title="CatalogWindow" Height="450" Width="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
-        <DataTemplate x:Key="Product" DataType="BO:ProductForList">
+        <DataTemplate  DataType="{x:Type BO:ProductItem}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding ID}"></TextBlock>
                 <TextBlock Text="{Binding Name}"></TextBlock>
@@ -20,22 +21,23 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="197*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
-        <ListView MouseDoubleClick="AddProductToCart" ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
+        
+        <DataGrid ItemsSource="{Binding ProductsList}">
+            
+        </DataGrid>
+        <!--<ListView MouseDoubleClick="AddProductToCart" ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
+                   
+                    --><!--<GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
                     <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"></GridViewColumn>
                     <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}"></GridViewColumn>
                     <GridViewColumn Header="amount of items" DisplayMemberBinding="{Binding Amount}"></GridViewColumn>
-                    <GridViewColumn Header="In Stock" DisplayMemberBinding="{Binding InStock}"></GridViewColumn>
+                    <GridViewColumn Header="In Stock" DisplayMemberBinding="{Binding InStock}"></GridViewColumn>--><!--
                 </GridView>
             </ListView.View>
-        </ListView>
+        </ListView>-->
         <Button Content="Show cart" HorizontalAlignment="Left" Margin="472,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="ShowProductViewButton_Click"/>
     </Grid>
 </Window>
