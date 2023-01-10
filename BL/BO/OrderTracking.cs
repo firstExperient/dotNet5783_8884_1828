@@ -19,7 +19,7 @@ public class OrderTracking
     /// <summary>
     /// a list of dates and a string represent the order status at that date
     /// </summary>
-    public List<(DateTime?, string?)>? TrackingList = new();
+    public List<(DateTime? Date, string? Descreption)>? TrackingList = new();
 
     /// <summary>
     /// a string of the order-tracking details

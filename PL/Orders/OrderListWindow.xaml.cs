@@ -1,5 +1,4 @@
-﻿using PL.Products;
-using System.Collections.Generic;
+﻿
 using System.Windows;
 using BlApi;
 using System.Linq;
@@ -34,7 +33,7 @@ public partial class OrderListWindow : Window
         var element = e.OriginalSource as FrameworkElement;
         if (element != null && element.DataContext is BO.OrderForList)
         {
-            new OrderWindow((element.DataContext as BO.OrderForList)!.ID).ShowDialog();
+            new OrderWindow((element.DataContext as BO.OrderForList)!.ID,State.Update).ShowDialog();
             OrdersList = new ObservableCollection<BO.OrderForList?>(bl?.Order.GetAll()!);
         }
     }

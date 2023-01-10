@@ -15,8 +15,8 @@ public partial class ProductWindow : Window
 {
     private IBl? bl = BlApi.Factory.Get();
 
-    public static readonly DependencyProperty StateProperty = DependencyProperty.Register(nameof(State), typeof(State), typeof(ProductWindow));
-    public State State
+    public static readonly DependencyProperty StateProperty = DependencyProperty.Register(nameof(StateP), typeof(State), typeof(ProductWindow));
+    public State StateP
     {
         get => (State)GetValue(StateProperty);
         set => SetValue(StateProperty, value);
@@ -35,7 +35,7 @@ public partial class ProductWindow : Window
     public ProductWindow()
     {
         InitializeComponent();
-        State = State.Add;
+        StateP = State.Add;
         Product = new();
 
         //set the right look for the add mode
@@ -49,7 +49,7 @@ public partial class ProductWindow : Window
     public ProductWindow(int id)
     {
         InitializeComponent();
-        State = State.Update;
+        StateP = State.Update;
         try
         {
             Product = bl.Product.AdminGet(id);
