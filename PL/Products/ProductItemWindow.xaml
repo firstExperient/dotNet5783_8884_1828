@@ -1,0 +1,42 @@
+﻿<Window x:Class="PL.Products.ProductItemWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Products"
+        xmlns:PL="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="ProductItemWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <PL:InCart x:Key="InCart"/>
+        <PL:NotInCart x:Key="NotInCart"/>
+        <PL:CategoryCnv x:Key="CategoryCnv"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <!--<StackPanel Grid.Column="0" HorizontalAlignment="Right">
+            <TextBlock Text="Product ID:"/>
+            <TextBlock Text="Product Name:"/>
+            <TextBlock Text="Product Category:"/>
+            <TextBlock Text="Product Price:"/>
+            <TextBlock Text="Product Amount:"/>
+            <TextBlock Text="Product Instock:"/>
+        </StackPanel>-->
+        <StackPanel Grid.Column="0">
+            
+            <TextBlock Text="{Binding Product.Name}"/>
+            <TextBlock Text="{Binding Product.Category,Converter={StaticResource CategoryCnv}}"/>
+            <TextBlock Text="{Binding Product.Price}"/>
+            <TextBox Text="{Binding Product.Amount}" IsEnabled="{Binding Product.InStock}"/>
+            <TextBlock Text="{Binding Product.InStock}"/>
+            <TextBlock Text="{Binding Product.ID}"/>
+            <Button Content="Add To Cart" Visibility="{Binding Product.Amount,Converter={StaticResource NotInCart}}" Click="AddToCart"/>
+            <Button Content="Remove From Cart" Visibility="{Binding Product.Amount,Converter={StaticResource InCart}}"/>
+            <Button Content="return" Click="ReturnToCatalog"/>
+        </StackPanel>
+    </Grid>
+</Window>

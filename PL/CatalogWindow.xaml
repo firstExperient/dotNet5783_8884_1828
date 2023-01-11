@@ -10,34 +10,30 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
         <DataTemplate  DataType="{x:Type BO:ProductItem}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding ID}"></TextBlock>
+            <StackPanel Orientation="Horizontal" >
                 <TextBlock Text="{Binding Name}"></TextBlock>
                 <TextBlock Text="{Binding Price}"></TextBlock>
-                <TextBlock Text="{Binding Category}"></TextBlock>
                 <TextBlock Text="{Binding Amount}"></TextBlock>
                 <TextBlock Text="{Binding InStock}"></TextBlock>
+                <Button Content="Add To Cart" Click="AddToCart"/>
+                <Button Content="Show Details" Click="ShowProductItem"/>
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        
-        <DataGrid ItemsSource="{Binding ProductsList}">
-            
-        </DataGrid>
-        <!--<ListView MouseDoubleClick="AddProductToCart" ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
-            <ListView.View>
+        <ListView  ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
+            <!--<ListView.View>
                 <GridView>
                    
-                    --><!--<GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
+                    <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
                     <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Price}"></GridViewColumn>
                     <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}"></GridViewColumn>
                     <GridViewColumn Header="amount of items" DisplayMemberBinding="{Binding Amount}"></GridViewColumn>
-                    <GridViewColumn Header="In Stock" DisplayMemberBinding="{Binding InStock}"></GridViewColumn>--><!--
+                    <GridViewColumn Header="In Stock" DisplayMemberBinding="{Binding InStock}"></GridViewColumn>
                 </GridView>
-            </ListView.View>
-        </ListView>-->
-        <Button Content="Show cart" HorizontalAlignment="Left" Margin="472,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="ShowProductViewButton_Click"/>
+            </ListView.View>-->
+        </ListView>
+        <Button Content="Show cart" HorizontalAlignment="Left" Margin="472,370,0,0" VerticalAlignment="Top" Height="32" Width="95"/>
     </Grid>
 </Window>

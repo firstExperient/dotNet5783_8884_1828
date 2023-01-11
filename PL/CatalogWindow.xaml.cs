@@ -26,7 +26,7 @@ namespace PL
         public static readonly DependencyProperty CartProperty
       = DependencyProperty.Register(nameof(Cart), typeof(BO.Cart), typeof(CatalogWindow));
 
-        public BO.Cart? Cart
+        public BO.Cart Cart
         {
             get => (BO.Cart)GetValue(CartProperty);
             set => SetValue(CartProperty, value);
@@ -38,21 +38,33 @@ namespace PL
             ProductsList = new ObservableCollection<BO.ProductItem?>(bl.Product.GetCatalog(Cart));
             InitializeComponent();
         }
+        public CatalogWindow(Cart cart)
+        {
+            Cart = cart;
+            ProductsList = new ObservableCollection<BO.ProductItem?>(bl.Product.GetCatalog(Cart));
+            InitializeComponent();
+        }
 
-        private void AddProductToCart(object sender, System.Windows.Input.MouseButtonEventArgs e)
+
+
+        private void AddToCart(object sender, RoutedEventArgs e)
         {
             var element = e.OriginalSource as FrameworkElement;
             if (element != null && element.DataContext is BO.ProductItem)
             {
-                new ProductWindow((element.DataContext as BO.ProductItem)!.ID).ShowDialog();
-                ProductsList = new ObservableCollection<BO.ProductItem?>(bl?.Product.GetCatalog(Cart)!);
+                //new ProductWindow((element.DataContext as BO.ProductItem)!.ID).ShowDialog();
+                //ProductsList = new ObservableCollection<BO.ProductItem?>(bl?.Product.GetCatalog(Cart)!);
             }
         }
 
-        private void ShowProductViewButton_Click(object sender, RoutedEventArgs e)
+        private void ShowProductItem(object sender, RoutedEventArgs e)
         {
-            new ProductView().Show();
-            Close();
+            var element = e.OriginalSource as FrameworkElement;
+            if (element != null && element.DataContext is BO.ProductItem)
+            {
+                new ProductItemWindow((element.DataContext as BO.ProductItem)!,Cart).Show();
+                Close();
+            }
         }
     }
 }
