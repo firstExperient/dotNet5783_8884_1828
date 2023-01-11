@@ -24,7 +24,7 @@
             <ColumnDefinition Width="197*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <ListView MouseDoubleClick="AddProductToCart" ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
+        <ListView MouseDoubleClick="ShowProductDetails" ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
@@ -36,6 +36,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Show cart" HorizontalAlignment="Left" Margin="472,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="ShowProductViewButton_Click"/>
+        <Button Content="Show cart" HorizontalAlignment="Left" Margin="472,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="ShowCartButton_Click"/>
     </Grid>
 </Window>

@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace PL.Products
 {
     /// <summary>
-    /// Interaction logic for ProductView.xaml
+    /// Interaction logic for ProductInfo.xaml
     /// </summary>
-    public partial class ProductView : Window
+    public partial class ProductInfo : Window
     {
-        public ProductView()
+        public ProductInfo()
         {
             InitializeComponent();
         }
