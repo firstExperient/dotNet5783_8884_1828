@@ -58,12 +58,12 @@ internal class Product : IProduct
         try
         {
             DO.Product dalProduct = dal?.Product.Get(p => p?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
-            BO.OrderItem? orderItem = cart.Items?.Find((x) => x?.ProductId == id);
+            BO.OrderItem? orderItem = cart.Items?.Where((x) => x?.ProductId == id).FirstOrDefault();//.Find((x) => x?.ProductId == id);
             int amount = orderItem?.Amount ?? 0;
             return Tools.Copy(dalProduct, new BO.ProductItem()
             {
                 Category = (BO.Category?)dalProduct.Category,
-                InStock = dalProduct.InStock > 0 ? true : false,
+                InStock = dalProduct.InStock - amount > 0 ? true : false,
                 Amount = amount
             });
         }
@@ -132,12 +132,12 @@ internal class Product : IProduct
         List<BO.ProductItem?> productItems = new List<BO.ProductItem?>();
         foreach (DO.Product? product in products)
         {
-            BO.OrderItem? orderItem = cart.Items?.Find((x) => x?.ProductId == product?.ID);
+            BO.OrderItem? orderItem = cart.Items?.Where((x) => x?.ProductId == product?.ID).FirstOrDefault();
             int amount = orderItem?.Amount ?? 0;
             productItems.Add(Tools.Copy(product, new BO.ProductItem()
             {
                 Category = (BO.Category?)product?.Category,
-                InStock = product?.InStock > 0 ? true : false,
+                InStock = product?.InStock - amount > 0 ? true : false,
                 Amount = amount
             }));
         }

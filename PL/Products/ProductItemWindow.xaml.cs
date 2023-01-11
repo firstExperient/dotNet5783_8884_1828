@@ -1,6 +1,8 @@
 ﻿
 using BlApi;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PL.Products;
 
@@ -32,6 +34,14 @@ public partial class ProductItemWindow : Window
     private void AddToCart(object sender, RoutedEventArgs e)
     {
         Cart = bl!.Cart.AddItem(Product.ID, Cart);
+        Product = bl.Product.Get(Product.ID, Cart);
+    }
+
+    
+
+    private void DecreaseOne(object sender, RoutedEventArgs e)
+    {
+        Cart = bl!.Cart.UpdateItemAmount(Product.ID, Cart, Product.Amount - 1);
         Product = bl.Product.Get(Product.ID, Cart);
     }
 

@@ -37,10 +37,6 @@ public partial class ProductWindow : Window
         InitializeComponent();
         StateP = State.Add;
         Product = new();
-
-        //set the right look for the add mode
-        //ConfirmAddBtn.Visibility = Visibility.Visible;
-        //ConfirmUpdateBtn.Visibility = Visibility.Hidden;
     }
 
     /// <summary>
@@ -53,10 +49,6 @@ public partial class ProductWindow : Window
         try
         {
             Product = bl.Product.AdminGet(id);
-            //set the right look for the update mode
-            //ConfirmAddBtn.Visibility = Visibility.Hidden;
-            //ConfirmUpdateBtn.Visibility = Visibility.Visible;
-            //ProductIdInput.IsEnabled = false;
         }
         catch (BO.NegativeNumberException)
         {

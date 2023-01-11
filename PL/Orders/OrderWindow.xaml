@@ -14,34 +14,6 @@
         <PL:UpdateToVisible x:Key="UpdateToVisible"/>
         <PL:ConfirmedToEnable x:Key="ConfirmedToEnable"/>
         <PL:ShipedToEnable x:Key="ShipedToEnable"/>
-        <DataTemplate  DataType="{x:Type BO:OrderItem}">
-            <Expander Header="{Binding Name}" Width="250">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Column="0" Grid.Row="0">
-                        <TextBlock Text="product id:"/>
-                        <TextBlock Text="product name:"/>
-                        <TextBlock Text="price per product:  "/>
-                        <TextBlock Text="amount:"/>
-                        <TextBlock Text="total price:"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Grid.Row="0">
-                        <TextBlock Text="{Binding ProductId}"/>
-                        <TextBlock Text="{Binding Name}"/>
-                        <TextBlock Text="{Binding Price}"/>
-                        <TextBox Text="{Binding Amount}"/>
-                        <TextBlock Text="{Binding TotalPrice}"/>
-                    </StackPanel>
-                </Grid>
-            </Expander>
-        </DataTemplate>
     </Window.Resources>
     <Grid>
         <StackPanel>
