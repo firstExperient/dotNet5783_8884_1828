@@ -48,7 +48,7 @@ public class Order
     /// <summary>
     /// the list of the items
     /// </summary>
-    public List<OrderItem>? Items { get; set; } = new();
+    public IEnumerable<OrderItem>? Items { get; set; } = new List<OrderItem>();
 
     /// <summary>
     /// the order's total price

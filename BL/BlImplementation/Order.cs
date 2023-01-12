@@ -59,7 +59,7 @@ internal class Order : IOrder
             return Tools.Copy(dalOrder, new BO.Order()
             {
                 Status = status,
-                Items = (List<BO.OrderItem>)blOrderItems,
+                Items = blOrderItems,
                 TotalPrice = (from item in blOrderItems select item.TotalPrice).Sum(),
             });
         }
@@ -143,7 +143,7 @@ internal class Order : IOrder
             DO.Order dalOrder = dal?.Order.Get(o => o?.ID == order.ID) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
             if (dalOrder.ShipDate != null)
                 throw new BO.IntegrityDamageException("cannot change an order after it was shipped");
-            order.Items ??= new();
+            order.Items ??= new List<BO.OrderItem>();
             foreach (var item in order.Items)//for each item - validate it,calculate the new number in stock and then save it in the database
             {
                 if (item.Amount < 0)
