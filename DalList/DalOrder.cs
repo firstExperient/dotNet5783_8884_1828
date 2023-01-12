@@ -34,22 +34,20 @@ namespace Dal;
     //    throw new NotFoundException("Order not found");
     //}
 
-    public Order Get(Predicate<Order?> match)
+    public Order Get(Func<Order?,bool> match)
     {
-        Order? order = DataSource.Orders.Find(match);
-        if(order == null) throw new NotFoundException("Order not found");
-        return (Order)order!;
+        return DataSource.Orders.Where(match).FirstOrDefault() ?? throw new NotFoundException("Order not found");
     }
 
     /// <summary>
     /// a function that returns all the orders
     /// </summary>
     /// <returns>a list of all orders</returns>
-    public IEnumerable<Order?> GetAll(Predicate<Order?>? match)
+    public IEnumerable<Order?> GetAll(Func<Order?,bool>? match)
     {
         if(match == null)
             return new List<Order?>(DataSource.Orders);
-        return DataSource.Orders.FindAll(match);
+        return DataSource.Orders.Where(match);
     }
 
     #endregion
@@ -85,19 +83,7 @@ namespace Dal;
     /// <param name="id">the ID of the order to delete</param>
     public void Delete(int id)
     {
-        bool flag = false;
-        int i = 0;
-        for (; i < DataSource.Orders.Count; i++)
-        {
-            if (DataSource.Orders[i]?.ID == id)
-            {
-                flag = true;
-                break;
-            }
-        }
-        if (!flag) throw new NotFoundException("Order not found");
-        else
-            DataSource.Orders.RemoveAt(i);
+        DataSource.Orders.RemoveAll(x => x?.ID == id);
     }
 
     #endregion

@@ -29,30 +29,20 @@ internal class DalOrderItem: IOrderItem
     /// </summary>
     /// <param name="id">ID of order-item to get</param>
     /// <returns>the order-item that has the given ID</returns>
-    //public OrderItem Get(int id)
-    //{
-    //    for (int i = 0; i < DataSource.OrderItems.Count; i++)
-    //    {
-    //        if (DataSource.OrderItems[i].HasValue &&  DataSource.OrderItems[i]!.Value.ID == id) return (OrderItem)DataSource.OrderItems[i]!;
-    //    }
-    //    throw new NotFoundException("Order item not found");
-    //}
-    public OrderItem Get(Predicate<OrderItem?> match)
+    public OrderItem Get(Func<OrderItem?,bool> match)
     {
-        OrderItem? orderItem = DataSource.OrderItems.Find(match);
-        if(orderItem == null) throw new NotFoundException("Order item not found");
-        return (OrderItem)orderItem!;
+        return DataSource.OrderItems.Where(match).FirstOrDefault() ?? throw new NotFoundException("Order item not found");
     }
 
     /// <summary>
     /// a function that returns all the order-items
     /// </summary>
     /// <returns>an array of all order-items</returns>
-    public IEnumerable<OrderItem?> GetAll(Predicate<OrderItem?>? match)
+    public IEnumerable<OrderItem?> GetAll(Func<OrderItem?,bool>? match)
     {
         if (match == null)
             return new List<OrderItem?>(DataSource.OrderItems);
-        return DataSource.OrderItems.FindAll(match);
+        return DataSource.OrderItems.Where(match);
     }
 
 
@@ -88,19 +78,7 @@ internal class DalOrderItem: IOrderItem
     /// <param name="id">the ID of the order-item to delete</param>
     public void Delete(int id)
     {
-        bool flag = false;
-        int i = 0;
-        for (; i < DataSource.OrderItems.Count; i++)
-        {
-            if (DataSource.OrderItems[i]?.ID == id)
-            {
-                flag = true;
-                break;
-            }
-        }
-        if (!flag) throw new NotFoundException("Order item not found");
-        else
-            DataSource.OrderItems.RemoveAt(i);
+        DataSource.OrderItems.RemoveAll(x => x?.ID == id);
     }
 
     #endregion

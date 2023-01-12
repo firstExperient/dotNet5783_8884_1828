@@ -33,14 +33,14 @@
             </ListView.View>--><!--
         </ListView>-->
         <ListBox Width="100" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding Order.TrackingList}">
-            <ListBox.ItemTemplate>
+            <!--<ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding Path=Item1}"/>
                         <TextBlock Text="{Binding Path=[Item2]}"/>
                     </StackPanel>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
+            </ListBox.ItemTemplate>-->
            
         </ListBox>
         <Button Click="ShowOrderDetails" Content="Order details" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left"/>
