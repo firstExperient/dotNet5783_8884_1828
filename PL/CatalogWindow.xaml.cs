@@ -15,38 +15,63 @@ namespace PL
         private IBl? bl = BlApi.Factory.Get();
 
         public static readonly DependencyProperty ListProperty
-      = DependencyProperty.Register(nameof(ProductItem), typeof(ObservableCollection<BO.ProductForList?>), typeof(CatalogWindow));
+      = DependencyProperty.Register(nameof(ProductItem), typeof(ObservableCollection<BO.ProductItem?>), typeof(CatalogWindow));
 
-        public ObservableCollection<BO.ProductForList?> ProductsList
+        public ObservableCollection<BO.ProductItem?> ProductsList
         {
-            get => (ObservableCollection<BO.ProductForList?>)GetValue(ListProperty);
+            get => (ObservableCollection<BO.ProductItem?>)GetValue(ListProperty);
             set => SetValue(ListProperty, value);
         }
+
+        public static readonly DependencyProperty CartProperty
+      = DependencyProperty.Register(nameof(Cart), typeof(BO.Cart), typeof(CatalogWindow));
+
+        public BO.Cart Cart
+        {
+            get => (BO.Cart)GetValue(CartProperty);
+            set => SetValue(CartProperty, value);
+        }
+
         public CatalogWindow()
         {
-            ProductsList = new ObservableCollection<BO.ProductForList?>(bl.Product.GetAll());
+            Cart = new BO.Cart();
+            ProductsList = new ObservableCollection<BO.ProductItem?>(bl.Product.GetCatalog(Cart));
+            InitializeComponent();
+        }
+        public CatalogWindow(Cart cart)
+        {
+            Cart = cart;
+            ProductsList = new ObservableCollection<BO.ProductItem?>(bl.Product.GetCatalog(Cart));
             InitializeComponent();
         }
 
-        private void AddProductToCart(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-           
-        }
-
-        private void ShowProductDetails(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-
-          /*  var element = e.OriginalSource as FrameworkElement;
-            if (element != null && element.DataContext is BO.ProductForList)
-            {
-                new ProductWindow(*//*(element.DataContext as BO.ProductForList)!.ID*//*).ShowDialog();
-                ProductsList = new ObservableCollection<BO.ProductForList?>(bl?.Product.GetAll()!);
-            }*/
-        }
-
-        private void ShowCartButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// This fuction opens the cart window
+        /// </summary>
+        private void ShowCart_click(object sender, RoutedEventArgs e)
         {
             new CartView().Show();
+            //Close();
+        }
+
+        private void AddToCart(object sender, RoutedEventArgs e)
+        {
+            var element = e.OriginalSource as FrameworkElement;
+            if (element != null && element.DataContext is BO.ProductItem)
+            {
+                //new ProductWindow((element.DataContext as BO.ProductItem)!.ID).ShowDialog();
+                //ProductsList = new ObservableCollection<BO.ProductItem?>(bl?.Product.GetCatalog(Cart)!);
+            }
+        }
+
+        private void ShowProductItem(object sender, RoutedEventArgs e)
+        {
+            var element = e.OriginalSource as FrameworkElement;
+            if (element != null && element.DataContext is BO.ProductItem)
+            {
+                new ProductItemWindow((element.DataContext as BO.ProductItem)!,Cart).Show();
+                Close();
+            }
         }
     }
 }
