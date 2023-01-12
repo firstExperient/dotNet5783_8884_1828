@@ -23,10 +23,44 @@
                 <Button Margin="60,20,0,0" Content="Show Details" Click="ShowProductItem" Height="25" Width="75"/>
             </StackPanel>
         </DataTemplate>
+        <local:IsGroupBy x:Key="IsGroupBy"/>
+        <local:IsNotGroupBy x:Key="IsNotGroupBy"/>
+        <CollectionViewSource x:Key='src' 
+                      Source="{Binding ProductsList}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Category" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </Window.Resources>
     <Grid>
-        <ListView  ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44*"/>
+            <RowDefinition Height="519*"/>
+            <RowDefinition Height="Auto" MinHeight="30"/>
+            <RowDefinition Height="Auto" MinHeight="61.04"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="Category:  "/>
+            <ComboBox Width="100"  ItemsSource="{x:Static local:CatalogWindow.Categories}"
+                SelectionChanged="CategorySelectionChanged"/>
+        </StackPanel>
+        <ListView Visibility="{Binding IsChecked,ElementName=GroupByCategory,Converter={StaticResource IsNotGroupBy}}" Grid.Row="1"  ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
         </ListView>
-        <Button Content="Show cart" HorizontalAlignment="Left" Click="ShowCart" Margin="472,370,0,0" VerticalAlignment="Top" Height="32" Width="95"/>
+        <ListView Visibility="{Binding IsChecked,ElementName=GroupByCategory,Converter={StaticResource IsGroupBy}}" Grid.Row="1"  ItemsSource="{Binding Source={StaticResource src}}"  Grid.ColumnSpan="2">
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+        </ListView>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <CheckBox x:Name="GroupByCategory" IsChecked="False"/>
+            <TextBlock Text="Group by category"/>
+        </StackPanel>
+        <Button Grid.Row="3" Content="Show cart" HorizontalAlignment="Right" Click="ShowCart"  VerticalAlignment="Center" Height="32" Width="95"/>
     </Grid>
 </Window>

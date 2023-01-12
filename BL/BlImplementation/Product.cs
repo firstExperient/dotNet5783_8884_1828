@@ -117,20 +117,22 @@ internal class Product : IProduct
         return blProducts;
     }
 
-    public IEnumerable<BO.ProductItem?> GetCatalog(BO.Cart cart)
+    public IEnumerable<IGrouping<BO.Category?, BO.ProductItem>> GetCatalog(BO.Cart cart)
     {
         //fix this - find a smart way to do this
         IEnumerable<DO.Product?> products =   dal?.Product.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
-        IEnumerable<BO.ProductItem?> productItems = from product in products
-                                                    where product != null
-                                                    let orderItem = cart.Items?.Where((x) => x?.ProductId == product?.ID).FirstOrDefault()
-                                                    let amount = orderItem?.Amount ?? 0
-                                                    select Tools.Copy(product, new BO.ProductItem()
-                                                    {
-                                                        Category = (BO.Category?)product?.Category,
-                                                        InStock = product?.InStock - amount > 0 ? true : false,
-                                                        Amount = amount
-                                                    });
+        IEnumerable<IGrouping<BO.Category?,BO.ProductItem>> productItems = (from product in products
+                                                     where product != null
+                                                     let orderItem = cart.Items?.Where((x) => x?.ProductId == product?.ID).FirstOrDefault()
+                                                     let amount = orderItem?.Amount ?? 0
+                                                     select Tools.Copy(product, new BO.ProductItem()
+                                                     {
+                                                         Category = (BO.Category?)product?.Category,
+                                                         InStock = product?.InStock - amount > 0 ? true : false,
+                                                         Amount = amount
+                                                     })).GroupBy(x => x.Category);
+                                                    
+            
         return productItems;
     }
 

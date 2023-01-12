@@ -83,3 +83,32 @@ internal class OutOfStock : IValueConverter
         throw new NotImplementedException();
     }
 }
+
+internal class IsGroupBy : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (!(value is bool)) throw new ArgumentException("value argument must be of type bool");
+        if ((bool)value == true) return Visibility.Visible;
+        return Visibility.Collapsed;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+internal class IsNotGroupBy : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (!(value is bool)) throw new ArgumentException("value argument must be of type bool");
+        if ((bool)value == false) return Visibility.Visible;
+        return Visibility.Collapsed;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
