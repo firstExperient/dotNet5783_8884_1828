@@ -3,7 +3,7 @@ using BlApi;
 using System.ComponentModel;
 using System.Windows;
 
-namespace PL.Cart;
+namespace PL;
 
 /// <summary>
 /// Interaction logic for Cart.xaml
@@ -89,5 +89,11 @@ public partial class CartWindow : Window,INotifyPropertyChanged
                 MessageBox.Show($"we are sorry, {orderItem.Name} is out of stock");
             }
         }
+    }
+
+    private void FinishOrder(object sender, RoutedEventArgs e)
+    {
+        new FinishOrderWindow(Cart!).Show();
+        Close();
     }
 }

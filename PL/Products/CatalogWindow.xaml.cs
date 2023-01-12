@@ -4,7 +4,6 @@ using System.Windows;
 using BlApi;
 using PL.Products;
 using PL.Orders;
-using PL.Cart;
 
 namespace PL
 {
