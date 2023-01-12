@@ -8,7 +8,7 @@ using System;
 namespace PL;
 
 
-internal class InCart : IValueConverter
+internal class InCartToVisible : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -23,7 +23,7 @@ internal class InCart : IValueConverter
     }
 }
 
-internal class NotInCart : IValueConverter
+internal class NotInCartToVisible : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -60,6 +60,21 @@ internal class UpdateToVisible : IValueConverter
     {
         if (!(value is State)) throw new ArgumentException("value argument must be of type State");
         if ((State)value == State.Update) return Visibility.Visible;
+        return Visibility.Collapsed;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+internal class OutOfStock : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (!(value is bool)) throw new ArgumentException("value argument must be of type bool");
+        if ((bool)value == false) return Visibility.Visible;
         return Visibility.Collapsed;
     }
 

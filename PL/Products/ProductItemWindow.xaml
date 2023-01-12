@@ -9,34 +9,27 @@
         Title="ProductItemWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
-        <PL:InCart x:Key="InCart"/>
-        <PL:NotInCart x:Key="NotInCart"/>
+        <PL:InCartToVisible x:Key="InCart"/>
+        <PL:NotInCartToVisible x:Key="NotInCart"/>
+        <PL:InCartToEnable x:Key="CanDecrease"/>
         <PL:CategoryCnv x:Key="CategoryCnv"/>
+        <PL:OutOfStock x:Key="OutOfStock"/>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <!--<StackPanel Grid.Column="0" HorizontalAlignment="Right">
-            <TextBlock Text="Product ID:"/>
-            <TextBlock Text="Product Name:"/>
-            <TextBlock Text="Product Category:"/>
-            <TextBlock Text="Product Price:"/>
-            <TextBlock Text="Product Amount:"/>
-            <TextBlock Text="Product Instock:"/>
-        </StackPanel>-->
+
         <StackPanel Grid.Column="0">
-            
             <TextBlock Text="{Binding Product.Name}"/>
             <TextBlock Text="{Binding Product.Category,Converter={StaticResource CategoryCnv}}"/>
             <TextBlock Text="{Binding Product.Price}"/>
-            <TextBox Text="{Binding Product.Amount}" IsEnabled="{Binding Product.InStock}"/>
-            <TextBlock Text="{Binding Product.InStock}"/>
-            <TextBlock Text="{Binding Product.ID}"/>
-            <Button Content="Add To Cart" Visibility="{Binding Product.Amount,Converter={StaticResource NotInCart}}" Click="AddToCart"/>
-            <Button Content="Remove From Cart" Visibility="{Binding Product.Amount,Converter={StaticResource InCart}}"/>
-            <Button Content="return" Click="ReturnToCatalog"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="+" Width="30"  IsEnabled="{Binding Product.InStock}" Click="AddToCart"/>
+                <TextBlock Text="{Binding Product.Amount}"  Width="30" />
+                <Button Content="-" Width="30"  IsEnabled="{Binding Product.Amount,Converter={StaticResource CanDecrease}}" Click="DecreaseOne"/>
+                <Button Content="Add To Cart" Visibility="{Binding Product.Amount,Converter={StaticResource NotInCart}}" IsEnabled="{Binding Product.InStock}" Click="AddToCart"/>
+                <Button Content="Remove From Cart" Visibility="{Binding Product.Amount,Converter={StaticResource InCart}}" Click="RemoveFromCart"/>
+            </StackPanel>
+            <TextBlock Text="Out of stock" Visibility="{Binding Product.InStock,Converter={StaticResource OutOfStock}}"/>
+            <Button Content="return" Click="ReturnToCatalog" Width="100"/>
         </StackPanel>
     </Grid>
 </Window>

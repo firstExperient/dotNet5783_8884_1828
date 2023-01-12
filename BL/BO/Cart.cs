@@ -1,4 +1,6 @@
 ﻿using DO;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace BO;
 public class Cart
@@ -21,12 +23,13 @@ public class Cart
     /// <summary>
     /// list of items in cart
     /// </summary>
-    public List<OrderItem?>? Items { get; set; } = new();
+    public ObservableCollection<OrderItem?>? Items { get; set; } = new();
 
     /// <summary>
     /// the total price of all items in cart
     /// </summary>
     public double TotalPrice { get; set; }
+
 
     /// <summary>
     /// a string of the cart details
