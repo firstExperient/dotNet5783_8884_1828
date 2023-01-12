@@ -1,8 +1,5 @@
 ﻿
 using BlApi;
-using PL.Products;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 
@@ -18,25 +15,14 @@ public partial class CartWindow : Window,INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private BO.Cart cart;
-    public BO.Cart Cart
+    private BO.Cart? cart;
+    public BO.Cart? Cart
     {
         get { return cart; }
         set { 
             cart = value;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs("Cart"));
-        }
-    }
-
-    public ObservableCollection<BO.OrderItem?>? Items
-    {
-        get { return cart.Items; }
-        set
-        {
-            cart.Items = value;
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs("Items"));
         }
     }
 
@@ -49,7 +35,7 @@ public partial class CartWindow : Window,INotifyPropertyChanged
 
     private void ShowCatalog(object sender, RoutedEventArgs e)
     {
-        new CatalogWindow(Cart).Show();
+        new CatalogWindow(Cart!).Show();
         Close();
     }
 
@@ -61,8 +47,7 @@ public partial class CartWindow : Window,INotifyPropertyChanged
             var orderItem = (BO.OrderItem)element.DataContext;
             try
             {
-                Cart = bl!.Cart.UpdateItemAmount(orderItem.ProductId, Cart, orderItem.Amount + 1);
-                Items = Cart.Items;
+                Cart = bl!.Cart.UpdateItemAmount(orderItem.ProductId, Cart!, orderItem.Amount + 1);
             }
             catch (BO.OutOfStockException)
             {
@@ -81,8 +66,7 @@ public partial class CartWindow : Window,INotifyPropertyChanged
             var orderItem = (BO.OrderItem)element.DataContext;
             try
             {
-                Cart = bl!.Cart.UpdateItemAmount(orderItem.ProductId, Cart, orderItem.Amount - 1);
-                Items = Cart.Items;
+                Cart = bl!.Cart.UpdateItemAmount(orderItem.ProductId, Cart!, orderItem.Amount - 1);
             }
             catch (BO.OutOfStockException)
             {

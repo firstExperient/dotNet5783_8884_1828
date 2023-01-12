@@ -13,7 +13,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" ItemsSource="{Binding Items}">
+        <ListView Grid.Row="0" ItemsSource="{Binding Cart.Items}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="300" Header="Product" DisplayMemberBinding="{Binding Name}"/>
