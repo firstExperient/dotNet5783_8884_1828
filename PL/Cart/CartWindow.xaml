@@ -26,9 +26,9 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Width="30" Content="+" Click="AddOne"/>
+                                    <Button Width="25" Content="+" Click="AddOne"/>
                                     <TextBlock Width="30"  Text="{Binding Amount}" TextAlignment="Center"/>
-                                    <Button Width="30"  Content="-" Click="DecreaseOne"/>
+                                    <Button Width="25"  Content="-" Click="DecreaseOne"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -37,15 +37,17 @@
                     <GridViewColumn Header="" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="x" Click="RemoveItem"/>
+                                <Button Content="remove" Click="RemoveItem" Width="55"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-        <TextBlock Grid.Row="1" Text="{Binding Cart.TotalPrice,Converter={StaticResource Double}}"/>
-        <Button Grid.Row="3" Content="finish order" Click="FinishOrder"/>
-        <Button Grid.Row="2" Content="Return to catalog" Click="ShowCatalog"/>
+        <TextBlock Margin="0,308,0,69" Text="Total Price: " FontSize="15" />
+        <TextBlock Margin="0,328,0,10" Text="{Binding Cart.TotalPrice,Converter={StaticResource Double}}" FontSize="12"/>
+
+        <Button Content="finish order" Click="FinishOrder" Margin="249,369,368,10"/>
+        <Button Content="Return to catalog" Click="ShowCatalog" Width="100" Background="White" Margin="613,382,37,0" Height="20" VerticalAlignment="Top"/>
     </Grid>
 </Window>
