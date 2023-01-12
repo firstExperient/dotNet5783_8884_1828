@@ -101,7 +101,7 @@ internal class Cart : ICart
 
     #region confirm order
 
-    public void ConfirmOrder(BO.Cart cart)
+    public int ConfirmOrder(BO.Cart cart)
     {
         if (cart.CustomerName == null || cart.CustomerName == "") throw new BO.NullValueException("customer name cannot be null or an empty string");
         if(cart.CustomerEmail == null || cart.CustomerEmail == "")throw new BO.NullValueException("customer email cannot be null or an empty string");
@@ -147,6 +147,7 @@ internal class Cart : ICart
                     throw new BO.NotFoundException("product not found", e);
                 }
         }
+        return orderId;
     }
 
     #endregion

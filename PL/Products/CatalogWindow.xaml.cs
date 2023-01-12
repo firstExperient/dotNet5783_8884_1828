@@ -4,7 +4,6 @@ using System.Windows;
 using BlApi;
 using PL.Products;
 using PL.Orders;
-using PL.Cart;
 
 namespace PL
 {
@@ -41,14 +40,7 @@ namespace PL
             InitializeComponent();
         }
 
-        /// <summary>
-        /// This fuction opens the cart window
-        /// </summary>
-        private void ShowCart_click(object sender, RoutedEventArgs e)
-        {
-            new CartView().Show();
-            //Close();
-        }
+        
 
         private void AddToCart(object sender, RoutedEventArgs e)
         {

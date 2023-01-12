@@ -26,5 +26,6 @@ public interface ICart
     /// confirmes the order - creates an order from the cart details and save to database
     /// </summary>
     /// <param name="cart">the cart</param>
-    public void ConfirmOrder(Cart cart);
+    /// <returns>the id of the new order</returns>
+    public int ConfirmOrder(Cart cart);
 }

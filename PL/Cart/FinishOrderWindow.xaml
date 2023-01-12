@@ -1,0 +1,36 @@
+﻿<Window x:Class="PL.FinishOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="FinishOrderWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <local:DoubleToFixed x:Key="Double"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Name: "/>
+        <TextBox Width="85" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Cart.CustomerName}"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Addres: "/>
+        <TextBox Width="85" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Cart.CustomerAdress}"/>
+        <TextBlock Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Mail: "/>
+        <TextBox Width="85" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Cart.CustomerEmail}"/>
+        <TextBlock Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Total price: "/>
+        <TextBlock Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Cart.TotalPrice,Converter={StaticResource Double}}"/>
+        <Button Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Confirm" Click="MakeOrder"/>
+    </Grid>
+</Window>

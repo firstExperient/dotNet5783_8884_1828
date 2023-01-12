@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using DO;
+using System.Collections.ObjectModel;
 
 namespace BlImplementation;
 
@@ -218,7 +219,7 @@ internal class Order : IOrder
             if (dalOrder.DeliveryDate != null) status = BO.OrderStatus.Delivered;
 
             //figuring the trackingList
-            List<(DateTime?, string?)> tracking = new();
+            ObservableCollection<(DateTime?, string?)> tracking = new();
             tracking.Add((dalOrder.OrderDate, "order confirmed"));
 
             if(dalOrder.ShipDate != null)
