@@ -74,4 +74,20 @@ public partial class CartWindow : Window,INotifyPropertyChanged
             }
         }
     }
+    private void RemoveItem(object sender, RoutedEventArgs e)
+    {
+        var element = e.OriginalSource as FrameworkElement;
+        if (element != null && element.DataContext is BO.OrderItem)
+        {
+            var orderItem = (BO.OrderItem)element.DataContext;
+            try
+            {
+                Cart = bl!.Cart.UpdateItemAmount(orderItem.ProductId, Cart!, 0);
+            }
+            catch (BO.OutOfStockException)
+            {
+                MessageBox.Show($"we are sorry, {orderItem.Name} is out of stock");
+            }
+        }
+    }
 }

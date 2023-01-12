@@ -33,7 +33,7 @@
                     <GridViewColumn Header="" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="x"/>
+                                <Button Content="x" Click="RemoveItem"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                         </GridViewColumn>

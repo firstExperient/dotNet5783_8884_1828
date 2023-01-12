@@ -41,14 +41,7 @@ namespace PL
             InitializeComponent();
         }
 
-        /// <summary>
-        /// This fuction opens the cart window
-        /// </summary>
-        private void ShowCart_click(object sender, RoutedEventArgs e)
-        {
-            new CartView().Show();
-            //Close();
-        }
+        
 
         private void AddToCart(object sender, RoutedEventArgs e)
         {
