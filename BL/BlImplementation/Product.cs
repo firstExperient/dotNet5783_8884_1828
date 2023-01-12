@@ -32,16 +32,12 @@ internal class Product : IProduct
 
     public void Delete(int id)
     {
-        List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)(dal?.OrderItem.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"));
-        foreach (DO.OrderItem? item in orderItems)
-        {
-            if (item?.ProductId == id)
-                throw new BO.IntegrityDamageException("cannot delete the product without hurting data integrity. There are orders for the product");
-        }
+        IEnumerable<DO.OrderItem?> orderItems = dal?.OrderItem.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
+        if (orderItems.Any(x => x?.ProductId == id))
+            throw new BO.IntegrityDamageException("cannot delete the product without hurting data integrity. There are orders for the product");
         try
         {
             dal.Product.Delete(id);
-
         }
         catch (DO.NotFoundException e)
         { 
@@ -58,7 +54,7 @@ internal class Product : IProduct
         try
         {
             DO.Product dalProduct = dal?.Product.Get(p => p?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
-            BO.OrderItem? orderItem = cart.Items?.Where((x) => x?.ProductId == id).FirstOrDefault();//.Find((x) => x?.ProductId == id);
+            BO.OrderItem? orderItem = cart.Items?.Where((x) => x?.ProductId == id).FirstOrDefault();
             int amount = orderItem?.Amount ?? 0;
             return Tools.Copy(dalProduct, new BO.ProductItem()
             {
@@ -98,14 +94,11 @@ internal class Product : IProduct
     /// <returns>all the products in a list</returns>
     public IEnumerable<BO.ProductForList?> GetAll()
     {
-        List<DO.Product?> dalProducts = (List<DO.Product?>)(dal?.Product.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"));
-        List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
-        foreach (DO.Product? item in dalProducts)
-        {
-            //didnt find a way to do this without checking if item is null, because i want to make comletely different thi each time
-            //since tha category is a different type, I had to copy it manually
-            blProducts.Add(item != null ? Tools.Copy(item, new BO.ProductForList() { Category = (BO.Category?)item?.Category }) : null);
-        }
+        IEnumerable<DO.Product?> dalProducts = dal?.Product.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
+        IEnumerable<BO.ProductForList?> blProducts = from item in dalProducts
+                                              where item != null
+                                              orderby item?.ID
+                                              select Tools.Copy(item, new BO.ProductForList() { Category = (BO.Category?)item?.Category });
         return blProducts;
     }
 
@@ -117,30 +110,27 @@ internal class Product : IProduct
     /// <returns>all the products in a list</returns>
     public IEnumerable<BO.ProductForList?> GetByCategory(BO.Category category)
     {
-        List<DO.Product?> dalProducts = (List<DO.Product?>)(dal?.Product.GetAll((product) => product?.Category == (DO.Category)category) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"));
-        List<BO.ProductForList?> blProducts = new List<BO.ProductForList?>();
-        foreach (DO.Product? item in dalProducts)
-        {
-            blProducts.Add(item != null ? Tools.Copy(item, new BO.ProductForList() { Category = (BO.Category?)item?.Category }) : null);
-        }
+        IEnumerable<DO.Product?> dalProducts = dal?.Product.GetAll((product) => product?.Category == (DO.Category)category) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
+        IEnumerable<BO.ProductForList?> blProducts = from item in dalProducts
+                                                     where item != null
+                                                     select Tools.Copy(item, new BO.ProductForList() { Category = (BO.Category?)item?.Category });
         return blProducts;
     }
 
     public IEnumerable<BO.ProductItem?> GetCatalog(BO.Cart cart)
     {
+        //fix this - find a smart way to do this
         IEnumerable<DO.Product?> products =   dal?.Product.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
-        List<BO.ProductItem?> productItems = new List<BO.ProductItem?>();
-        foreach (DO.Product? product in products)
-        {
-            BO.OrderItem? orderItem = cart.Items?.Where((x) => x?.ProductId == product?.ID).FirstOrDefault();
-            int amount = orderItem?.Amount ?? 0;
-            productItems.Add(Tools.Copy(product, new BO.ProductItem()
-            {
-                Category = (BO.Category?)product?.Category,
-                InStock = product?.InStock - amount > 0 ? true : false,
-                Amount = amount
-            }));
-        }
+        IEnumerable<BO.ProductItem?> productItems = from product in products
+                                                    where product != null
+                                                    let orderItem = cart.Items?.Where((x) => x?.ProductId == product?.ID).FirstOrDefault()
+                                                    let amount = orderItem?.Amount ?? 0
+                                                    select Tools.Copy(product, new BO.ProductItem()
+                                                    {
+                                                        Category = (BO.Category?)product?.Category,
+                                                        InStock = product?.InStock - amount > 0 ? true : false,
+                                                        Amount = amount
+                                                    });
         return productItems;
     }
 
