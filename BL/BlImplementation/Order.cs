@@ -1,5 +1,4 @@
 ﻿using BlApi;
-using DO;
 using System.Collections.ObjectModel;
 
 namespace BlImplementation;
@@ -12,37 +11,26 @@ internal class Order : IOrder
 
     public IEnumerable<BO.OrderForList?> GetAll()
     {
-        List<DO.Order?> dalOrders = (List<DO.Order?>)(dal?.Order.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"));
-        List<BO.OrderForList?> blOrders = new List<BO.OrderForList?>();
+        IEnumerable<DO.Order?> dalOrders = dal?.Order.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
+        //the querie config for each order the total price, amount of items and status, than copy rhe rest 
+        //of the details from DO.order
+        //this is where i used select new (the new is inside the Tools.copy function)
+        IEnumerable<BO.OrderForList?> blOrders = from order in dalOrders
 
-        foreach (DO.Order? order in dalOrders)
-        {
-            //figuring order status
-            BO.OrderStatus status = BO.OrderStatus.Confirmed;
-            if (order?.ShipDate != null) status = BO.OrderStatus.Shipped;
-            if (order?.DeliveryDate != null) status = BO.OrderStatus.Delivered;
+                                                 let totalPrice = (from item in dal.OrderItem.GetAll(o => o?.OrderId == order?.ID)
+                                                                   where item != null
+                                                                   select item?.Price * item?.Amount).Sum()
+                                                 let count = dal.OrderItem.GetAll(o => o?.OrderId == order?.ID).Count()
+                                                 let status = order?.DeliveryDate != null ? BO.OrderStatus.Delivered : 
+                                                 (order?.ShipDate != null ? BO.OrderStatus.Shipped : BO.OrderStatus.Confirmed)
 
-            //figuring order total price
-            List<DO.OrderItem?> orderItems = (List<DO.OrderItem?>)dal.OrderItem.GetAll(o=>o?.OrderId == order?.ID);
-
-
-            double totalPrice = 0;
-
-            //totalPrice =
-            //    from item in orderItems
-            //    where item != null
-            //    select (double)(item?.Price * item?.Amount).Sum();
-
-            foreach (var item in orderItems)
-                totalPrice += item != null ? (double)(item?.Price * item?.Amount)! : 0;
-
-            blOrders.Add(order != null ? Tools.Copy(order,new BO.OrderForList()
-            {
-                Status = status,
-                AmountOfItems = orderItems.Count,
-                TotalPrice = totalPrice
-            }) : null);
-        }
+                                                 where order != null
+                                                 select Tools.Copy(order, new BO.OrderForList()
+                                                 {
+                                                     Status = status,
+                                                     AmountOfItems = count,
+                                                     TotalPrice = (double)totalPrice
+                                                 });
         return blOrders;
     }
 
@@ -52,25 +40,17 @@ internal class Order : IOrder
         try
         {
             DO.Order dalOrder = dal?.Order.Get(o => o?.ID == id) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"); 
-            List<DO.OrderItem?> dalOrderItems = dal.OrderItem.GetAll(oi => oi?.OrderId == dalOrder.ID) as List<DO.OrderItem?> ?? throw new BO.NullValueException("encouter a null value");
+            IEnumerable<DO.OrderItem?> dalOrderItems = dal.OrderItem.GetAll(oi => oi?.OrderId == dalOrder.ID);
 
             //creating the orderItem list for the order and figuring order total price 
-            List<BO.OrderItem> blOrderItems = new();
-            double totalPrice = 0;
-            foreach (DO.OrderItem item in dalOrderItems) //temporary - fix this!!!
-            {
-                
-                    
-                    DO.Product product = dal.Product.Get(p => p?.ID == item.ProductId);
-                    totalPrice += item.Price * item.Amount;
-                    blOrderItems.Add(Tools.Copy(item, new BO.OrderItem()
-                    {
-                        Name = product.Name,
-                        TotalPrice = item.Amount * item.Price,
-                    }));
-                 
-            };
- 
+            IEnumerable<BO.OrderItem> blOrderItems = from item in dalOrderItems
+                                                     let product = dal.Product.Get(p => p?.ID == item?.ProductId)
+                                                     where item != null
+                                                     select Tools.Copy(item, new BO.OrderItem()
+                                                     {
+                                                         Name = product.Name,
+                                                         TotalPrice = (double)(item?.Amount * item?.Price)!,
+                                                     });
             //figuring order status
             BO.OrderStatus status = BO.OrderStatus.Confirmed;
             if (dalOrder.ShipDate != null) status = BO.OrderStatus.Shipped;
@@ -80,7 +60,7 @@ internal class Order : IOrder
             {
                 Status = status,
                 Items = blOrderItems,
-                TotalPrice = totalPrice,
+                TotalPrice = (from item in blOrderItems select item.TotalPrice).Sum(),
             });
         }
         catch (DO.NotFoundException e)
@@ -163,7 +143,7 @@ internal class Order : IOrder
             DO.Order dalOrder = dal?.Order.Get(o => o?.ID == order.ID) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
             if (dalOrder.ShipDate != null)
                 throw new BO.IntegrityDamageException("cannot change an order after it was shipped");
-            order.Items ??= new();
+            order.Items ??= new List<BO.OrderItem>();
             foreach (var item in order.Items)//for each item - validate it,calculate the new number in stock and then save it in the database
             {
                 if (item.Amount < 0)
