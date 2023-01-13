@@ -3,26 +3,42 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using BlApi;
 using PL.Products;
-using PL.Orders;
+using System.Collections.Generic;
+using System.Linq;
+using System.Collections;
+using System;
+using System.Windows.Controls;
+using System.ComponentModel;
 
 namespace PL
 {
     /// <summary>
     /// Interaction logic for CatalogWindow.xaml
     /// </summary>
-    public partial class CatalogWindow : Window
+    public partial class CatalogWindow : Window,INotifyPropertyChanged
     {
         private IBl? bl = BlApi.Factory.Get();
 
-        public static readonly DependencyProperty ListProperty
-      = DependencyProperty.Register(nameof(ProductItem), typeof(ObservableCollection<BO.ProductItem?>), typeof(CatalogWindow));
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ObservableCollection<BO.ProductItem?> ProductsList
+
+
+        private IEnumerable<BO.ProductItem?>? productsList;
+
+        public IEnumerable<BO.ProductItem?>? ProductsList
         {
-            get => (ObservableCollection<BO.ProductItem?>)GetValue(ListProperty);
-            set => SetValue(ListProperty, value);
+            get => productsList;
+            set
+            {
+                productsList = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("ProductsList"));
+            }
         }
 
+        private IEnumerable<IGrouping<BO.Category?, BO.ProductItem>> FullProductsList;
+
+        public static IEnumerable Categories = Enum.GetValues(typeof(BO.Category));
 
         public BO.Cart Cart;
         
@@ -30,13 +46,15 @@ namespace PL
         public CatalogWindow()
         {
             Cart = new BO.Cart();
-            ProductsList = new ObservableCollection<BO.ProductItem?>(bl.Product.GetCatalog(Cart));
+            FullProductsList = bl.Product.GetCatalog(Cart);
+            ProductsList = FullProductsList.SelectMany(x=>x.AsEnumerable());
             InitializeComponent();
         }
         public CatalogWindow(BO.Cart cart)
         {
             Cart = cart;
-            ProductsList = new ObservableCollection<BO.ProductItem?>(bl.Product.GetCatalog(Cart));
+            FullProductsList = bl.Product.GetCatalog(Cart);
+            ProductsList = FullProductsList.SelectMany(x => x.AsEnumerable());
             InitializeComponent();
         }
 
@@ -51,7 +69,6 @@ namespace PL
                 try
                 {
                     Cart = bl!.Cart.AddItem(product.ID, Cart);
-                    ProductsList[ProductsList.IndexOf(product)]!.Amount = product.Amount + 1;
                     new CartWindow(Cart).Show();
                     Close();
                 }
@@ -76,6 +93,15 @@ namespace PL
         {
             new CartWindow(Cart).Show();
             Close();
+        }
+
+        private void CategorySelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            var element = args.OriginalSource as ComboBox;
+            if (element != null)
+            {
+                ProductsList = FullProductsList.Where(x=>x.FirstOrDefault()?.Category == (BO.Category)element.SelectedItem).FirstOrDefault()?.AsEnumerable();
+            }
         }
 
     }

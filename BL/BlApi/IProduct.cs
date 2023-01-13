@@ -5,7 +5,7 @@ namespace BlApi;
 public interface IProduct
 {
 
-    public IEnumerable<BO.ProductItem?> GetCatalog(Cart cart);
+    public IEnumerable<IGrouping<BO.Category?, BO.ProductItem>> GetCatalog(Cart cart);
 
     /// <summary>
     /// get all the products from the database, return a list of ProductForList 
