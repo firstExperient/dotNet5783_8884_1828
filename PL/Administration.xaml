@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="Administration" Height="450" Width="800">
     <Grid>
-        <Button Click="ShowProducts" Content="Protucts list" HorizontalAlignment="Center" Margin="0,160,0,0" VerticalAlignment="Top"/>
-        <Button Click="ShowOrders" Content="Orders list" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top"/>
+        <Button Click="ShowProducts" Content="Protucts list" HorizontalAlignment="Center" Margin="0,128,0,0" VerticalAlignment="Top" Height="52" Width="142"/>
+        <Button Click="ShowOrders" Content="Orders list" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top" Height="53" Width="142"/>
 
     </Grid>
 </Window>

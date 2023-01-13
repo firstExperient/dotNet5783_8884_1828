@@ -38,14 +38,14 @@
                     <GridViewColumn Header="ship order" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="ship" Click="ShipOrder"></Button>
+                                <Button Width="100" Height="35" Content="ship" Click="ShipOrder"></Button>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="deliver order">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="deliver" Click="DeliverOrder"></Button>
+                                <Button Width="100" Height="35" Content="deliver" Click="DeliverOrder"></Button>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
