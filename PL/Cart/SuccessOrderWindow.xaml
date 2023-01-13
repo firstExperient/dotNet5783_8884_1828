@@ -9,10 +9,10 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
         <StackPanel>
-            <TextBlock Text="Your order has been successfully placed. Your order ID: "/>
-            <TextBlock Text="{Binding OrderId}"/>
-            <TextBlock Text="You can follow the status of the order on the order tracking page"/>
-            <Button Content="Return to main page" Click="ShowMain"/>
+            <TextBlock Margin="0,0,0,0" Text="Your order has been successfully placed. Your order ID: "/>
+            <TextBlock Margin="0,0,0,0" Text="{Binding OrderId}"/>
+            <TextBlock Margin="0,0,0,0" Text="You can follow the status of the order on the order tracking page"/>
+            <Button Margin="0,365,0,0" Content="Return to main page" Click="ShowMain"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -9,24 +9,28 @@
         Title="CatalogWindow" Height="450" Width="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
-        <DataTemplate  DataType="{x:Type BO:ProductItem}">
-            <StackPanel Orientation="Horizontal" >
-                <TextBlock Text="Name: "></TextBlock>
-                <TextBlock Text="{Binding Name}"></TextBlock>
-                <TextBlock Margin="15,00,0,0" Text="Price: "></TextBlock>
-                <TextBlock Text="{Binding Price}"></TextBlock>
-               <!-- <TextBlock Text="{Binding Amount}"></TextBlock> -->
-                <TextBlock Margin="15,00,0,0" Text="In Stock: "></TextBlock>
-                <TextBlock Text="{Binding InStock}"></TextBlock>
 
-                <Button Margin="60,20,0,0" Content="Add To Cart" Click="AddToCart" Height="25" Width="75"/>
-                <Button Margin="60,20,0,0" Content="Show Details" Click="ShowProductItem" Height="25" Width="75"/>
+        <DataTemplate  DataType="{x:Type BO:ProductItem}">
+
+            <StackPanel Orientation="Horizontal" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="330"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="1" Text="Name: "></TextBlock>
+                    <TextBlock Grid.Column="2" Margin="40,0,0,0" Text="{Binding Name}"></TextBlock>
+                    <TextBlock Grid.Column="3" Margin="150,0,0,0" Text="Price: "></TextBlock>
+                    <TextBlock Grid.Column="4" Margin="190,0,0,0" Text="{Binding Price}"></TextBlock>
+                    <TextBlock Grid.Column="5" Margin="250,0,0,0" Text="In Stock: "></TextBlock>
+                    <TextBlock Grid.Column="6" Margin="300,0,0,0" Text="{Binding InStock}"></TextBlock>
+                </Grid>
+                <Button Margin="60,10,0,0" Content="Add To Cart" Click="AddToCart" Height="25" Width="75"/>
+                <Button Margin="20,10,0,0" Content="Show Details" Click="ShowProductItem" Height="25" Width="75"/>
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <ListView  ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
-        </ListView>
-        <Button Content="Show cart" HorizontalAlignment="Left" Click="ShowCart" Margin="472,370,0,0" VerticalAlignment="Top" Height="32" Width="95"/>
+        <ListView  ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2"/>
+        <Button Content="Show cart" HorizontalAlignment="Left" Click="ShowCart" Margin="466,376,0,0" VerticalAlignment="Top" Height="32" Width="94"/>
     </Grid>
 </Window>

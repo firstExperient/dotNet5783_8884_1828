@@ -43,7 +43,6 @@ public partial class FinishOrderWindow : Window,INotifyPropertyChanged
                 new SuccessOrderWindow((int)orderId!).Show();
                 Close();
             }
-
         }
         catch
         {
