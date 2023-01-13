@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button  Content="administor" HorizontalAlignment="Left" Margin="360,168,0,0" VerticalAlignment="Top" Click="Administration" Width="76"/>
-        <Button Content="New Order" HorizontalAlignment="Left" Margin="360,193,0,0" VerticalAlignment="Top" Click="NewOrder" Width="76"/>
-        <Button Content="Track Order"  HorizontalAlignment="Left" Margin="360,219,0,0" VerticalAlignment="Top" Click="TrackOrder" Width="76"/>
+        <Button Content="administor" HorizontalAlignment="Center" Margin="0,134,0,0" VerticalAlignment="Top" Click="Administration" Width="140" Height="45"/>
+        <Button Content="New Order" HorizontalAlignment="Left" Margin="323,189,10,0" VerticalAlignment="Top" Click="NewOrder" Width="140" Height="45"/>
+        <Button Content="Track Order"  HorizontalAlignment="Center" Margin="0,245,0,0" VerticalAlignment="Top" Click="TrackOrder" Width="140" Height="45"/>
         <Image HorizontalAlignment="Left" Height="180" Margin="152,214,0,0" VerticalAlignment="Top" Width="194" Source="https://images.unsplash.com/photo-1587925358603-c2eea5305bbc?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8d3Jpc3R3YXRjaHxlbnwwfHwwfHw%3D&amp;w=1000&amp;q=80"/>
-        <Image HorizontalAlignment="Left" Height="185" Margin="439,216,0,0" VerticalAlignment="Top" Width="239" Source="https://price4u.co.il/2184-thickbox_default/armani-wrist-watch-women-ar1926.jpg" RenderTransformOrigin="0.5,0.5">
+        <Image HorizontalAlignment="Left" Height="200" Margin="464,206,0,0" VerticalAlignment="Top" Width="235" Source="https://price4u.co.il/2184-thickbox_default/armani-wrist-watch-women-ar1926.jpg" RenderTransformOrigin="0.5,0.5">
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

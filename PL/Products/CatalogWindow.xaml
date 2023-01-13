@@ -15,14 +15,14 @@
             <StackPanel Orientation="Horizontal" >
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="330"/>
+                        <ColumnDefinition Width="315"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="1" Text="Name: "></TextBlock>
                     <TextBlock Grid.Column="2" Margin="40,0,0,0" Text="{Binding Name}"></TextBlock>
-                    <TextBlock Grid.Column="3" Margin="150,0,0,0" Text="Price: "></TextBlock>
-                    <TextBlock Grid.Column="4" Margin="190,0,0,0" Text="{Binding Price}"></TextBlock>
-                    <TextBlock Grid.Column="5" Margin="250,0,0,0" Text="In Stock: "></TextBlock>
-                    <TextBlock Grid.Column="6" Margin="300,0,0,0" Text="{Binding InStock}"></TextBlock>
+                    <TextBlock Grid.Column="3" Margin="145,0,0,0" Text="Price: "></TextBlock>
+                    <TextBlock Grid.Column="4" Margin="180,0,0,0" Text="{Binding Price}"></TextBlock>
+                    <TextBlock Grid.Column="5" Margin="240,0,0,0" Text="In Stock: "></TextBlock>
+                    <TextBlock Grid.Column="6" Margin="290,0,0,0" Text="{Binding InStock}"></TextBlock>
                 </Grid>
                 <Button Margin="60,10,0,0" Content="Add To Cart" Click="AddToCart" Height="25" Width="75"/>
                 <Button Margin="20,10,0,0" Content="Show Details" Click="ShowProductItem" Height="25" Width="75"/>
@@ -39,19 +39,18 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="44*"/>
-            <RowDefinition Height="519*"/>
-            <RowDefinition Height="Auto" MinHeight="30"/>
-            <RowDefinition Height="Auto" MinHeight="61.04"/>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="316*"/>
+            <RowDefinition Height="Auto" MinHeight="40"/>
+            <RowDefinition Height="Auto" MinHeight="51.04"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <TextBlock Text="Category:  "/>
-            <ComboBox Width="100"  ItemsSource="{x:Static local:CatalogWindow.Categories}"
+            <TextBlock Text="Category:    "/>
+            <ComboBox Width="135" ItemsSource="{x:Static local:CatalogWindow.Categories}"
                 SelectionChanged="CategorySelectionChanged"/>
         </StackPanel>
-        <ListView Visibility="{Binding IsChecked,ElementName=GroupByCategory,Converter={StaticResource IsNotGroupBy}}" Grid.Row="1"  ItemsSource="{Binding ProductsList}"  Grid.ColumnSpan="2">
-        </ListView>
-        <ListView Visibility="{Binding IsChecked,ElementName=GroupByCategory,Converter={StaticResource IsGroupBy}}" Grid.Row="1"  ItemsSource="{Binding Source={StaticResource src}}"  Grid.ColumnSpan="2">
+        <ListView Visibility="{Binding IsChecked,ElementName=GroupByCategory,Converter={StaticResource IsNotGroupBy}}" Grid.Row="1"  ItemsSource="{Binding ProductsList}"/>
+        <ListView Visibility="{Binding IsChecked,ElementName=GroupByCategory,Converter={StaticResource IsGroupBy}}" Grid.Row="1"  ItemsSource="{Binding Source={StaticResource src}}">
             <ListView.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
@@ -66,6 +65,6 @@
             <CheckBox x:Name="GroupByCategory" IsChecked="False"/>
             <TextBlock Text="Group by category"/>
         </StackPanel>
-        <Button Grid.Row="3" Content="Show cart" HorizontalAlignment="Right" Click="ShowCart"  VerticalAlignment="Center" Height="32" Width="95"/>
+        <Button Grid.Row="3" Content="Show cart" HorizontalAlignment="Left" Click="ShowCart"  VerticalAlignment="Center" Height="32" Width="95" Margin="479,0,0,0"/>
     </Grid>
 </Window>
