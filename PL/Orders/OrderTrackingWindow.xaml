@@ -24,16 +24,14 @@
         <Button Click="GetOrderStatus" Grid.Column="2" Content="confirm" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="74,0,0,0" Height="32" Width="73"/>
         <TextBlock Text="Order status: " Grid.Row="1" HorizontalAlignment="Left" Margin="265,0,0,0"/>
         <TextBlock Text="{Binding Order.Status}" Grid.Row="1" Grid.Column="1"/>
-        <!--<ListView ItemsSource="{Binding Order.TrackingList}" Width="100" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Center">
-            -->
-        <!--<ListView.View>
+        <ListView ItemsSource="{Binding Order.TrackingList}" Width="100" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+            <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}"/>
                     <GridViewColumn Header="Descreption" DisplayMemberBinding="{Binding Descreption}"/>
                 </GridView>
-            </ListView.View>-->
-        <!--
-        </ListView>-->
+            </ListView.View>
+        </ListView>
         <ListBox Grid.ColumnSpan="3" ItemsSource="{Binding Order.TrackingList}" Margin="360,2,353,18" Grid.Row="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>

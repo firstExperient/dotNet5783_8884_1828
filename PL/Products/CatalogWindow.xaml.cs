@@ -21,8 +21,6 @@ namespace PL
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-
-
         private IEnumerable<BO.ProductItem?>? productsList;
 
         public IEnumerable<BO.ProductItem?>? ProductsList
@@ -42,7 +40,6 @@ namespace PL
 
         public BO.Cart Cart;
         
-
         public CatalogWindow()
         {
             Cart = new BO.Cart();
@@ -50,6 +47,7 @@ namespace PL
             ProductsList = FullProductsList.SelectMany(x=>x.AsEnumerable());
             InitializeComponent();
         }
+
         public CatalogWindow(BO.Cart cart)
         {
             Cart = cart;
@@ -58,8 +56,9 @@ namespace PL
             InitializeComponent();
         }
 
-        
-
+        /// <summary>
+        /// This function addes a product to the user's cart
+        /// </summary>
         private void AddToCart(object sender, RoutedEventArgs e)
         {
             var element = e.OriginalSource as FrameworkElement;
@@ -69,8 +68,8 @@ namespace PL
                 try
                 {
                     Cart = bl!.Cart.AddItem(product.ID, Cart);
-                    new CartWindow(Cart).Show();
-                    Close();
+                   // new CartWindow(Cart).Show();
+                   // Close();
                 }
                 catch (BO.OutOfStockException)
                 {
@@ -79,6 +78,9 @@ namespace PL
            }
         }
 
+        /// <summary>
+        /// This function open a window of the product's details
+        /// </summary>
         private void ShowProductItem(object sender, RoutedEventArgs e)
         {
             var element = e.OriginalSource as FrameworkElement;
@@ -89,12 +91,18 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// This function opens a window of the user's cart
+        /// </summary>
         private void ShowCart(object sender, RoutedEventArgs e)
         {
             new CartWindow(Cart).Show();
             Close();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void CategorySelectionChanged(object sender, SelectionChangedEventArgs args)
         {
             var element = args.OriginalSource as ComboBox;
@@ -103,6 +111,5 @@ namespace PL
                 ProductsList = FullProductsList.Where(x=>x.FirstOrDefault()?.Category == (BO.Category)element.SelectedItem).FirstOrDefault()?.AsEnumerable();
             }
         }
-
     }
 }

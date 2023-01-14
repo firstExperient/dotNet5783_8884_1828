@@ -9,9 +9,7 @@
         Title="CatalogWindow" Height="450" Width="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
-
         <DataTemplate  DataType="{x:Type BO:ProductItem}">
-
             <StackPanel Orientation="Horizontal" >
                 <Grid>
                     <Grid.ColumnDefinitions>
