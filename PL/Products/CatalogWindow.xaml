@@ -63,6 +63,7 @@
             <CheckBox x:Name="GroupByCategory" IsChecked="False"/>
             <TextBlock Text="Group by category"/>
         </StackPanel>
+        <Button Click="GoBack" Content="Back" HorizontalAlignment="Left" Margin="16,14,0,0" VerticalAlignment="Top" Height="28" Width="81" Grid.Row="3"/>
         <Button Grid.Row="3" Content="Show cart" HorizontalAlignment="Left" Click="ShowCart"  VerticalAlignment="Center" Height="32" Width="95" Margin="479,0,0,0"/>
     </Grid>
 </Window>

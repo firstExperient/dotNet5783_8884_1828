@@ -43,5 +43,6 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Button Click="ShowOrderDetails" Content="Order details" Grid.Column="2" HorizontalAlignment="Left" Margin="74,0,0,0" Height="36" VerticalAlignment="Center" Width="86" Grid.Row="1"/>
+        <Button Click="GoBack" Content="Back" HorizontalAlignment="Left" Margin="20,237,0,0" VerticalAlignment="Top" Height="28" Width="81" Grid.Row="2"/>
     </Grid>
 </Window>

@@ -35,5 +35,11 @@ namespace PL
         {
             new OrderListWindow().Show();
         }
+
+        private void GoBack(object sender, RoutedEventArgs e)
+        {
+            new MainWindow().Show();
+            Close();    
+        }
     }
 }

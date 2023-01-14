@@ -9,6 +9,6 @@
     <Grid>
         <Button Click="ShowProducts" Content="Protucts list" HorizontalAlignment="Center" Margin="0,128,0,0" VerticalAlignment="Top" Height="52" Width="142"/>
         <Button Click="ShowOrders" Content="Orders list" HorizontalAlignment="Center" Margin="0,197,0,0" VerticalAlignment="Top" Height="53" Width="142"/>
-
+        <Button Click="GoBack" Content="Back" HorizontalAlignment="Left" Margin="24,365,0,0" VerticalAlignment="Top" Height="28" Width="81"/>
     </Grid>
 </Window>

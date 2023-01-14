@@ -39,9 +39,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
         <Button  Content="Add New Product"  Grid.Row="2" HorizontalAlignment="Left" Margin="659,10,0,10" Padding="5" Click="AddNewProductButton_Click" Width="112"/>
         <Button  Content="Back"  Grid.Row="2" HorizontalAlignment="Left" Margin="18,10,0,10" Padding="5" Click="backButton_Click" Width="94"/>
-
     </Grid>
 </Window>

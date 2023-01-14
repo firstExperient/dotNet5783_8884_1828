@@ -111,5 +111,11 @@ namespace PL
                 ProductsList = FullProductsList.Where(x=>x.FirstOrDefault()?.Category == (BO.Category)element.SelectedItem).FirstOrDefault()?.AsEnumerable();
             }
         }
+
+        private void GoBack(object sender, RoutedEventArgs e)
+        {
+            new MainWindow().Show();
+            Close();
+        }
     }
 }

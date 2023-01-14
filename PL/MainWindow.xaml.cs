@@ -27,6 +27,7 @@ public partial class MainWindow : Window
     private void TrackOrder(object sender, RoutedEventArgs e)
     {
         new OrderTrackingWindow().Show();
+        Close();
     }
 
     private void NewOrder(object sender, RoutedEventArgs e)

@@ -48,4 +48,10 @@ public partial class OrderTrackingWindow : Window
     {
         new OrderWindow(OrderId ?? -1, State.View).Show();
     }
+
+    private void GoBack(object sender, RoutedEventArgs e)
+    {
+        new MainWindow().Show();
+        Close();
+    }
 }
