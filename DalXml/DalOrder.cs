@@ -14,7 +14,10 @@ namespace Dal;
     /// <returns> ID of the added order</returns>
     public int Add(Order order)
     {
-        return 0;
+        List<Order?> orders = (List<Order?>)FilesManage<Order?>.ReadList("Orders.xml");
+        orders.Add(order);
+        FilesManage<Order?>.SaveList(orders, "Orders.xml");
+        return order.ID;
     }
 
     #endregion
@@ -23,12 +26,7 @@ namespace Dal;
 
     public Order Get(Func<Order?,bool> match)
     {
-        XmlSerializer xs = new XmlSerializer(typeof(IEnumerable<Order?>));
-        StreamReader sr = new StreamReader("xml/Orders");
-        //קריאת האוביקט שנשמר
-        IEnumerable<Order?> orders = xs.Deserialize(sr) as IEnumerable<Order?> ?? throw new Exception("fix this");
-        sr.Close();
-        return orders.Where(match).FirstOrDefault() ?? throw new Exception("not found");
+        return FilesManage<Order?>.ReadList("Orders.xml").Where(match).FirstOrDefault() ?? throw new Exception("not found");
     }
 
     /// <summary>
@@ -37,13 +35,7 @@ namespace Dal;
     /// <returns>a list of all orders</returns>
     public IEnumerable<Order?> GetAll(Func<Order?,bool>? match)
     {
-        XmlSerializer xs = new XmlSerializer(typeof(IEnumerable<Order?>));
-        StreamReader sr = new StreamReader("xml/Orders");
-        //קריאת האוביקט שנשמר
-        IEnumerable<Order?> orders = xs.Deserialize(sr) as IEnumerable<Order?> ?? throw new Exception("fix this");
-        sr.Close();
-        //fix this
-        return orders.Where(match);
+        return FilesManage<Order?>.ReadList("Orders.xml").Where(match);
     }
 
     #endregion
@@ -56,7 +48,20 @@ namespace Dal;
     /// <param name="order">the order to update</param>
     public void Update(Order order)
     {
-       
+        List<Order?> orders = (List<Order?>)FilesManage<Order?>.ReadList("Orders.xml");
+        
+        bool flag = false;
+        for (int i = 0; i < orders.Count; i++)
+        {
+            if (orders[i]?.ID == order.ID)
+            {
+                orders[i] = order;
+                flag = true;
+                break;
+            }
+        }
+        FilesManage<Order?>.SaveList(orders, "Orders.xml");
+        if (!flag) throw new NotFoundException("Order not found");
     }
 
     #endregion
@@ -69,7 +74,9 @@ namespace Dal;
     /// <param name="id">the ID of the order to delete</param>
     public void Delete(int id)
     {
+        //read the list, and save again with only the orders with Id different than the parameter
+        FilesManage<Order?>.SaveList(FilesManage<Order?>.ReadList("Orders.xml").Where(x => x?.ID != id), "Orders.xml");
     }
 
     #endregion
- }
+}
