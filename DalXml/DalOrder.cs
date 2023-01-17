@@ -14,7 +14,7 @@ namespace Dal;
     /// <returns> ID of the added order</returns>
     public int Add(Order order)
     {
-        
+        return 0;
     }
 
     #endregion

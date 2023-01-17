@@ -1,5 +1,5 @@
 ﻿using DO;
-using static Dal.DataSource;
+using static DalXml.DataSource;
 using System.Diagnostics;
 using DalApi;
 using System.Text.RegularExpressions;

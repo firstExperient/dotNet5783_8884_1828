@@ -1,4 +1,4 @@
-﻿using DO;
+﻿
 using System.Xml.Serialization;
 
 namespace Dal
@@ -8,14 +8,21 @@ namespace Dal
     /// </summary>
     internal class Tools
     {
-        public Order Get(Func<T?, bool> match, string path)
+       /* public T Get(Func<T?, bool> match, string path)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(IEnumerable<T?>));
-            StreamReader sr = new StreamReader(path);
-            //קריאת האוביקט שנשמר
-            IEnumerable<T?> array = xs.Deserialize(sr) as IEnumerable<T?> ?? throw new Exception("fix this");
-            sr.Close();
-            return array.Where(match).FirstOrDefault() ?? throw new Exception("not found");
+            try
+            {
+                XmlSerializer xs = new XmlSerializer(typeof(IEnumerable<T?>));
+                StreamReader sr = new StreamReader(path);
+                //קריאת האוביקט שנשמר
+                IEnumerable<T?> array = xs.Deserialize(sr) as IEnumerable<T?> ?? throw new Exception("fix this");
+                sr.Close();
+                return array.Where(match);
+            }
+            catch
+            {
+
+            }
         }
 
         public IEnumerable<T?> GetAll(Func<T?, bool>? match, string path)
@@ -45,6 +52,6 @@ namespace Dal
                 fs.Close();
             }catch
             {
-            }
+            }*/
         }
     }
