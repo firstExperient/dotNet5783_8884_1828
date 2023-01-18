@@ -3,6 +3,7 @@ using DalApi;
 using System.Diagnostics;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Dal;
 
@@ -16,9 +17,9 @@ internal class DalProduct : IProduct
     /// <returns>ID of the added watch</returns>
     public int Add(Product product)
     {
-        if(DataSource.Products.Any(x => x?.ID == product.ID))
-            throw new AlreadyExistsException("product with id: " + product.ID + " already exists");
-        DataSource.Products.Add(product);
+        List<Product?> products = (List<Product?>)FilesManage<Product?>.ReadList("Products.xml");
+        products.Add(product);
+        FilesManage<Product?>.SaveList(products, "Products.xml");
         return product.ID;
     }
 
@@ -33,7 +34,7 @@ internal class DalProduct : IProduct
     /// <returns>the watch that has the given ID</returns>
     public Product Get(Func<Product?,bool> match)
     {
-        return DataSource.Products.Where(match).FirstOrDefault() ?? throw new NotFoundException("Product not found");
+        return FilesManage<Product?>.ReadList("Products.xml").Where(match).FirstOrDefault() ?? throw new Exception("not found");
     }
 
     /// <summary>
@@ -42,9 +43,7 @@ internal class DalProduct : IProduct
     /// <returns>an array of all watches</returns>
     public IEnumerable<Product?> GetAll(Func<Product?,bool>? match)
     {
-        if (match == null)
-            return new List<Product?>(DataSource.Products);
-        return DataSource.Products.Where(match);
+        return FilesManage<Product?>.ReadList("Products.xml").Where(match);
     }
 
     #endregion
@@ -57,16 +56,19 @@ internal class DalProduct : IProduct
     /// <param name="product">the watch to update</param>
     public void Update(Product product)
     {
+        List<Product?> products = (List<Product?>)FilesManage<Product?>.ReadList("Products.xml");
+
         bool flag = false;
-        for (int i = 0; i < DataSource.Products.Count; i++)//we used a loop and not Linq because we need to update
+        for (int i = 0; i < products.Count; i++)
         {
-            if (DataSource.Products[i]?.ID == product.ID)
+            if (products[i]?.ID == product.ID)
             {
-                DataSource.Products[i] = product;
+                products[i] = product;
                 flag = true;
                 break;
             }
         }
+        FilesManage<Product?>.SaveList(products, "Products.xml");
         if (!flag) throw new NotFoundException("Product not found");
     }
 
@@ -80,7 +82,8 @@ internal class DalProduct : IProduct
     /// <param name="id">the ID of the watch to delete</param>
     public void Delete(int id)
     {
-        DataSource.Products.RemoveAll(x => x?.ID == id);
+        //read the list, and save again with only the products with Id different than the parameter
+        FilesManage<Product?>.SaveList(FilesManage<Product?>.ReadList("Products.xml").Where(x => x?.ID != id), "Products.xml");
     }
 
     #endregion

@@ -3,6 +3,7 @@
 using System.Diagnostics;
 using DalApi;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Dal;
 
@@ -16,8 +17,9 @@ internal class DalOrderItem: IOrderItem
     /// <returns>order-item ID of the added order-item</returns>
     public int Add(OrderItem orderItem)
     {
-        orderItem.ID = DataSource.Config.OrderItemId;
-        DataSource.OrderItems.Add(orderItem);
+        List<OrderItem?> orderItems = (List<OrderItem?>)FilesManage<OrderItem?>.ReadList("OrderItems.xml");
+        orderItems.Add(orderItem);
+        FilesManage<OrderItem?>.SaveList(orderItems, "OrderItems.xml");
         return orderItem.ID;
     }
 
@@ -31,7 +33,7 @@ internal class DalOrderItem: IOrderItem
     /// <returns>the order-item that has the given ID</returns>
     public OrderItem Get(Func<OrderItem?,bool> match)
     {
-        return DataSource.OrderItems.Where(match).FirstOrDefault() ?? throw new NotFoundException("Order item not found");
+        return FilesManage<OrderItem?>.ReadList("OrderItems.xml").Where(match).FirstOrDefault() ?? throw new Exception("not found");
     }
 
     /// <summary>
@@ -40,13 +42,8 @@ internal class DalOrderItem: IOrderItem
     /// <returns>an array of all order-items</returns>
     public IEnumerable<OrderItem?> GetAll(Func<OrderItem?,bool>? match)
     {
-        if (match == null)
-            return new List<OrderItem?>(DataSource.OrderItems);
-        return DataSource.OrderItems.Where(match);
+        return FilesManage<OrderItem?>.ReadList("OrderItems.xml").Where(match);
     }
-
-
-
     #endregion
 
     #region Update
@@ -56,17 +53,20 @@ internal class DalOrderItem: IOrderItem
     /// <param name="orderItem">the order-item to update</param>
     public void Update(OrderItem orderItem)
     {
+        List<OrderItem?> orderItems = (List<OrderItem?>)FilesManage<OrderItem?>.ReadList("OrderItemss.xml");
+
         bool flag = false;
-        for (int i = 0; i < DataSource.OrderItems.Count; i++)
+        for (int i = 0; i < orderItems.Count; i++)
         {
-            if (DataSource.OrderItems[i]?.ID == orderItem.ID)
+            if (orderItems[i]?.ID == orderItem.ID)
             {
-                DataSource.OrderItems[i] = orderItem;
+                orderItems[i] = orderItem;
                 flag = true;
                 break;
             }
         }
-        if (!flag) throw new NotFoundException("Order item not found");
+        FilesManage<OrderItem?>.SaveList(orderItems, "OrderItems.xml");
+        if (!flag) throw new NotFoundException("OrderItem not found");
     }
 
     #endregion
@@ -78,7 +78,8 @@ internal class DalOrderItem: IOrderItem
     /// <param name="id">the ID of the order-item to delete</param>
     public void Delete(int id)
     {
-        DataSource.OrderItems.RemoveAll(x => x?.ID == id);
+        //read the list, and save again with only the order-items with Id different than the parameter
+        FilesManage<OrderItem?>.SaveList(FilesManage<OrderItem?>.ReadList("OrderItems.xml").Where(x => x?.ID != id), "OrderItems.xml");
     }
 
     #endregion
