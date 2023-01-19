@@ -2,8 +2,6 @@
 //using static DalXml.DataSource;
 using System.Diagnostics;
 using DalApi;
-using System.Text.RegularExpressions;
-using System.Linq;
 
 namespace Dal;
 

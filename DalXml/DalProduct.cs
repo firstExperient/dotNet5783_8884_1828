@@ -1,9 +1,5 @@
 ﻿using DO;
 using DalApi;
-using System.Diagnostics;
-using System.Xml.Linq;
-using System.Text.RegularExpressions;
-using System.Linq;
 
 namespace Dal;
 
