@@ -1,7 +1,5 @@
 ﻿using DalApi;
 using DO;
-using System.IO;
-using System.Xml.Serialization;
 
 namespace Dal;
  internal class DalOrder:IOrder 
@@ -75,7 +73,7 @@ namespace Dal;
     public void Delete(int id)
     {
         //read the list, and save again with only the orders with Id different than the parameter
-        FilesManage<Order?>.SaveList(FilesManage<Order?>.ReadList("Orders.xml").Where(x => x?.ID != id), "Orders.xml");
+        FilesManage<Order?>.SaveList((List<Order?>)FilesManage<Order?>.ReadList("Orders.xml").Where(x => x?.ID != id), "Orders.xml");
     }
 
     #endregion

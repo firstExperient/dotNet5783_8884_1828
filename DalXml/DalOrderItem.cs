@@ -2,8 +2,6 @@
 //using static DalXml.DataSource;
 using System.Diagnostics;
 using DalApi;
-using System.Text.RegularExpressions;
-using System.Linq;
 
 namespace Dal;
 
@@ -79,7 +77,7 @@ internal class DalOrderItem: IOrderItem
     public void Delete(int id)
     {
         //read the list, and save again with only the order-items with Id different than the parameter
-        FilesManage<OrderItem?>.SaveList(FilesManage<OrderItem?>.ReadList("OrderItems.xml").Where(x => x?.ID != id), "OrderItems.xml");
+        FilesManage<OrderItem?>.SaveList((List<OrderItem?>)FilesManage<OrderItem?>.ReadList("OrderItems.xml").Where(x => x?.ID != id), "OrderItems.xml");
     }
 
     #endregion

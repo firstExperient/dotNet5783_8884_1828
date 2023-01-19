@@ -1,9 +1,5 @@
 ﻿using DO;
 using DalApi;
-using System.Diagnostics;
-using System.Xml.Linq;
-using System.Text.RegularExpressions;
-using System.Linq;
 
 namespace Dal;
 
@@ -83,7 +79,7 @@ internal class DalProduct : IProduct
     public void Delete(int id)
     {
         //read the list, and save again with only the products with Id different than the parameter
-        FilesManage<Product?>.SaveList(FilesManage<Product?>.ReadList("Products.xml").Where(x => x?.ID != id), "Products.xml");
+        FilesManage<Product?>.SaveList((List<Product?>)FilesManage<Product?>.ReadList("Products.xml").Where(x => x?.ID != id), "Products.xml");
     }
 
     #endregion
