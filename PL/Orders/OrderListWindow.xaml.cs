@@ -67,4 +67,10 @@ public partial class OrderListWindow : Window
             OrdersList[index].Status = bl?.Order.DeliverOrder(orderId).Status;
         }
     }
+
+    private void backButton_Click(object sender, RoutedEventArgs e)
+    {
+        new Administration().Show();
+        Close();
+    }
 }

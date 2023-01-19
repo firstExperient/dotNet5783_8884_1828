@@ -39,8 +39,8 @@ public class OrderTracking:INotifyPropertyChanged
     /// a list of dates and a string represent the order status at that date
     /// </summary>
 
-    private ObservableCollection<(DateTime?, string?)>? trackingList = new();
-    public ObservableCollection<(DateTime?, string?)>? TrackingList
+    private Dictionary<DateTime, string?>? trackingList = new();
+    public Dictionary<DateTime, string?>? TrackingList
     {
         get { return trackingList; }
         set
@@ -59,9 +59,8 @@ public class OrderTracking:INotifyPropertyChanged
     {
         string tracking = "";
         if(TrackingList != null)
-            foreach ((DateTime? date, string? msg) in TrackingList) {
-                if(date != null && msg != null)
-                    tracking += "\n\t\tDate: " + date + "\n\t\tDescreption: " + msg + "\n";
+            foreach (var pair in TrackingList) {
+                    tracking += "\n\t\tDate: " + pair.Key + "\n\t\tDescreption: " + pair.Value + "\n";
             } 
         return $@"
         Order ID: {ID}

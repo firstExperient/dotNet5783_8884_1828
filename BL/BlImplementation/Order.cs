@@ -199,14 +199,14 @@ internal class Order : IOrder
             if (dalOrder.DeliveryDate != null) status = BO.OrderStatus.Delivered;
 
             //figuring the trackingList
-            ObservableCollection<(DateTime?, string?)> tracking = new();
-            tracking.Add((dalOrder.OrderDate, "order confirmed"));
+            Dictionary<DateTime, string?> tracking = new();
+            tracking.Add((DateTime)dalOrder.OrderDate!, "order confirmed");
 
             if(dalOrder.ShipDate != null)
-                tracking.Add((dalOrder.ShipDate, "order shipped"));
+                tracking.Add((DateTime)dalOrder.ShipDate, "order shipped");
 
             if (dalOrder.DeliveryDate != null)
-                tracking.Add((dalOrder.DeliveryDate, "order delivered"));
+                tracking.Add((DateTime)dalOrder.DeliveryDate, "order delivered");
 
             orderTracking = new BO.OrderTracking()
             {

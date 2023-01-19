@@ -18,3 +18,12 @@
 
 6.
 שכלול של הסינגלטון של DalList כדי שיהיה Thread Safe ועם Lazy Initialization מירבי 
+
+7.
+שימוש מלא ב-binding
+
+8.
+שימוש ב style לעיצוב פקדים
+
+9.
+שימוש ב dataTemplate

@@ -3,9 +3,9 @@ using System.Xml.Serialization;
 
 namespace Dal;
 
-public class FilesManage<T>
+public class FilesManage
 {
-    static public List<T> ReadList(string path)
+    static public List<T> ReadList<T>(string path)
     {
         XmlSerializer xs = new XmlSerializer(typeof(List<T>));
         StreamReader sr = new StreamReader(@"../../../../xml/" + path);
@@ -13,7 +13,7 @@ public class FilesManage<T>
         sr.Close();
     }
 
-    static public void SaveList(List<T> list, string path)
+    static public void SaveList<T>(List<T> list, string path)
     {
         XmlSerializer xs = new XmlSerializer(list.GetType());
         FileStream fs = new FileStream(@"../../../../xml/" + path, FileMode.OpenOrCreate);

@@ -9,6 +9,10 @@
         Title="CatalogWindow" Height="450" Width="600"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
+        <local:IsGroupBy x:Key="IsGroupBy"/>
+        <local:IsNotGroupBy x:Key="IsNotGroupBy"/>
+        <local:InStock x:Key="InStock"/>
+        <local:OutOfStock x:Key="OutOfStock"/>
         <DataTemplate  DataType="{x:Type BO:ProductItem}">
             <StackPanel Orientation="Horizontal" >
                 <Grid>
@@ -16,18 +20,16 @@
                         <ColumnDefinition Width="315"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="1" Text="Name: "></TextBlock>
-                    <TextBlock Grid.Column="2" Margin="40,0,0,0" Text="{Binding Name}"></TextBlock>
-                    <TextBlock Grid.Column="3" Margin="145,0,0,0" Text="Price: "></TextBlock>
-                    <TextBlock Grid.Column="4" Margin="180,0,0,0" Text="{Binding Price}"></TextBlock>
-                    <TextBlock Grid.Column="5" Margin="240,0,0,0" Text="In Stock: "></TextBlock>
-                    <TextBlock Grid.Column="6" Margin="290,0,0,0" Text="{Binding InStock}"></TextBlock>
+                    <TextBlock Grid.Column="2" Margin="40,0,0,0" Text="{Binding Name}"/>
+                    <TextBlock Grid.Column="3" Margin="145,0,0,0" Text="Price: "/>
+                    <TextBlock Grid.Column="4" Margin="180,0,0,0" Text="{Binding Price}"/>
+                    <TextBlock Grid.Column="5" Margin="250,0,0,0"  Foreground="Red" Visibility="{Binding InStock,Converter={StaticResource OutOfStock}}" Text="out of stock"/>
                 </Grid>
-                <Button Margin="60,10,0,0" Content="Add To Cart" Click="AddToCart" Height="25" Width="75"/>
-                <Button Margin="20,10,0,0" Content="Show Details" Click="ShowProductItem" Height="25" Width="75"/>
+                <Button Margin="60,10,0,0" Content="Show Details" Click="ShowProductItem" Height="25" Width="75"/>
+                <Button Margin="20,10,0,0" Visibility="{Binding InStock,Converter={StaticResource InStock}}" Content="Add To Cart" Click="AddToCart" Height="25" Width="75"/>
             </StackPanel>
         </DataTemplate>
-        <local:IsGroupBy x:Key="IsGroupBy"/>
-        <local:IsNotGroupBy x:Key="IsNotGroupBy"/>
+        
         <CollectionViewSource x:Key='src' 
                       Source="{Binding ProductsList}">
             <CollectionViewSource.GroupDescriptions>

@@ -23,11 +23,11 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="197*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
-        <ListView MouseDoubleClick="UpdateOrder" ItemsSource="{Binding OrdersList}"  Grid.ColumnSpan="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition  Height="Auto" MinHeight="60"/>
+        </Grid.RowDefinitions>
+        <ListView MouseDoubleClick="UpdateOrder" ItemsSource="{Binding OrdersList}"  >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id" DisplayMemberBinding="{Binding ID}"></GridViewColumn>
@@ -35,7 +35,7 @@
                     <GridViewColumn Header="amount of items" DisplayMemberBinding="{Binding AmountOfItems}"></GridViewColumn>
                     <GridViewColumn Header="total price" DisplayMemberBinding="{Binding TotalPrice}"></GridViewColumn>
                     <GridViewColumn Header="status" DisplayMemberBinding="{Binding Status}"></GridViewColumn>
-                    <GridViewColumn Header="ship order" >
+                    <!--<GridViewColumn Header="ship order" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Width="100" Height="35" Content="ship" Click="ShipOrder"></Button>
@@ -48,9 +48,10 @@
                                 <Button Width="100" Height="35" Content="deliver" Click="DeliverOrder"></Button>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                    </GridViewColumn>-->
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Grid.Row="1" Click="backButton_Click" Content="Back" HorizontalAlignment="Left"/>
     </Grid>
 </Window>

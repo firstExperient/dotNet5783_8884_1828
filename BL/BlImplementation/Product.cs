@@ -166,10 +166,10 @@ internal class Product : IProduct
     /// <exception cref="BO.NullValueException">Name is null</exception>
     private void checkValid(BO.Product product)
     {
-        if (product.ID < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
+        if (product.ID <= 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
         if (product.Name == null || product.Name == "") throw new BO.NullValueException("product Name property cannot be null or an empty string");
-        if(product.Price < 0) throw new BO.NegativeNumberException("product Price property cannot be a negative number");
-        if (product.InStock < 0) throw new BO.NegativeNumberException("product InStock property cannot be a negative number");
+        if(product.Price <= 0) throw new BO.NegativeNumberException("product Price property cannot be a negative number");
+        if (product.InStock <= 0) throw new BO.NegativeNumberException("product InStock property cannot be a negative number");
     }
 
     

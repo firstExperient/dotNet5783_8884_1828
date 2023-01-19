@@ -3,11 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:PL="clr-namespace:PL"
         xmlns:local="clr-namespace:PL.Orders"
         mc:Ignorable="d"
         Title="OrderTrackingWindow" Height="450" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         >
+    <Window.Resources>
+        <PL:NotNullToVisible x:Key="NotNull"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -22,17 +26,17 @@
         <TextBlock Grid.Column="0" Text="Enter order ID:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="265,0,0,0"/>
         <TextBox Text="{Binding OrderId}" VerticalAlignment="Center" Grid.ColumnSpan="3" Margin="360,0,353,0" Height="16" />
         <Button Click="GetOrderStatus" Grid.Column="2" Content="confirm" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="74,0,0,0" Height="32" Width="73"/>
-        <TextBlock Text="Order status: " Grid.Row="1" HorizontalAlignment="Left" Margin="265,0,0,0"/>
-        <TextBlock Text="{Binding Order.Status}" Grid.Row="1" Grid.Column="1"/>
-        <ListView ItemsSource="{Binding Order.TrackingList}" Width="100" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+        <TextBlock Visibility="{Binding Order,Converter={StaticResource NotNull}}" Text="Order status: " Grid.Row="1" HorizontalAlignment="Left" Margin="265,0,0,0"/>
+        <TextBlock Visibility="{Binding Order,Converter={StaticResource NotNull}}" Text="{Binding Order.Status}" Grid.Row="1" Grid.Column="1"/>
+        <ListView Visibility="{Binding Order,Converter={StaticResource NotNull}}" ItemsSource="{Binding Order.TrackingList}" Width="300" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Center">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}"/>
-                    <GridViewColumn Header="Descreption" DisplayMemberBinding="{Binding Descreption}"/>
+                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Key}"/>
+                    <GridViewColumn Header="Descreption" DisplayMemberBinding="{Binding Value}"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListBox Grid.ColumnSpan="3" ItemsSource="{Binding Order.TrackingList}" Margin="360,2,353,18" Grid.Row="1">
+        <!--<ListBox Visibility="{Binding Order,Converter={StaticResource NotNull}}" Grid.ColumnSpan="3" ItemsSource="{Binding Order.TrackingList}" Margin="360,2,353,18" Grid.Row="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -41,8 +45,8 @@
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
-        <Button Click="ShowOrderDetails" Content="Order details" Grid.Column="2" HorizontalAlignment="Left" Margin="74,0,0,0" Height="36" VerticalAlignment="Center" Width="86" Grid.Row="1"/>
+        </ListBox>-->
+        <Button Visibility="{Binding Order,Converter={StaticResource NotNull}}" Click="ShowOrderDetails" Content="Order details" Grid.Column="2" HorizontalAlignment="Left" Margin="74,0,0,0" Height="36" VerticalAlignment="Center" Width="86" Grid.Row="1"/>
         <Button Click="GoBack" Content="Back" HorizontalAlignment="Left" Margin="20,237,0,0" VerticalAlignment="Top" Height="28" Width="81" Grid.Row="2"/>
     </Grid>
 </Window>

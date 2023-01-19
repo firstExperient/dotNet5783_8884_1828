@@ -68,8 +68,8 @@ namespace PL
                 try
                 {
                     Cart = bl!.Cart.AddItem(product.ID, Cart);
-                   // new CartWindow(Cart).Show();
-                   // Close();
+                    new CartWindow(Cart).Show();
+                    Close();
                 }
                 catch (BO.OutOfStockException)
                 {

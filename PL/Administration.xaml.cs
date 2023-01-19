@@ -29,11 +29,13 @@ namespace PL
         private void ShowProducts(object sender, RoutedEventArgs e)
         {
             new ProductListWindow().Show();
+            Close();
         }
 
         private void ShowOrders(object sender, RoutedEventArgs e)
         {
             new OrderListWindow().Show();
+            Close();
         }
 
         private void GoBack(object sender, RoutedEventArgs e)

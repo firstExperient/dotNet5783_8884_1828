@@ -44,9 +44,9 @@ public partial class FinishOrderWindow : Window,INotifyPropertyChanged
                 Close();
             }
         }
-        catch
+        catch(BO.NullValueException)
         {
-            MessageBox.Show("ooops, something went worng");
+            MessageBox.Show("please insert name, adress and email to complete the order");
         }
     }
 }

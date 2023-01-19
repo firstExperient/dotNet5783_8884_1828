@@ -76,6 +76,14 @@ public partial class ProductWindow : Window
         {
             MessageBox.Show($"There is already a product with id: {Product.ID}, please choose a different ID for the product");
         }
+        catch (BO.NullValueException)
+        {
+            MessageBox.Show("please insert product name");
+        }
+        catch (BO.NegativeNumberException)
+        {
+            MessageBox.Show("the product's amount in stock, id and price should be a positive numbers");
+        }
     }
 
     /// <summary>
@@ -86,12 +94,21 @@ public partial class ProductWindow : Window
         try
         {
             bl?.Product.Update(Product);
+            Close();
         }
         catch (BO.NotFoundException)
         {
             MessageBox.Show($"No product with id: {Product.ID} was found in database.");
         }
-        Close();
+        catch (BO.NullValueException)
+        {
+            MessageBox.Show("please insert product name");
+        }
+        catch (BO.NegativeNumberException)
+        {
+            MessageBox.Show("the product's amount in stock, id and price should be a positive numbers");
+        }
+        
     }
 
     /// <summary>

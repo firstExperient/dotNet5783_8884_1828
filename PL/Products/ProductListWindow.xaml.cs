@@ -81,7 +81,7 @@ public partial class ProductListWindow : Window
     /// </summary>
     private void backButton_Click(object sender, RoutedEventArgs e)
     {
-        new MainWindow().Show();
+        new Administration().Show();
         Close();
     }
 }

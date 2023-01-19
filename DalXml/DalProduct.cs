@@ -17,9 +17,6 @@ internal class DalProduct : IProduct
     /// <returns>ID of the added watch</returns>
     public int Add(Product product)
     {
-        List<Product?> products = (List<Product?>)FilesManage<Product?>.ReadList("Products.xml");
-        products.Add(product);
-        FilesManage<Product?>.SaveList(products, "Products.xml");
         return product.ID;
     }
 
@@ -34,7 +31,7 @@ internal class DalProduct : IProduct
     /// <returns>the watch that has the given ID</returns>
     public Product Get(Func<Product?,bool> match)
     {
-        return FilesManage<Product?>.ReadList("Products.xml").Where(match).FirstOrDefault() ?? throw new Exception("not found");
+        return FilesManage.ReadList<Product?>("Products.xml").Where(match).FirstOrDefault() ?? throw new Exception("not found");
     }
 
     /// <summary>
@@ -43,7 +40,7 @@ internal class DalProduct : IProduct
     /// <returns>an array of all watches</returns>
     public IEnumerable<Product?> GetAll(Func<Product?,bool>? match)
     {
-        return FilesManage<Product?>.ReadList("Products.xml").Where(match);
+        return FilesManage.ReadList<Product?>("Products.xml").Where(match);
     }
 
     #endregion
@@ -56,7 +53,7 @@ internal class DalProduct : IProduct
     /// <param name="product">the watch to update</param>
     public void Update(Product product)
     {
-        List<Product?> products = (List<Product?>)FilesManage<Product?>.ReadList("Products.xml");
+        List<Product?> products = (List<Product?>)FilesManage.ReadList<Product?>("Products.xml");
 
         bool flag = false;
         for (int i = 0; i < products.Count; i++)
@@ -68,7 +65,7 @@ internal class DalProduct : IProduct
                 break;
             }
         }
-        FilesManage<Product?>.SaveList(products, "Products.xml");
+        FilesManage.SaveList<Product?>(products, "Products.xml");
         if (!flag) throw new NotFoundException("Product not found");
     }
 
@@ -83,7 +80,7 @@ internal class DalProduct : IProduct
     public void Delete(int id)
     {
         //read the list, and save again with only the products with Id different than the parameter
-        FilesManage<Product?>.SaveList(FilesManage<Product?>.ReadList("Products.xml").Where(x => x?.ID != id), "Products.xml");
+        //FilesManage.SaveList<Product?>(FilesManage.ReadList<Product?>("Products.xml").Where(x => x?.ID != id), "Products.xml");
     }
 
     #endregion
