@@ -1,1 +1,72 @@
-﻿<?xml version="1.0" encoding="utf-8"?><ArrayOfProduct xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Product><ID>0</ID><Name>iceWatch</Name><Category>WomenWatches</Category><Price>378.2</Price><InStock>105</InStock></Product><Product><ID>0</ID><Name>Rolex</Name><Category>DivingWatches</Category><Price>169.5</Price><InStock>159</InStock></Product><Product><ID>0</ID><Name>DKNY</Name><Category>WomenWatches</Category><Price>265.9</Price><InStock>0</InStock></Product><Product><ID>0</ID><Name>Michael Kors</Name><Category>SmartWatches</Category><Price>110.7</Price><InStock>72</InStock></Product><Product><ID>0</ID><Name>Louis Vitton</Name><Category>MenWatches</Category><Price>91.3</Price><InStock>258</InStock></Product><Product><ID>0</ID><Name>Tommy Hilfiger</Name><Category>WomenWatches</Category><Price>313.8</Price><InStock>76</InStock></Product><Product><ID>0</ID><Name>Casio</Name><Category>ChildrenWatches</Category><Price>14.4</Price><InStock>75</InStock></Product><Product><ID>0</ID><Name>Anna Klein</Name><Category>DivingWatches</Category><Price>54.4</Price><InStock>179</InStock></Product><Product><ID>0</ID><Name>Celvin Clein</Name><Category>ChildrenWatches</Category><Price>130</Price><InStock>109</InStock></Product><Product><ID>0</ID><Name>Q&amp;Q</Name><Category>MenWatches</Category><Price>105.2</Price><InStock>121</InStock></Product></ArrayOfProduct>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfProduct xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<Product>
+		<ID>0</ID>
+	<Name>iceWatch</Name>
+<Category>WomenWatches</Category>
+		<Price>378.2</Price>
+		<InStock>105</InStock>
+	</Product>
+	<Product>
+	<ID>0</ID>
+	<Name>Rolex</Name>
+	<Category>DivingWatches</Category>
+			<Price>169.5</Price>
+			<InStock>159</InStock>
+</Product>
+	<Product>
+		<ID>0</ID>
+		<Name>DKNY</Name>
+<Category>WomenWatches</Category>
+		<Price>265.9</Price>
+		<InStock>0</InStock>
+	</Product>
+	<Product>
+		<ID>0</ID>
+		<Name>Michael Kors</Name>
+<Category>SmartWatches</Category>
+		<Price>110.7</Price>
+		<InStock>72</InStock>
+	</Product>
+	<Product>
+	<ID>0</ID><Name>Louis Vitton</Name>
+			<Category>MenWatches</Category>
+			<Price>91.3</Price>
+<InStock>258</InStock>
+	</Product>
+	<Product>
+	<ID>0</ID>
+<Name>Tommy Hilfiger</Name>
+		<Category>WomenWatches</Category>
+	<Price>313.8</Price>
+	<InStock>76</InStock>
+	</Product>
+	<Product>
+		<ID>0</ID>
+		<Name>Casio</Name>
+	<Category>ChildrenWatches</Category>
+		<Price>14.4</Price>
+		<InStock>75</InStock>
+	</Product>
+	<Product>
+		<ID>0</ID>
+		<Name>Anna Klein</Name>
+		<Category>DivingWatches</Category>
+			<Price>54.4</Price>
+	<InStock>179</InStock>
+	</Product>
+	<Product>
+		<ID>0</ID>
+	<Name>Celvin Clein</Name>
+		<Category>ChildrenWatches</Category>
+<Price>130</Price>
+<InStock>109</InStock>
+	</Product>
+	<Product>
+	<ID>0</ID>
+		<Name>Q&amp;Q</Name>
+		<Category>MenWatches</Category>
+	<Price>105.2</Price>
+		<InStock>121</InStock>
+	</Product>
+</ArrayOfProduct>
