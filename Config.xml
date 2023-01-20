@@ -2,4 +2,30 @@
 <Config>
 	<OrderId>0</OrderId>
 	<OrderItemId>0</OrderItemId>
+
+	<customerName>
+		<value>Moshe Gross</value>
+		<value>Rebecca Levi</value>
+		<value>Jossef Cohen</value>
+		<value>Sarah Mendel</value>
+		<value>Rachel Greenfeld</value>
+		<value>Haim Goldstein</value>
+		<value>Esther Buxboim</value>
+		<value>Arieh Zilbernagel</value>
+		<value>Yechezkel Burstein</value>
+		<value>Tzipora Chazan</value>
+	</customerName>
+	<email>
+		<value>MosheGross@gmail.com</value>
+		<value>RebeccaLevi@gmail.com</value>
+		<value>JossefCohen@gmail.com</value>
+		<value>SarahMendel@gmail.com</value>
+		<value>RachelGreenfeld@gmail.com</value>
+		<value>HaimGoldstein@gmail.com</value>
+		<value>EstherBuxboim@gmail.com</value>
+		<value>AriehZilbernagel@gmail.com</value>
+		<value>YechezkelBurstein@gmail.com</value> 
+		<value>TziporaChazan@gmail.com</value>
+	</email>
+	
 </Config>
