@@ -36,3 +36,17 @@ public class DalConfigException : Exception
     public DalConfigException(string msg) : base(msg) { }
     public DalConfigException(string msg, Exception ex) : base(msg, ex) { }
 }
+
+public class XmlFileException: Exception
+{
+    public XmlFileException(string msg) : base(msg) { }
+
+    public XmlFileException (string msg, Exception ex) : base(msg, ex) { }
+    public override string ToString()
+    {
+        return $@"
+          database XmlFileException:
+          {Message}
+        ";
+    }
+}
