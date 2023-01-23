@@ -1,5 +1,7 @@
 ﻿
+using DalApi;
 using DO;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace XmlInitalize;
@@ -19,7 +21,17 @@ internal class Program
 
         for (int i = 0; i < 10; i++)
         {
-            products.Add(new Product() { Name = watchNames[i], Category = (Category)Random.Next(0, 5), Price = Math.Round(Random.NextDouble() * 400, 1), InStock = i == 2 ? 0 : Random.Next(0, 350) });
+            int id = Random.Next(100000, 1000000);
+
+            for (int j = 0; j < products.Count; j++)//make sure no id repeat itself
+            {
+                if (products[j]?.ID == id)
+                {
+                    id = Random.Next(100000, 1000000);
+                    j = 0;
+                }
+            }
+            products.Add(new Product() {ID = id, Name = watchNames[i], Category = (Category)Random.Next(0, 5), Price = Math.Round(Random.NextDouble() * 400, 1), InStock = i == 2 ? 0 : Random.Next(0, 350) });
         }
 
         // orders:
@@ -47,6 +59,7 @@ internal class Program
 
         //orderItems:
 
+        int orderId = 0;
         //the code will add an avarage of 2 items to an order wich will give about 40 order-items
         for (int i = 0; i < 20; i++)
         {
@@ -56,11 +69,12 @@ internal class Program
                 int productIndex = Random.Next(0, products.Count);//selecting a random product to add
                 orderItems.Add(new OrderItem()
                 {
+                    ID = orderId++,
                     ProductId = (int)products[productIndex]?.ID!,
                     OrderId = (int)orders[i]?.ID!,
                     Price = (int)products[productIndex]?.Price!,
                     Amount = Random.Next(1, 5)
-                });
+                }); 
             }
         }
 
@@ -70,6 +84,10 @@ internal class Program
         FilesManage<DO.Product?>.Save(products, "Products.xml");
         FilesManage<DO.OrderItem?>.Save(orderItems, "OrderItems.xml");
 
+        XElement Config = new("Config",
+            new XElement("OrderId", 20),
+            new XElement("OrderItemId", orderId));
+        Config.Save(@"../../../../xml/Config.xml");
         IEnumerable<DO.Order?> ordersSaved = FilesManage<DO.Order?>.Read("Orders.xml");
 
         foreach (DO.Order? o in ordersSaved)

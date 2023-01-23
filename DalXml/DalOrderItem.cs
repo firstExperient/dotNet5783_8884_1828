@@ -2,12 +2,14 @@
 //using static DalXml.DataSource;
 using System.Diagnostics;
 using DalApi;
+using System.Xml.Linq;
 
 namespace Dal;
 
 internal class DalOrderItem: IOrderItem
 {
     private string _path = "OrderItems.xml";
+    private string _configPath = "Config.xml";
 
     #region Add
     /// <summary>
@@ -17,10 +19,16 @@ internal class DalOrderItem: IOrderItem
     /// <returns>order-item ID of the added order-item</returns>
     public int Add(OrderItem orderItem)
     {
-        //fix this
+        //config th id for the new order item
+        XElement Config = FilesManage.ReadXml(_configPath);
+        orderItem.ID = int.Parse(Config.Element("OrderItemId")!.Value);
+        Config.Element("OrderItemId")!.Value = (orderItem.ID + 1).ToString();
+
+        
         List<OrderItem?> orderItems = FilesManage.ReadList<OrderItem?>(_path);
         orderItems.Add(orderItem);
         FilesManage.SaveList(orderItems, _path);
+        FilesManage.SaveXml(Config, _configPath);
         return orderItem.ID;
     }
 
