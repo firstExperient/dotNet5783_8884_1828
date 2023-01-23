@@ -24,6 +24,10 @@ internal class Product : IProduct
         {
             throw new BO.AlreadyExistsException(e.Message, e);
         }
+        catch (DO.XmlFileException e)
+        {
+            throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
+        }
     }
 
     #endregion
@@ -32,16 +36,20 @@ internal class Product : IProduct
 
     public void Delete(int id)
     {
-        IEnumerable<DO.OrderItem?> orderItems = dal?.OrderItem.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
-        if (orderItems.Any(x => x?.ProductId == id))
-            throw new BO.IntegrityDamageException("cannot delete the product without hurting data integrity. There are orders for the product");
         try
         {
+            IEnumerable<DO.OrderItem?> orderItems = dal?.OrderItem.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
+            if (orderItems.Any(x => x?.ProductId == id))
+                throw new BO.IntegrityDamageException("cannot delete the product without hurting data integrity. There are orders for the product");
             dal.Product.Delete(id);
         }
         catch (DO.NotFoundException e)
         { 
             throw new BO.NotFoundException("product not found",e);
+        }
+        catch (DO.XmlFileException e)
+        {
+            throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
         }
     }
 
@@ -66,6 +74,10 @@ internal class Product : IProduct
         catch (DO.NotFoundException e)
         {
             throw new BO.NotFoundException("product not found", e);
+        }
+        catch (DO.XmlFileException e)
+        {
+            throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
         }
     }
 
@@ -151,6 +163,10 @@ internal class Product : IProduct
         catch (DO.NotFoundException e)
         {
             throw new BO.NotFoundException("product not found", e);
+        }
+        catch (DO.XmlFileException e)
+        {
+            throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
         }
     }
 

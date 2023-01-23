@@ -67,6 +67,10 @@ internal class Order : IOrder
         {
             throw new BO.NotFoundException(e.Message, e);
         }
+        catch (DO.XmlFileException e)
+        {
+            throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
+        }
     }
     #endregion
 
@@ -100,6 +104,10 @@ internal class Order : IOrder
         {
             throw new BO.NotFoundException("Order not found", e);
         }
+        catch (DO.XmlFileException e)
+        {
+            throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
+        }
     }
 
     public BO.Order DeliverOrder(int id,DateTime? deliveryDate = null)
@@ -132,6 +140,10 @@ internal class Order : IOrder
         catch (DO.NotFoundException e)
         {
             throw new BO.NotFoundException("Order not found", e);
+        }
+        catch (DO.XmlFileException e)
+        {
+            throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
         }
     }
 
@@ -181,6 +193,10 @@ internal class Order : IOrder
         {
             throw new BO.NotFoundException(e.Message, e);
         }
+        catch (DO.XmlFileException e)
+        {
+            throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
+        }
     }
     #endregion
 
@@ -219,6 +235,10 @@ internal class Order : IOrder
         catch (DO.NotFoundException e)
         {
             throw new BO.NotFoundException("order not found", e);
+        }
+        catch (DO.XmlFileException e)
+        {
+            throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
         }
     }
     #endregion
