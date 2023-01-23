@@ -1,9 +1,12 @@
 ﻿using DalApi;
 using DO;
+using System.Xml.Linq;
 
 namespace Dal;
  internal class DalOrder:IOrder 
 {
+    string _path = "Orders.xml";
+    string _configPath = "Config.xml";
     #region Add
     /// <summary>
     /// this function is used when there is a new order
@@ -12,10 +15,16 @@ namespace Dal;
     /// <returns> ID of the added order</returns>
     public int Add(Order order)
     {
-        //fix this
-        List<Order?> orders = FilesManage.ReadList<Order?>("Orders.xml");
+        //config the id for the new order
+        XElement Config = FilesManage.ReadXml(_configPath);
+        order.ID = int.Parse(Config.Element("OrderId")!.Value);
+        Config.Element("OrderId")!.Value = (order.ID + 1).ToString();
+
+
+        List<Order?> orders = FilesManage.ReadList<Order?>(_path);
         orders.Add(order);
-        FilesManage.SaveList(orders, "Orders.xml");
+        FilesManage.SaveList(orders, _path);
+        FilesManage.SaveXml(Config, _configPath);
         return order.ID;
     }
 
@@ -25,7 +34,7 @@ namespace Dal;
 
     public Order Get(Func<Order?,bool> match)
     {
-        return FilesManage.ReadList<Order?>("Orders.xml").Where(match).FirstOrDefault() ?? throw new NotFoundException("Order not found");
+        return FilesManage.ReadList<Order?>(_path).Where(match).FirstOrDefault() ?? throw new NotFoundException("Order not found");
     }
 
     /// <summary>
@@ -35,8 +44,8 @@ namespace Dal;
     public IEnumerable<Order?> GetAll(Func<Order?,bool>? match)
     {
         if (match == null)
-            return FilesManage.ReadList<Order?>("Orders.xml");
-        return FilesManage.ReadList<Order?>("Orders.xml").Where(match);
+            return FilesManage.ReadList<Order?>(_path);
+        return FilesManage.ReadList<Order?>(_path).Where(match);
     }
 
     #endregion
@@ -49,7 +58,7 @@ namespace Dal;
     /// <param name="order">the order to update</param>
     public void Update(Order order)
     {
-        List<Order?> orders = FilesManage.ReadList<Order?>("Orders.xml");
+        List<Order?> orders = FilesManage.ReadList<Order?>(_path);
         
         bool flag = false;
         for (int i = 0; i < orders.Count; i++)
@@ -61,7 +70,7 @@ namespace Dal;
                 break;
             }
         }
-        FilesManage.SaveList(orders, "Orders.xml");
+        FilesManage.SaveList(orders, _path);
         if (!flag) throw new NotFoundException("Order not found");
     }
 
@@ -76,9 +85,9 @@ namespace Dal;
     public void Delete(int id)
     {
         //read the list, and save again with only the orders with Id different than the parameter
-        List<Order?> orders = FilesManage.ReadList<Order?>("Orders.xml");
+        List<Order?> orders = FilesManage.ReadList<Order?>(_path);
         orders.RemoveAll(x => x?.ID == id);
-        FilesManage.SaveList<Order?>(orders, "Orders.xml");
+        FilesManage.SaveList(orders, _path);
     }
 
     #endregion
