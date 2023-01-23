@@ -2,6 +2,8 @@
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
+using DO;
+
 namespace Dal;
 
 public class FilesManage
@@ -34,9 +36,9 @@ public class FilesManage
                 return list;
             }
         }
-        catch
+        catch (Exception ex)
         {
-            throw;
+            throw new XmlFileException($"Failed to read list from file {_path + path}",ex);
         } 
     }
 
@@ -55,9 +57,9 @@ public class FilesManage
             xs.Serialize(fs, list);
             fs.Close();
         }
-        catch
+        catch (Exception ex)
         {
-            throw;
+            throw new XmlFileException($"Failed to save list to file {_path + path}",ex);
         }
     }
 
@@ -75,10 +77,9 @@ public class FilesManage
                 return rootElem;
             }
         }
-        catch 
+        catch (Exception ex)
         {
-            //throw new DO.XMLFileLoadCreateException(filePath, $"fail to load xml file: {filePath}", ex);
-            throw;
+            throw new XmlFileException($"Failed to read from file {_path + path}", ex);
         }
     }
 
@@ -88,9 +89,9 @@ public class FilesManage
         {
             element.Save(_path + path);
         }
-        catch
+        catch (Exception ex)
         {
-            throw;// new DO.XMLFileLoadCreateException(filePath, $"fail to create xml file: {filePath}", ex);
+            throw new XmlFileException($"Failed to save to file {_path + path}", ex);
         }
     }
 }

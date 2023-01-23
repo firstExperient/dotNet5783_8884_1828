@@ -139,6 +139,9 @@ public class AccessToDataFailedException : Exception
     {
 
     }
+    public AccessToDataFailedException(string msg, Exception innerException) : base(msg, innerException)
+    {
+    }
     public override string ToString()
     {
 
