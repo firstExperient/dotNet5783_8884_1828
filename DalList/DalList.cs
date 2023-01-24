@@ -5,9 +5,9 @@ internal sealed class DalList : IDal
 {
     private DalList() { }
 
-    public IProduct Product => new DalProduct();
-    public IOrder Order => new DalOrder();
-    public IOrderItem OrderItem => new DalOrderItem();
+    public IProduct Product { get; } = new DalProduct();
+    public IOrder Order { get; } = new DalOrder();
+    public IOrderItem OrderItem { get; } = new DalOrderItem();
 
 
     //using c# bulit in Lazy class to provide fully Lazy  and Thread Safe Initialization
