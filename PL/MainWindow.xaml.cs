@@ -40,4 +40,10 @@ public partial class MainWindow : Window
         new Administration().Show();
         Close();
     }
+
+    private void StartSimulation(object sender, RoutedEventArgs e)
+    {
+       // new OrderTrackingWindow().Show();
+        Close();
+    }
 }
