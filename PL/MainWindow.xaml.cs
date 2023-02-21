@@ -43,7 +43,7 @@ public partial class MainWindow : Window
 
     private void StartSimulation(object sender, RoutedEventArgs e)
     {
-       // new OrderTrackingWindow().Show();
+        new Simulation().Show();
         Close();
     }
 }
