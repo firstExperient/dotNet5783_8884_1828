@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="Simulation" Height="450" Width="800">
     <Grid>
-        <Button Content="End Simulation" HorizontalAlignment="Left" Margin="327,168,0,0" VerticalAlignment="Top" Click="StopSimulation" Width="93" Height="32"/>
+        <Button Content="End Simulation" HorizontalAlignment="Left" Margin="316,122,0,0" VerticalAlignment="Top" Click="StopSimulation" Width="104" Height="43"/>
+        <TextBlock HorizontalAlignment="Left" Margin="306,25,0,0" TextWrapping="Wrap" Name="clock" VerticalAlignment="Top" Height="42" Width="114"/>
 
     </Grid>
 </Window>
