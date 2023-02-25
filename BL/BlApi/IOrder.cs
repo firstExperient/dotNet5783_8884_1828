@@ -44,4 +44,6 @@ public interface IOrder
     /// </summary>
     /// <param name="order">the order to update</param>
     public void UpdateOrder(Order order);
+
+    public BO.Order? GetForSimulator();
 }

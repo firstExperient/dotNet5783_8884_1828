@@ -72,6 +72,16 @@ internal class Order : IOrder
             throw new BO.AccessToDataFailedException("Error when accessing xml file", e);
         }
     }
+
+    public BO.Order? GetForSimulator()
+    {
+        var orders = from order in dal?.Order.GetAll((o)=> o?.OrderDate != null && o?.DeliveryDate == null)
+            orderby order?.ShipDate, order?.OrderDate
+            select order
+            ;
+        return orders.FirstOrDefault() != null ? Get(orders.FirstOrDefault()!.Value.ID)  : null;
+    }
+
     #endregion
 
     #region UPDATE
