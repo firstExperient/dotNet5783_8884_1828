@@ -1,5 +1,6 @@
 ﻿using DalApi;
 using DO;
+using System.Runtime.CompilerServices;
 namespace Dal;
  internal class DalOrder:IOrder 
 {
@@ -9,6 +10,7 @@ namespace Dal;
     /// </summary>
     /// <param name="order">the new order to add</param>
     /// <returns> ID of the added order</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int Add(Order order)
     {
         order.ID = DataSource.Config.OrderId;
@@ -33,6 +35,7 @@ namespace Dal;
     //    }
     //    throw new NotFoundException("Order not found");
     //}
+    [MethodImpl(MethodImplOptions.Synchronized)]
 
     public Order Get(Func<Order?,bool> match)
     {
@@ -43,6 +46,7 @@ namespace Dal;
     /// a function that returns all the orders
     /// </summary>
     /// <returns>a list of all orders</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Order?> GetAll(Func<Order?,bool>? match)
     {
         if(match == null)
@@ -58,6 +62,7 @@ namespace Dal;
     /// this function gets an order to update it's details
     /// </summary>
     /// <param name="order">the order to update</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Order order)
     {
         bool flag = false;
@@ -81,6 +86,7 @@ namespace Dal;
     /// this fuction delete's an order by the given ID
     /// </summary>
     /// <param name="id">the ID of the order to delete</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         DataSource.Orders.RemoveAll(x => x?.ID == id);

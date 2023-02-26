@@ -5,8 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="SimulatorWindow" Height="450" Width="800">
+        Title="SimulatorWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="{Binding Time}" Grid.Row="0"/>
+        <TextBlock Text="Strating time: " Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBlock Text="{Binding Data.Item1}"  Grid.Row="1" Grid.Column="1"/>
+        <TextBlock Text="Estimated finish time: "  Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBlock Text="{Binding Data.Item2}"  Grid.Row="2" Grid.Column="1"/>
+        <TextBlock Text="Order id: "  Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBlock Text="{Binding Data.Item3}"  Grid.Row="3" Grid.Column="1"/>
+        <TextBlock Text="Previous state: "  Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBlock Text="{Binding Data.Item4}"  Grid.Row="4" Grid.Column="1"/>
+        <TextBlock Text="Next state: "  Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBlock Text="{Binding Data.Item5}"  Grid.Row="5" Grid.Column="1"/>
+        <Button Content="End Simulation"  Click="StopSimulation"  Grid.Row="6" Grid.Column="1"/>
     </Grid>
 </Window>

@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 
 namespace BlImplementation;
 
@@ -8,7 +9,7 @@ internal class Order : IOrder
     private DalApi.IDal? dal = DalApi.Factory.Get();
 
     #region GET
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<BO.OrderForList?> GetAll()
     {
         IEnumerable<DO.Order?> dalOrders = dal?.Order.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
@@ -34,6 +35,7 @@ internal class Order : IOrder
         return blOrders;
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public BO.Order Get(int id)
     {
         if (id < 0) throw new BO.NegativeNumberException("order ID property cannot be a negative number");
@@ -73,6 +75,7 @@ internal class Order : IOrder
         }
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public BO.Order? GetForSimulator()
     {
         var orders = from order in dal?.Order.GetAll((o)=> o?.OrderDate != null && o?.DeliveryDate == null)
@@ -86,6 +89,7 @@ internal class Order : IOrder
 
     #region UPDATE
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public BO.Order ShipOrder(int id, DateTime? shipDate = null)
     {
         try
@@ -120,6 +124,7 @@ internal class Order : IOrder
         }
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public BO.Order DeliverOrder(int id,DateTime? deliveryDate = null)
     {
         try
@@ -157,6 +162,7 @@ internal class Order : IOrder
         }
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void UpdateOrder(BO.Order order)
     {
         
@@ -212,6 +218,7 @@ internal class Order : IOrder
 
     #region TRACK
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public BO.OrderTracking TrackOrder(int id)
     {
         BO.OrderTracking orderTracking;

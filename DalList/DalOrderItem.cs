@@ -3,6 +3,7 @@ using static Dal.DataSource;
 using System.Diagnostics;
 using DalApi;
 using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
 
 namespace Dal;
 
@@ -14,6 +15,7 @@ internal class DalOrderItem: IOrderItem
     /// </summary>
     /// <param name="orderItem"> ID of the added order-item</param>
     /// <returns>order-item ID of the added order-item</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int Add(OrderItem orderItem)
     {
         orderItem.ID = DataSource.Config.OrderItemId;
@@ -29,6 +31,7 @@ internal class DalOrderItem: IOrderItem
     /// </summary>
     /// <param name="id">ID of order-item to get</param>
     /// <returns>the order-item that has the given ID</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public OrderItem Get(Func<OrderItem?,bool> match)
     {
         return DataSource.OrderItems.Where(match).FirstOrDefault() ?? throw new NotFoundException("Order item not found");
@@ -38,6 +41,7 @@ internal class DalOrderItem: IOrderItem
     /// a function that returns all the order-items
     /// </summary>
     /// <returns>an array of all order-items</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<OrderItem?> GetAll(Func<OrderItem?,bool>? match)
     {
         if (match == null)
@@ -54,6 +58,7 @@ internal class DalOrderItem: IOrderItem
     /// this function gets an order-item to update it's details
     /// </summary>
     /// <param name="orderItem">the order-item to update</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(OrderItem orderItem)
     {
         bool flag = false;
@@ -76,6 +81,7 @@ internal class DalOrderItem: IOrderItem
     /// this fuction delete's an order-item by the given ID 
     /// </summary>
     /// <param name="id">the ID of the order-item to delete</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         DataSource.OrderItems.RemoveAll(x => x?.ID == id);

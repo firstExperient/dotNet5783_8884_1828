@@ -37,7 +37,8 @@ public static class Simulator
                         new ProgressDetails(order.Status!,
                                          order.Status == OrderStatus.Confirmed ? OrderStatus.Shipped : OrderStatus.Delivered,
                                          DateTime.Now,
-                                         DateTime.Now + new TimeSpan(0, 0, seconds)));
+                                         DateTime.Now + new TimeSpan(0, 0, seconds),
+                                         order.ID));
                 }
                 Thread.Sleep(seconds * 1000);
                 if (order.Status == OrderStatus.Confirmed)

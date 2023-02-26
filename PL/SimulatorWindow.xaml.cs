@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,7 +17,6 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
 namespace PL
 {
     /// <summary>
@@ -25,27 +25,27 @@ namespace PL
     public partial class SimulatorWindow : Window
     {
         BackgroundWorker worker;
-        Timer timer;
+        System.Timers.Timer timer;
 
         #region Dependency properties
 
-        //public static readonly DependencyProperty TimeProperty = DependencyProperty.Register(nameof(Time), typeof(string), typeof(SimulationWindow));
+        public static readonly DependencyProperty TimeProperty = DependencyProperty.Register(nameof(Time), typeof(string), typeof(SimulatorWindow));
 
 
-        //public string Time
-        //{
-        //    get { return (string)GetValue(TimeProperty); }
-        //    set { SetValue(TimeProperty, value); }
-        //}
+        public string Time
+        {
+            get { return (string)GetValue(TimeProperty); }
+            set { SetValue(TimeProperty, value); }
+        }
 
-        //public static readonly DependencyProperty DataProperty = DependencyProperty.Register(nameof(Data), typeof(Tuple<string, string, int, BO.OrderStatus, BO.OrderStatus>), typeof(SimulationWindow));
+        public static readonly DependencyProperty DataProperty = DependencyProperty.Register(nameof(Data), typeof(Tuple<string?, string?, int?, BO.OrderStatus?, BO.OrderStatus?>), typeof(SimulatorWindow));
 
 
-        //public Tuple<string?,string?,int?,BO.OrderStatus?,BO.OrderStatus?>? Data
-        //{
-        //    get { return (Tuple<string?, string?, int?, BO.OrderStatus?, BO.OrderStatus?>?)GetValue(DataProperty); }
-        //    set { SetValue(DataProperty, value); }
-        //}
+        public Tuple<string?, string?, int?, BO.OrderStatus?, BO.OrderStatus?>? Data
+        {
+            get { return (Tuple<string?, string?, int?, BO.OrderStatus?, BO.OrderStatus?>?)GetValue(DataProperty); }
+            set { SetValue(DataProperty, value); }
+        }
 
         //public static readonly DependencyProperty PreStatusProperty = DependencyProperty.Register(nameof(PreStatus), typeof(BO.OrderStatus), typeof(SimulationWindow));
 
@@ -102,7 +102,11 @@ namespace PL
                 var hwnd = new WindowInteropHelper(this).Handle;
                 SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
             };
+      
             StartSimulator();
+            Tuple<string?, string?, int?, BO.OrderStatus?, BO.OrderStatus?> data =
+               new("","",0,BO.OrderStatus.Shipped,BO.OrderStatus.Shipped);
+             Data = new("", "", 0, BO.OrderStatus.Shipped, BO.OrderStatus.Shipped);
         }
 
         void StartSimulator()
@@ -116,8 +120,6 @@ namespace PL
             worker.WorkerSupportsCancellation = true;
 
             worker.RunWorkerAsync();
-            //worker.ReportProgress(1);
-            //ProgressChanged(null, new ProgressChangedEventArgs(1,null));
         }
 
         void DoWork(object sender, DoWorkEventArgs e)
@@ -135,36 +137,39 @@ namespace PL
         public void ProgressChanged(object? sender, ProgressChangedEventArgs e)
         {
             if (e.ProgressPercentage == 1)
-                Dispatcher.BeginInvoke(() => MessageBox.Show("hi"));// Time = DateTime.Now.ToString());
+                Dispatcher.BeginInvoke(() => Time = DateTime.Now.ToString());
             else
             {
                 if (e.UserState is Tuple<string?, string?, int?, BO.OrderStatus?, BO.OrderStatus?>)
-                    Dispatcher.BeginInvoke(() => MessageBox.Show("hi"));// Data = e.UserState as Tuple<string?, string?, int?, BO.OrderStatus?, BO.OrderStatus?>);
+                    Dispatcher.BeginInvoke(() => Data = e.UserState as Tuple<string?, string?, int?, BO.OrderStatus?, BO.OrderStatus?>);
             }
         }
 
         public void RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
         {
-
+            Simulator.Simulator.StopSimulation();
+            Simulator.Simulator.RemoveStopedEventListener(StopedEvent);
+            Simulator.Simulator.RemoveProgressEventListener(ProgressedEvent);
+            Close();
         }
 
         public void StopSimulation(object sender, RoutedEventArgs e)
         {
             worker.CancelAsync();
-            Close();
+           
         }
 
 
         public void StopedEvent(object? sender, EventArgs e)
         {
-
+            worker.CancelAsync();
         }
 
         public void ProgressedEvent(object? sender, EventArgs e)
         {
             ProgressDetails details = e as ProgressDetails ?? throw new Exception("worng event args type");
             Tuple<string?, string?, int?, BO.OrderStatus?, BO.OrderStatus?> data =
-                new(details.StartTime.ToString(), details.EndTime.ToString(), 0, details.PreStatus, details.NextStatus);
+                new(details.StartTime.ToString(), details.EndTime.ToString(), details.OrderId, details.PreStatus, details.NextStatus);
             worker.ReportProgress(0, data);
         }
 

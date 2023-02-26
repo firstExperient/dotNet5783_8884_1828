@@ -1,5 +1,5 @@
 ﻿using BlApi;
-
+using System.Runtime.CompilerServices;
 
 namespace BlImplementation;
 
@@ -8,7 +8,7 @@ internal class Cart : ICart
     DalApi.IDal? dal = DalApi.Factory.Get();
 
     #region add item
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public BO.Cart AddItem(int id, BO.Cart cart)
     {
         try
@@ -58,7 +58,7 @@ internal class Cart : ICart
     #endregion
 
     #region update item amount
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public BO.Cart UpdateItemAmount(int id, BO.Cart cart, int newAmount)
     {
         if (newAmount < 0) throw new BO.NegativeNumberException("amount cannot be a negative number");
@@ -108,58 +108,63 @@ internal class Cart : ICart
     #endregion
 
     #region confirm order
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int ConfirmOrder(BO.Cart cart)
     {
         try
         {
 
-
-            if (cart.CustomerName == null || cart.CustomerName == "") throw new BO.NullValueException("customer name cannot be null or an empty string");
-            if (cart.CustomerEmail == null || cart.CustomerEmail == "") throw new BO.NullValueException("customer email cannot be null or an empty string");
-            if (cart.CustomerAdress == null || cart.CustomerAdress == "") throw new BO.NullValueException("customer address cannot be null or an empty string");
-
-
-            int orderId = dal?.Order.Add(new DO.Order()//add the order to database
+            lock (dal!)
             {
-                //no need to add id - auto id is generete
-                CustomerName = cart.CustomerName,
-                CustomerEmail = cart.CustomerEmail,
-                CustomerAdress = cart.CustomerAdress,
-                OrderDate = DateTime.Now,
-                ShipDate = null,
-                DeliveryDate = null,
-            }) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"); ;
-            if (cart.Items == null) throw new BO.NullValueException("cart items cannot be null when confirming an order");
 
-            foreach (var item in cart.Items) //add each item,
-            {
-                DO.Product product;
-                if (item != null)
-                    try
-                    {
-                        product = dal.Product.Get(p => p?.ID == item.ProductId);
-                        if (item.Amount <= 0)
-                            throw new BO.NegativeNumberException("item amount property must be a positive number");
-                        if (product.InStock < item.Amount)
-                            throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
-                        if (item.Price < 0)
-                            throw new BO.NegativeNumberException("item price property cannot be a negative number");
+            
+                if (cart.CustomerName == null || cart.CustomerName == "") throw new BO.NullValueException("customer name cannot be null or an empty string");
+                if (cart.CustomerEmail == null || cart.CustomerEmail == "") throw new BO.NullValueException("customer email cannot be null or an empty string");
+                if (cart.CustomerAdress == null || cart.CustomerAdress == "") throw new BO.NullValueException("customer address cannot be null or an empty string");
 
-                        product.InStock -= item.Amount;
-                        dal.OrderItem.Add(Tools.Copy(item, new DO.OrderItem()
+
+                int orderId = dal?.Order.Add(new DO.Order()//add the order to database
+                {
+                    //no need to add id - auto id is generete
+                    CustomerName = cart.CustomerName,
+                    CustomerEmail = cart.CustomerEmail,
+                    CustomerAdress = cart.CustomerAdress,
+                    OrderDate = DateTime.Now,
+                    ShipDate = null,
+                    DeliveryDate = null,
+                }) ?? throw new BO.AccessToDataFailedException("cannot access the data layer"); ;
+                if (cart.Items == null) throw new BO.NullValueException("cart items cannot be null when confirming an order");
+
+                foreach (var item in cart.Items) //add each item,
+                {
+                    DO.Product product;
+                    if (item != null)
+                        try
                         {
-                            //no need to add id - auto id is generete, other propertys will be copied from item
-                            OrderId = orderId,
-                        }));
-                        dal.Product.Update(product);//update the amount of product in stock
-                    }
-                    catch (DO.NotFoundException e)
-                    {
-                        throw new BO.NotFoundException("product not found", e);
-                    }
+                            product = dal.Product.Get(p => p?.ID == item.ProductId);
+                            if (item.Amount <= 0)
+                                throw new BO.NegativeNumberException("item amount property must be a positive number");
+                            if (product.InStock < item.Amount)
+                                throw new BO.OutOfStockException("product " + product.ID + " is out of stock");
+                            if (item.Price < 0)
+                                throw new BO.NegativeNumberException("item price property cannot be a negative number");
+
+                            product.InStock -= item.Amount;
+                            dal.OrderItem.Add(Tools.Copy(item, new DO.OrderItem()
+                            {
+                                //no need to add id - auto id is generete, other propertys will be copied from item
+                                OrderId = orderId,
+                            }));
+                            dal.Product.Update(product);//update the amount of product in stock
+                        }
+                        catch (DO.NotFoundException e)
+                        {
+                            throw new BO.NotFoundException("product not found", e);
+                        }
+                }
+            
+                return orderId;
             }
-            return orderId;
         }
         catch (DO.XmlFileException e)
         {

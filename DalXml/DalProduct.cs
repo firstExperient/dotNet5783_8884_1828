@@ -1,6 +1,7 @@
 ﻿using DO;
 using DalApi;
 using System.Xml.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Dal;
 
@@ -13,6 +14,7 @@ internal class DalProduct : IProduct
     /// </summary>
     /// <param name="product">the new watch to add</param>
     /// <returns>ID of the added watch</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int Add(Product product)
     {
         XElement products = FilesManage.ReadXml(_path);
@@ -33,6 +35,7 @@ internal class DalProduct : IProduct
     /// </summary>
     /// <param name="id">ID of watch to get</param>
     /// <returns>the watch that has the given ID</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Product Get(Func<Product?,bool> match)
     {
         IEnumerable<XElement> products = FilesManage.ReadXml(_path).Elements();
@@ -43,6 +46,7 @@ internal class DalProduct : IProduct
     /// a function that returns all the watches
     /// </summary>
     /// <returns>an array of all watches</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Product?> GetAll(Func<Product?,bool>? match)
     {
         if (match == null)
@@ -58,6 +62,7 @@ internal class DalProduct : IProduct
     /// this function gets a watch to update it's details
     /// </summary>
     /// <param name="product">the watch to update</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Product product)
     {
         XElement products = FilesManage.ReadXml(_path);
@@ -76,6 +81,7 @@ internal class DalProduct : IProduct
     /// this fuction delete's a watch by the given ID
     /// </summary>
     /// <param name="id">the ID of the watch to delete</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         XElement products = FilesManage.ReadXml(_path);

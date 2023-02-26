@@ -95,6 +95,7 @@ public partial class SimulationWindow: Window
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         };
         StartSimulator();
+
     }
     
     void StartSimulator()
@@ -110,6 +111,20 @@ public partial class SimulationWindow: Window
         worker.RunWorkerAsync();
         //worker.ReportProgress(1);
         //ProgressChanged(null, new ProgressChangedEventArgs(1,null));
+        Thread please = new Thread(() =>
+        {
+
+            Simulator.Simulator.StopedEventListener(StopedEvent);
+            Simulator.Simulator.ProgressEventListener(ProgressedEvent);
+            Simulator.Simulator.StartSimulation();
+            while (!worker.CancellationPending)
+            {
+                worker.ReportProgress(1);
+                Thread.Sleep(1000);
+            };
+        }
+    );
+        please.Start();
     }
 
     void DoWork(object sender, DoWorkEventArgs e)

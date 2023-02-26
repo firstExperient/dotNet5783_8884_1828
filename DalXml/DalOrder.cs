@@ -1,5 +1,6 @@
 ﻿using DalApi;
 using DO;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
 namespace Dal;
@@ -13,6 +14,7 @@ namespace Dal;
     /// </summary>
     /// <param name="order">the new order to add</param>
     /// <returns> ID of the added order</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public int Add(Order order)
     {
         //config the id for the new order
@@ -32,6 +34,7 @@ namespace Dal;
 
     #region Get
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public Order Get(Func<Order?,bool> match)
     {
         return FilesManage.ReadList<Order?>(_path).Where(match).FirstOrDefault() ?? throw new NotFoundException("Order not found");
@@ -41,6 +44,7 @@ namespace Dal;
     /// a function that returns all the orders
     /// </summary>
     /// <returns>a list of all orders</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<Order?> GetAll(Func<Order?,bool>? match)
     {
         if (match == null)
@@ -56,6 +60,7 @@ namespace Dal;
     /// this function gets an order to update it's details
     /// </summary>
     /// <param name="order">the order to update</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(Order order)
     {
         List<Order?> orders = FilesManage.ReadList<Order?>(_path);
@@ -82,6 +87,7 @@ namespace Dal;
     /// this fuction delete's an order by the given ID
     /// </summary>
     /// <param name="id">the ID of the order to delete</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         //read the list, and save again with only the orders with Id different than the parameter

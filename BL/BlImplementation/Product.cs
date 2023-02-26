@@ -1,4 +1,6 @@
 ﻿using BlApi;
+using System.Runtime.CompilerServices;
+
 namespace BlImplementation;
 
 internal class Product : IProduct
@@ -7,6 +9,8 @@ internal class Product : IProduct
 
 
     #region ADD
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Add(BO.Product item)
     {
         checkValid(item);
@@ -33,7 +37,7 @@ internal class Product : IProduct
     #endregion
 
     #region DELETE
-
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Delete(int id)
     {
         try
@@ -56,6 +60,8 @@ internal class Product : IProduct
     #endregion
 
     #region GET
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public BO.ProductItem Get(int id, BO.Cart cart)
     {
         if (id < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
@@ -81,6 +87,7 @@ internal class Product : IProduct
         }
     }
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public BO.Product AdminGet(int id)
     {
         if (id < 0) throw new BO.NegativeNumberException("product ID property cannot be a negative number");
@@ -104,6 +111,7 @@ internal class Product : IProduct
     /// turns them to ProductForList type and return them in a list
     /// </summary>
     /// <returns>all the products in a list</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<BO.ProductForList?> GetAll()
     {
         IEnumerable<DO.Product?> dalProducts = dal?.Product.GetAll(null) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
@@ -120,6 +128,7 @@ internal class Product : IProduct
     /// turns them to ProductForList type and return them in a list
     /// </summary>
     /// <returns>all the products in a list</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public IEnumerable<BO.ProductForList?> GetByCategory(BO.Category category)
     {
         IEnumerable<DO.Product?> dalProducts = dal?.Product.GetAll((product) => product?.Category == (DO.Category)category) ?? throw new BO.AccessToDataFailedException("cannot access the data layer");
@@ -128,6 +137,8 @@ internal class Product : IProduct
                                                      select Tools.Copy(item, new BO.ProductForList() { Category = (BO.Category?)item?.Category });
         return blProducts;
     }
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
 
     public IEnumerable<IGrouping<BO.Category?, BO.ProductItem>> GetCatalog(BO.Cart cart)
     {
@@ -152,6 +163,7 @@ internal class Product : IProduct
 
     #region UPDATE
 
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Update(BO.Product item)
     {
         checkValid(item);
