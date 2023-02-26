@@ -43,7 +43,7 @@ public partial class MainWindow : Window
 
     private void StartSimulation(object sender, RoutedEventArgs e)
     {
-        new Simulation().Show();
-        Close();
+        new SimulationWindow().Show();
+        
     }
 }
