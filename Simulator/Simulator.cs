@@ -2,11 +2,10 @@
 
 using BlApi;
 using BO;
-using System.Reflection.PortableExecutable;
 
 namespace Simulator;
 
-internal static class Simulator
+public static class Simulator
 {
     private static IBl? bl = BlApi.Factory.Get();
 
